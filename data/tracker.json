@@ -1,7 +1,7 @@
 {
   "meta": {
     "data_source": "GitHub Pages / same-repo JSON",
-    "last_update": "2026-03-09 20:03 UTC"
+    "last_update": "2026-03-09 20:24 UTC"
   },
   "changes": [
     "Tracker refreshed",
@@ -319,13 +319,7 @@
     "imports_series": [],
     "debug": {
       "message": "Monthly COMEXT extraction did not yield a usable series yet. HTTPError: HTTP Error 404: Not Found",
-      "attempted_urls": [
-        "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059322?freq=M&format=JSON",
-        "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059322?freq=M&geo=EU27_2020&format=JSON",
-        "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059332?freq=M&format=JSON",
-        "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059332?freq=M&geo=EU27_2020&format=JSON"
-      ],
-      "updated_at": "2026-03-09 20:03 UTC"
+      "updated_at": "2026-03-09 20:24 UTC"
     }
   }
 }
