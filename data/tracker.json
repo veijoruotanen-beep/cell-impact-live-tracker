@@ -1,14 +1,14 @@
 {
   "meta": {
     "data_source": "GitHub Pages / same-repo JSON",
-    "last_update": "2026-03-09 19:44 UTC"
+    "last_update": "2026-03-09 20:03 UTC"
   },
   "changes": [
     "Tracker refreshed",
     "IR headlines updated",
     "Share price updated",
     "Trade index recalculated",
-    "Monthly balanced bundle refreshed",
+    "Monthly balanced bundle fetch failed",
     "What matters now updated"
   ],
   "what_matters_now": [
@@ -30,7 +30,7 @@
     {
       "label": "Biggest current risk",
       "value": "Dilution before scale",
-      "note": "Even with annual trade backdrop at -1.4% YoY, the key company-specific risk is financing before scale-up."
+      "note": "Even with trade backdrop at -1.4% YoY, the key company-specific risk is financing before scale-up."
     }
   ],
   "company": {
@@ -57,7 +57,7 @@
     },
     "hydrogen_trade_pulse": {
       "value": "Trade index 1016924.3",
-      "meta": "Annual macro/proxy backdrop from tracker series.",
+      "meta": "Customs index based on tracker series.",
       "status": "Live"
     },
     "dilution_pressure": {
@@ -226,7 +226,7 @@
         "exports": 0.6,
         "imports": 0.4
       },
-      "why": "Primary monthly trade pulse for a faster read than the annual macro proxy, combining a hydrogen hardware anchor with a cautious metals/forming proxy.",
+      "why": "Faster customs pulse than the annual macro proxy, combining a hydrogen hardware anchor with a cautious metals/forming proxy.",
       "limitation": "Proxy signal only. It does not directly measure Cell Impact revenue or orders.",
       "codes": [
         {
@@ -256,37 +256,33 @@
       ]
     },
     "source_type": "single-dataset proxy",
-    "coverage_note": "Annual macro/proxy remains live. Monthly balanced bundle is layered on top as a faster but noisier trade pulse.",
+    "coverage_note": "This is a customs proxy signal, not a complete global fuel-cell trade dataset.",
     "dataset_target": "tet00013",
-    "next_step_note": "Next step: refine the metals/forming proxy or tighten product-level filters if live monthly bundle quality improves."
+    "next_step_note": "Next step: replace or supplement tet00013 with a verified COMEXT monthly bundle.",
+    "comext_dataset_target": "DS-059322 + DS-059332"
   },
   "trade_signals": {
     "balanced_signal": {
-      "status": "Pending live extraction",
+      "status": "Fetch failed",
       "scope": "EU + selected partners",
       "flows": "imports + exports",
       "weights": {
         "exports": 0.6,
         "imports": 0.4
       },
-      "value": null,
-      "latest_period": null,
-      "yoy_pct": null,
-      "note": "Monthly balanced bundle waits for a successful live extraction. Existing monthly data is preserved when available."
+      "note": "Monthly COMEXT extraction did not yield a usable series yet. HTTPError: HTTP Error 404: Not Found"
     },
     "exports_signal": {
-      "status": "Pending live extraction",
+      "status": "Fetch failed",
       "scope": "EU + selected partners",
       "flows": "exports",
-      "value": null,
-      "note": "Exports-only 3M smoothed signal."
+      "note": "Monthly COMEXT extraction did not yield a usable series yet. HTTPError: HTTP Error 404: Not Found"
     },
     "imports_signal": {
-      "status": "Pending live extraction",
+      "status": "Fetch failed",
       "scope": "EU + selected partners",
       "flows": "imports",
-      "value": null,
-      "note": "Imports-only 3M smoothed signal."
+      "note": "Monthly COMEXT extraction did not yield a usable series yet. HTTPError: HTTP Error 404: Not Found"
     },
     "macro_signal": {
       "status": "Live",
@@ -297,7 +293,7 @@
     }
   },
   "monthly_trade_pulse": {
-    "status": "Pending live run",
+    "status": "Fetch failed",
     "scope": "EU + selected partners | imports + exports | 60/40 weighting",
     "partners": [
       "US",
@@ -316,14 +312,20 @@
     "latest_raw_balanced": null,
     "yoy_pct": null,
     "methodology": "Monthly balanced bundle. Shows the last 18 months after 3-month moving-average smoothing when live COMEXT extraction succeeds.",
-    "note": "Starts empty until the updated agent writes live monthly series.",
+    "note": "Monthly COMEXT extraction did not yield a usable series yet. HTTPError: HTTP Error 404: Not Found",
     "balanced_series": [],
     "balanced_raw_series": [],
     "exports_series": [],
     "imports_series": [],
-    "source_datasets": [
-      "DS-059332",
-      "DS-059322"
-    ]
+    "debug": {
+      "message": "Monthly COMEXT extraction did not yield a usable series yet. HTTPError: HTTP Error 404: Not Found",
+      "attempted_urls": [
+        "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059322?freq=M&format=JSON",
+        "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059322?freq=M&geo=EU27_2020&format=JSON",
+        "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059332?freq=M&format=JSON",
+        "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059332?freq=M&geo=EU27_2020&format=JSON"
+      ],
+      "updated_at": "2026-03-09 20:03 UTC"
+    }
   }
 }
