@@ -1,0 +1,216 @@
+{
+  "meta": {
+    "data_source": "GitHub Pages / same-repo JSON",
+    "last_update": "2026-03-09 12:05 UTC"
+  },
+  "changes": [
+    "JSON-stat mapper added for Eurostat payloads",
+    "Eurostat dataset tet00013 kept as live customs target",
+    "Fallback customs series remain available"
+  ],
+  "what_matters_now": [
+    {
+      "label": "Cash runway",
+      "value": "Short-to-moderate",
+      "note": "Current baseline suggests runway is still limited without stronger commercial scaling."
+    },
+    {
+      "label": "Funding pressure",
+      "value": "Elevated",
+      "note": "Further funding can still become relevant before clear scale-up."
+    },
+    {
+      "label": "Commercial signal",
+      "value": "Early but improving",
+      "note": "Headlines point to progress, but stronger recurring production proof is still needed."
+    },
+    {
+      "label": "Biggest current risk",
+      "value": "Dilution before scale",
+      "note": "The key risk is that funding needs arrive before commercial momentum is strong enough."
+    }
+  ],
+  "company": {
+    "name": "Cell Impact AB (publ)",
+    "ticker": "CI",
+    "market": "Nasdaq First North Growth Market",
+    "cash_msek": 23.0,
+    "cash_meta": "Rights issue proceeds, gross, used here as a practical tracker baseline.",
+    "shares_outstanding": 471335592,
+    "shares_meta": "Post-rights issue share count used as tracker baseline.",
+    "runway_months": 8.3,
+    "runway_meta": "Illustrative runway estimate based on current baseline assumptions."
+  },
+  "market_signals": {
+    "latest_ir_signal": {
+      "title": "Last day of trading in Cell Impact BTA",
+      "meta": "Nasdaq-listed release, March 2026",
+      "status": "Watch"
+    },
+    "share_price": {
+      "value": "CI.ST seed",
+      "meta": "Best-effort live quote can be updated by the agent.",
+      "status": "Live"
+    },
+    "hydrogen_trade_pulse": {
+      "value": "Trade index 118",
+      "meta": "Eurostat mapper added. Fallback series still active until live match is found.",
+      "status": "Proxy"
+    },
+    "dilution_pressure": {
+      "value": "Elevated",
+      "meta": "Funding sensitivity remains relevant when runway is short.",
+      "status": "Risk"
+    }
+  },
+  "probability": {
+    "funding_through_2027_pct": 41,
+    "meta": "Model estimate based on runway, burn assumptions and financing sensitivity."
+  },
+  "scenarios": [
+    {
+      "name": "Bear",
+      "score": 28
+    },
+    {
+      "name": "Base",
+      "score": 52
+    },
+    {
+      "name": "Bull",
+      "score": 74
+    }
+  ],
+  "monte_carlo": {
+    "valuation_distribution": [
+      8,
+      11,
+      13,
+      14,
+      16,
+      17,
+      18,
+      19,
+      19,
+      20,
+      20,
+      21,
+      22,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      30,
+      31,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      46,
+      48,
+      49,
+      50,
+      52,
+      54,
+      57,
+      60,
+      63
+    ]
+  },
+  "ir_headlines": [
+    {
+      "date": "2026-03-06",
+      "title": "Last day of trading in Cell Impact BTA",
+      "url": "https://view.news.eu.nasdaq.com/view?id=b82214032a5a94776c8bf5975cf13a195&lang=en&src=listed"
+    },
+    {
+      "date": "2026-03-04",
+      "title": "Cell Impact carries out a directed share issue to guarantors",
+      "url": "https://mb.cision.com/Main/18253/4316961/3966413.pdf"
+    },
+    {
+      "date": "2026-02-24",
+      "title": "Cell Impact announces outcome of rights issue",
+      "url": "https://view.news.eu.nasdaq.com/view?id=b376ec6360964f79e742b6265e0f8f4f6&lang=en&src=listed"
+    }
+  ],
+  "customs_monitor": {
+    "index_name": "Global Fuel Cell Trade Index",
+    "latest_year": 2024,
+    "latest_index": 118,
+    "yoy_pct": 12.4,
+    "methodology": "Fallback regional trade proxy. Agent now includes a JSON-stat payload mapper for Eurostat dataset tet00013.",
+    "series": {
+      "eu_imports_proxy": [
+        {
+          "year": 2021,
+          "value": 84
+        },
+        {
+          "year": 2022,
+          "value": 96
+        },
+        {
+          "year": 2023,
+          "value": 105
+        },
+        {
+          "year": 2024,
+          "value": 114
+        }
+      ],
+      "us_imports_proxy": [
+        {
+          "year": 2021,
+          "value": 91
+        },
+        {
+          "year": 2022,
+          "value": 95
+        },
+        {
+          "year": 2023,
+          "value": 102
+        },
+        {
+          "year": 2024,
+          "value": 111
+        }
+      ],
+      "china_exports_proxy": [
+        {
+          "year": 2021,
+          "value": 79
+        },
+        {
+          "year": 2022,
+          "value": 92
+        },
+        {
+          "year": 2023,
+          "value": 108
+        },
+        {
+          "year": 2024,
+          "value": 129
+        }
+      ]
+    }
+  }
+}
