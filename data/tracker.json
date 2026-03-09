@@ -1,0 +1,316 @@
+{
+  "meta": {
+    "data_source": "GitHub Pages / same-repo JSON",
+    "last_update": "2026-03-09 13:16 UTC"
+  },
+  "changes": [
+    "Tracker refreshed",
+    "IR headlines updated",
+    "Share price updated",
+    "Trade index recalculated",
+    "What matters now updated",
+    "Monthly balanced bundle scaffold added"
+  ],
+  "what_matters_now": [
+    {
+      "label": "Cash runway",
+      "value": "Short-to-moderate",
+      "note": "Current tracker baseline implies roughly 8.3 months of runway."
+    },
+    {
+      "label": "Funding pressure",
+      "value": "Elevated",
+      "note": "Funding pressure remains meaningful until commercial progress clearly reduces financing risk."
+    },
+    {
+      "label": "Commercial signal",
+      "value": "Early but improving",
+      "note": "Recent investor-page headlines suggest movement, but stronger recurring production proof is still needed."
+    },
+    {
+      "label": "Biggest current risk",
+      "value": "Dilution before scale",
+      "note": "Even with trade backdrop at -1.4% YoY, the key company-specific risk is financing before scale-up."
+    }
+  ],
+  "company": {
+    "name": "Cell Impact AB (publ)",
+    "ticker": "CI",
+    "market": "Nasdaq First North Growth Market",
+    "cash_msek": 23.0,
+    "cash_meta": "Rights issue proceeds, gross, used here as a practical tracker baseline.",
+    "shares_outstanding": 471335592,
+    "shares_meta": "Post-rights issue share count used as tracker baseline.",
+    "runway_months": 8.3,
+    "runway_meta": "Illustrative runway estimate based on current baseline assumptions."
+  },
+  "market_signals": {
+    "latest_ir_signal": {
+      "title": "Investor Relations &#x2013;&#xA0;Cell Impact",
+      "meta": "Latest headline from Cell Impact investor page",
+      "status": "Watch"
+    },
+    "share_price": {
+      "value": "0.130 SEK",
+      "meta": "CI.ST | -2.26% vs prev close",
+      "status": "Live"
+    },
+    "hydrogen_trade_pulse": {
+      "value": "Trade index 1016924.3",
+      "meta": "Customs index based on tracker series.",
+      "status": "Live"
+    },
+    "dilution_pressure": {
+      "value": "Elevated",
+      "meta": "Funding sensitivity remains relevant when runway is short.",
+      "status": "Risk"
+    }
+  },
+  "probability": {
+    "funding_through_2027_pct": 41,
+    "meta": "Model estimate based on runway, burn assumptions and financing sensitivity."
+  },
+  "scenarios": [
+    {
+      "name": "Bear",
+      "score": 28
+    },
+    {
+      "name": "Base",
+      "score": 52
+    },
+    {
+      "name": "Bull",
+      "score": 74
+    }
+  ],
+  "monte_carlo": {
+    "valuation_distribution": [
+      8,
+      11,
+      13,
+      14,
+      16,
+      17,
+      18,
+      19,
+      19,
+      20,
+      20,
+      21,
+      22,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      30,
+      31,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      46,
+      48,
+      49,
+      50,
+      52,
+      54,
+      57,
+      60,
+      63
+    ]
+  },
+  "ir_headlines": [
+    {
+      "title": "Investor Relations &#x2013;&#xA0;Cell Impact",
+      "url": "https://investor.cellimpact.com/css/generated-themes/ig-theme-eysvSQIBHECw6jSEKSSdSQ.css?v=250320251300",
+      "date": ""
+    },
+    {
+      "title": "Cell Impact AB is a global supplier of advanced flow plates to manufacturers of fuel cells and electrolyzers.",
+      "url": "https://investor.cellimpact.com/en/about-us/",
+      "date": ""
+    },
+    {
+      "title": "Good corporate governance is about ensuring that Cell Impact is managed sustainably, responsibly and as efficiently as possible.",
+      "url": "https://investor.cellimpact.com/en/governance/",
+      "date": ""
+    }
+  ],
+  "customs_monitor": {
+    "index_name": "Global Fuel Cell Trade Index",
+    "latest_year": 2024,
+    "latest_index": 1016924.3,
+    "yoy_pct": -1.4,
+    "methodology": "Live Eurostat dataset tet00013 mapped via JSON-stat payload parser.",
+    "series": {
+      "eu_imports_proxy": [
+        {
+          "year": 2013,
+          "value": 741129.7
+        },
+        {
+          "year": 2014,
+          "value": 750927.1
+        },
+        {
+          "year": 2015,
+          "value": 803409.5
+        },
+        {
+          "year": 2016,
+          "value": 799481.5
+        },
+        {
+          "year": 2017,
+          "value": 843608.3
+        },
+        {
+          "year": 2018,
+          "value": 858136.4
+        },
+        {
+          "year": 2019,
+          "value": 876488.3
+        },
+        {
+          "year": 2020,
+          "value": 763894.5
+        },
+        {
+          "year": 2021,
+          "value": 837669.7
+        },
+        {
+          "year": 2022,
+          "value": 954719.7
+        },
+        {
+          "year": 2023,
+          "value": 1031570.0
+        },
+        {
+          "year": 2024,
+          "value": 1016924.3
+        }
+      ]
+    },
+    "bundle_definition": {
+      "status": "Configured",
+      "bundle_name": "Balanced EU + partner hydrogen hardware bundle",
+      "dataset_target": "DS-059322 + DS-059332",
+      "partners": [
+        "US",
+        "CN",
+        "JP",
+        "KR"
+      ],
+      "flows": "imports + exports",
+      "weights": {
+        "exports": 0.6,
+        "imports": 0.4
+      },
+      "why": "Faster customs pulse than the annual macro proxy, combining a hydrogen hardware anchor with a cautious metals/forming proxy.",
+      "limitation": "Proxy signal only. It does not directly measure Cell Impact revenue or orders.",
+      "codes": [
+        {
+          "group": "hydrogen_anchor",
+          "code": "8501",
+          "level": "HS4",
+          "label": "Electric motors and generators"
+        },
+        {
+          "group": "hydrogen_anchor",
+          "code": "8504",
+          "level": "HS4",
+          "label": "Electrical transformers and converters"
+        },
+        {
+          "group": "metals_forming_proxy",
+          "code": "7219",
+          "level": "HS4",
+          "label": "Stainless steel flat-rolled products"
+        },
+        {
+          "group": "metals_forming_proxy",
+          "code": "7326",
+          "level": "HS4",
+          "label": "Other articles of iron or steel"
+        }
+      ]
+    }
+  },
+  "trade_signals": {
+    "balanced_signal": {
+      "status": "Pending live run",
+      "scope": "EU + selected partners",
+      "flows": "imports + exports",
+      "weights": {
+        "exports": 0.6,
+        "imports": 0.4
+      },
+      "note": "Primary monthly trade pulse. Will update after the agent completes a successful COMEXT monthly extraction."
+    },
+    "exports_signal": {
+      "status": "Pending live run",
+      "scope": "EU + selected partners",
+      "flows": "exports",
+      "note": "Closer commercial-direction signal for an EU-based supplier."
+    },
+    "imports_signal": {
+      "status": "Pending live run",
+      "scope": "EU + selected partners",
+      "flows": "imports",
+      "note": "Demand-environment signal."
+    },
+    "macro_signal": {
+      "status": "Live",
+      "dataset_target": "tet00013",
+      "value": 1016924.3,
+      "yoy_pct": -1.4,
+      "note": "Annual macro/proxy backdrop."
+    }
+  },
+  "monthly_trade_pulse": {
+    "status": "Pending live run",
+    "scope": "EU + selected partners | imports + exports | 60/40 weighting",
+    "partners": [
+      "US",
+      "CN",
+      "JP",
+      "KR"
+    ],
+    "flows": {
+      "exports": 0.6,
+      "imports": 0.4
+    },
+    "window_months": 18,
+    "smoothing": "3M MA",
+    "latest_period": null,
+    "latest_value": null,
+    "latest_raw_balanced": null,
+    "yoy_pct": null,
+    "methodology": "Monthly balanced bundle. Shows the last 18 months after 3-month moving-average smoothing when live COMEXT extraction succeeds.",
+    "note": "Starts empty until the updated agent writes live monthly series.",
+    "balanced_series": [],
+    "balanced_raw_series": [],
+    "exports_series": [],
+    "imports_series": []
+  }
+}
