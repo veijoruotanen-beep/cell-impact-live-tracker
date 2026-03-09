@@ -1,33 +1,35 @@
 {
   "meta": {
     "data_source": "GitHub Pages / same-repo JSON",
-    "last_update": "2026-03-09 12:05 UTC"
+    "last_update": "2026-03-09 13:11 UTC"
   },
   "changes": [
-    "JSON-stat mapper added for Eurostat payloads",
-    "Eurostat dataset tet00013 kept as live customs target",
-    "Fallback customs series remain available"
+    "Tracker refreshed",
+    "IR headlines updated",
+    "Share price updated",
+    "Trade index recalculated",
+    "What matters now updated"
   ],
   "what_matters_now": [
     {
       "label": "Cash runway",
       "value": "Short-to-moderate",
-      "note": "Current baseline suggests runway is still limited without stronger commercial scaling."
+      "note": "Current tracker baseline implies roughly 8.3 months of runway."
     },
     {
       "label": "Funding pressure",
       "value": "Elevated",
-      "note": "Further funding can still become relevant before clear scale-up."
+      "note": "Funding pressure remains meaningful until commercial progress clearly reduces financing risk."
     },
     {
       "label": "Commercial signal",
       "value": "Early but improving",
-      "note": "Headlines point to progress, but stronger recurring production proof is still needed."
+      "note": "Recent investor-page headlines suggest movement, but stronger recurring production proof is still needed."
     },
     {
       "label": "Biggest current risk",
       "value": "Dilution before scale",
-      "note": "The key risk is that funding needs arrive before commercial momentum is strong enough."
+      "note": "Even with trade backdrop at -1.4% YoY, the key company-specific risk is financing before scale-up."
     }
   ],
   "company": {
@@ -43,19 +45,19 @@
   },
   "market_signals": {
     "latest_ir_signal": {
-      "title": "Last day of trading in Cell Impact BTA",
-      "meta": "Nasdaq-listed release, March 2026",
+      "title": "Investor Relations &#x2013;&#xA0;Cell Impact",
+      "meta": "Latest headline from Cell Impact investor page",
       "status": "Watch"
     },
     "share_price": {
-      "value": "CI.ST seed",
-      "meta": "Best-effort live quote can be updated by the agent.",
+      "value": "0.130 SEK",
+      "meta": "CI.ST | -2.26% vs prev close",
       "status": "Live"
     },
     "hydrogen_trade_pulse": {
-      "value": "Trade index 118",
-      "meta": "Eurostat mapper added. Fallback series still active until live match is found.",
-      "status": "Proxy"
+      "value": "Trade index 1016924.3",
+      "meta": "Customs index based on tracker series.",
+      "status": "Live"
     },
     "dilution_pressure": {
       "value": "Elevated",
@@ -135,80 +137,76 @@
   },
   "ir_headlines": [
     {
-      "date": "2026-03-06",
-      "title": "Last day of trading in Cell Impact BTA",
-      "url": "https://view.news.eu.nasdaq.com/view?id=b82214032a5a94776c8bf5975cf13a195&lang=en&src=listed"
+      "title": "Investor Relations &#x2013;&#xA0;Cell Impact",
+      "url": "https://investor.cellimpact.com/css/generated-themes/ig-theme-eysvSQIBHECw6jSEKSSdSQ.css?v=250320251300",
+      "date": ""
     },
     {
-      "date": "2026-03-04",
-      "title": "Cell Impact carries out a directed share issue to guarantors",
-      "url": "https://mb.cision.com/Main/18253/4316961/3966413.pdf"
+      "title": "Cell Impact AB is a global supplier of advanced flow plates to manufacturers of fuel cells and electrolyzers.",
+      "url": "https://investor.cellimpact.com/en/about-us/",
+      "date": ""
     },
     {
-      "date": "2026-02-24",
-      "title": "Cell Impact announces outcome of rights issue",
-      "url": "https://view.news.eu.nasdaq.com/view?id=b376ec6360964f79e742b6265e0f8f4f6&lang=en&src=listed"
+      "title": "Good corporate governance is about ensuring that Cell Impact is managed sustainably, responsibly and as efficiently as possible.",
+      "url": "https://investor.cellimpact.com/en/governance/",
+      "date": ""
     }
   ],
   "customs_monitor": {
     "index_name": "Global Fuel Cell Trade Index",
     "latest_year": 2024,
-    "latest_index": 118,
-    "yoy_pct": 12.4,
-    "methodology": "Fallback regional trade proxy. Agent now includes a JSON-stat payload mapper for Eurostat dataset tet00013.",
+    "latest_index": 1016924.3,
+    "yoy_pct": -1.4,
+    "methodology": "Live Eurostat dataset tet00013 mapped via JSON-stat payload parser.",
     "series": {
       "eu_imports_proxy": [
         {
+          "year": 2013,
+          "value": 741129.7
+        },
+        {
+          "year": 2014,
+          "value": 750927.1
+        },
+        {
+          "year": 2015,
+          "value": 803409.5
+        },
+        {
+          "year": 2016,
+          "value": 799481.5
+        },
+        {
+          "year": 2017,
+          "value": 843608.3
+        },
+        {
+          "year": 2018,
+          "value": 858136.4
+        },
+        {
+          "year": 2019,
+          "value": 876488.3
+        },
+        {
+          "year": 2020,
+          "value": 763894.5
+        },
+        {
           "year": 2021,
-          "value": 84
+          "value": 837669.7
         },
         {
           "year": 2022,
-          "value": 96
+          "value": 954719.7
         },
         {
           "year": 2023,
-          "value": 105
+          "value": 1031570.0
         },
         {
           "year": 2024,
-          "value": 114
-        }
-      ],
-      "us_imports_proxy": [
-        {
-          "year": 2021,
-          "value": 91
-        },
-        {
-          "year": 2022,
-          "value": 95
-        },
-        {
-          "year": 2023,
-          "value": 102
-        },
-        {
-          "year": 2024,
-          "value": 111
-        }
-      ],
-      "china_exports_proxy": [
-        {
-          "year": 2021,
-          "value": 79
-        },
-        {
-          "year": 2022,
-          "value": 92
-        },
-        {
-          "year": 2023,
-          "value": 108
-        },
-        {
-          "year": 2024,
-          "value": 129
+          "value": 1016924.3
         }
       ]
     }
