@@ -1,15 +1,15 @@
 {
   "meta": {
     "data_source": "GitHub Pages / same-repo JSON",
-    "last_update": "2026-03-09 13:16 UTC"
+    "last_update": "2026-03-09 19:44 UTC"
   },
   "changes": [
     "Tracker refreshed",
     "IR headlines updated",
     "Share price updated",
     "Trade index recalculated",
-    "What matters now updated",
-    "Monthly balanced bundle scaffold added"
+    "Monthly balanced bundle refreshed",
+    "What matters now updated"
   ],
   "what_matters_now": [
     {
@@ -30,7 +30,7 @@
     {
       "label": "Biggest current risk",
       "value": "Dilution before scale",
-      "note": "Even with trade backdrop at -1.4% YoY, the key company-specific risk is financing before scale-up."
+      "note": "Even with annual trade backdrop at -1.4% YoY, the key company-specific risk is financing before scale-up."
     }
   ],
   "company": {
@@ -46,18 +46,18 @@
   },
   "market_signals": {
     "latest_ir_signal": {
-      "title": "Investor Relations &#x2013;&#xA0;Cell Impact",
+      "title": "Investor Relations – Cell Impact",
       "meta": "Latest headline from Cell Impact investor page",
       "status": "Watch"
     },
     "share_price": {
-      "value": "0.130 SEK",
-      "meta": "CI.ST | -2.26% vs prev close",
+      "value": "0.129 SEK",
+      "meta": "CI.ST | -3.01% vs prev close",
       "status": "Live"
     },
     "hydrogen_trade_pulse": {
       "value": "Trade index 1016924.3",
-      "meta": "Customs index based on tracker series.",
+      "meta": "Annual macro/proxy backdrop from tracker series.",
       "status": "Live"
     },
     "dilution_pressure": {
@@ -138,7 +138,7 @@
   },
   "ir_headlines": [
     {
-      "title": "Investor Relations &#x2013;&#xA0;Cell Impact",
+      "title": "Investor Relations – Cell Impact",
       "url": "https://investor.cellimpact.com/css/generated-themes/ig-theme-eysvSQIBHECw6jSEKSSdSQ.css?v=250320251300",
       "date": ""
     },
@@ -226,7 +226,7 @@
         "exports": 0.6,
         "imports": 0.4
       },
-      "why": "Faster customs pulse than the annual macro proxy, combining a hydrogen hardware anchor with a cautious metals/forming proxy.",
+      "why": "Primary monthly trade pulse for a faster read than the annual macro proxy, combining a hydrogen hardware anchor with a cautious metals/forming proxy.",
       "limitation": "Proxy signal only. It does not directly measure Cell Impact revenue or orders.",
       "codes": [
         {
@@ -254,30 +254,39 @@
           "label": "Other articles of iron or steel"
         }
       ]
-    }
+    },
+    "source_type": "single-dataset proxy",
+    "coverage_note": "Annual macro/proxy remains live. Monthly balanced bundle is layered on top as a faster but noisier trade pulse.",
+    "dataset_target": "tet00013",
+    "next_step_note": "Next step: refine the metals/forming proxy or tighten product-level filters if live monthly bundle quality improves."
   },
   "trade_signals": {
     "balanced_signal": {
-      "status": "Pending live run",
+      "status": "Pending live extraction",
       "scope": "EU + selected partners",
       "flows": "imports + exports",
       "weights": {
         "exports": 0.6,
         "imports": 0.4
       },
-      "note": "Primary monthly trade pulse. Will update after the agent completes a successful COMEXT monthly extraction."
+      "value": null,
+      "latest_period": null,
+      "yoy_pct": null,
+      "note": "Monthly balanced bundle waits for a successful live extraction. Existing monthly data is preserved when available."
     },
     "exports_signal": {
-      "status": "Pending live run",
+      "status": "Pending live extraction",
       "scope": "EU + selected partners",
       "flows": "exports",
-      "note": "Closer commercial-direction signal for an EU-based supplier."
+      "value": null,
+      "note": "Exports-only 3M smoothed signal."
     },
     "imports_signal": {
-      "status": "Pending live run",
+      "status": "Pending live extraction",
       "scope": "EU + selected partners",
       "flows": "imports",
-      "note": "Demand-environment signal."
+      "value": null,
+      "note": "Imports-only 3M smoothed signal."
     },
     "macro_signal": {
       "status": "Live",
@@ -311,6 +320,10 @@
     "balanced_series": [],
     "balanced_raw_series": [],
     "exports_series": [],
-    "imports_series": []
+    "imports_series": [],
+    "source_datasets": [
+      "DS-059332",
+      "DS-059322"
+    ]
   }
 }
