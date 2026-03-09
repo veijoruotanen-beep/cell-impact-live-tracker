@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cell Impact Live Tracker</title>
+<style>
+:root{--bg:#0a0d12;--panel:#121823;--panel-2:#182233;--line:rgba(255,255,255,.08);--text:#edf2fb;--muted:#9fb0c7;--accent:#7fb7ff;--accent-2:#7ee0ae;--shadow:0 24px 60px rgba(0,0,0,.35)}
+*{box-sizing:border-box} html,body{margin:0;padding:0;background:radial-gradient(circle at top left, rgba(80,120,255,.20), transparent 24%),radial-gradient(circle at top right, rgba(0,180,255,.12), transparent 20%),linear-gradient(180deg, #0a0d12 0%, #0d1220 100%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+.wrap{max-width:1240px;margin:0 auto;padding:34px 20px 80px}.hero,.card{background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));border:1px solid var(--line);box-shadow:var(--shadow);backdrop-filter:blur(10px)}
+.hero{border-radius:30px;padding:34px 28px;margin-bottom:22px}.eyebrow{color:var(--accent);font-size:13px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px}
+h1{margin:0 0 12px;font-size:clamp(32px,5vw,54px);line-height:1.02}.lead{max-width:860px;color:var(--muted);font-size:18px;line-height:1.58}
+.topbar,.badges,.grid,.mini-grid,.two-up,.matters-grid{display:grid;gap:14px}.topbar{grid-template-columns:repeat(3,max-content);margin-top:22px}
+.pill{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:999px;padding:10px 14px;color:#d6e3f7;font-size:14px}
+.badges{grid-template-columns:repeat(4,1fr);margin-top:22px}.badge,.card{border-radius:22px;padding:22px}.badge{background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.025));border:1px solid var(--line)}
+.badge-top{display:flex;justify-content:space-between;align-items:center;gap:10px}.badge-label,.kicker{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}.badge-status{font-size:11px;padding:4px 8px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid var(--line);color:#dce7f8}
+.badge-value{font-size:24px;font-weight:700;margin-top:10px;line-height:1.15}.badge-meta,.sub{margin-top:8px;color:var(--muted);font-size:13px;line-height:1.5}
+.grid{grid-template-columns:repeat(12,1fr);margin-top:18px}.span-12{grid-column:span 12}.span-8{grid-column:span 8}.span-6{grid-column:span 6}.span-4{grid-column:span 4}
+.value{font-size:34px;font-weight:700;letter-spacing:-.02em}.mini-grid{grid-template-columns:repeat(4,1fr)} .signal,.matter,.bundle-card{padding:16px;border-radius:18px;background:var(--panel-2);border:1px solid var(--line)}
+.signal .label,.matter .label,.bundle-card .label{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted)} .signal .big,.matter .big{font-size:22px;font-weight:700;margin-top:8px}.signal .small,.matter .small,.bundle-card .small{margin-top:6px;color:var(--muted);font-size:13px;line-height:1.45}.matters-grid{grid-template-columns:repeat(4,1fr)}
+.changes{margin:0;padding-left:20px;color:#dbe6f7}.changes li{margin:8px 0}.list{display:grid;gap:12px}.list-item{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--line)}.list-item:last-child{border-bottom:none;padding-bottom:0}.list-item .left{max-width:75%}.list-item .title{font-weight:600}.list-item .meta{font-size:13px;color:var(--muted);margin-top:6px}
+.bars{display:grid;gap:12px;margin-top:6px}.barrow{display:grid;grid-template-columns:132px 1fr 80px;gap:14px;align-items:center}.barlabel{font-size:14px;color:#dfe7f5}.bar{position:relative;height:12px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.05)}.fill{position:absolute;inset:0 auto 0 0;border-radius:999px;background:linear-gradient(90deg, rgba(127,183,255,.85), rgba(126,224,174,.85))}.barvalue{text-align:right;font-size:14px;color:var(--muted)}
+.canvas-wrap{background:var(--panel-2);border:1px solid var(--line);border-radius:18px;padding:14px;min-height:312px} canvas{width:100%;height:280px;display:block}.two-up{grid-template-columns:1fr 1fr}.mc-meta{display:flex;gap:18px;flex-wrap:wrap;margin-top:12px;color:var(--muted);font-size:13px}.note{color:var(--muted);font-size:12px;margin-top:10px}.tiny{font-size:12px;color:var(--muted)}
+.bundle-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px}.bundle-list{display:grid;gap:10px;margin-top:10px}.bundle-item{display:flex;justify-content:space-between;gap:14px;padding:10px 12px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.03)}.bundle-code{font-weight:700;color:#dfe7f5}.bundle-tag{display:inline-block;margin-top:8px;padding:5px 10px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.05);font-size:12px;color:#d6e3f7}
+@media (max-width:980px){.badges,.mini-grid,.two-up,.matters-grid,.bundle-grid{grid-template-columns:1fr 1fr}.span-8,.span-6,.span-4{grid-column:span 12}.topbar{grid-template-columns:1fr}.barrow{grid-template-columns:120px 1fr 68px}}
+@media (max-width:640px){.wrap{padding:18px 14px 54px}.hero{padding:24px 18px}.badges,.mini-grid,.two-up,.matters-grid,.bundle-grid{grid-template-columns:1fr}.barrow{grid-template-columns:1fr;gap:8px}.list-item{display:block}.list-item .left{max-width:100%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="hero">
+<div class="eyebrow">Independent Tracker</div>
+<h1>Cell Impact Live Tracker</h1>
+<div class="lead">This page brings the main moving parts together in one view: cash runway, dilution pressure, market signals, customs proxy signals, scenario paths and a simple probability view.</div>
+<div class="topbar">
+<div class="pill">Data source: <strong id="dataSource">Loading…</strong></div>
+<div class="pill">Last update: <strong id="lastUpdateTop">Loading…</strong></div>
+<div class="pill">Ticker: <strong id="ticker">Loading…</strong></div>
+</div>
+<div class="badges">
+<div class="badge"><div class="badge-top"><div class="badge-label">Last update</div><div class="badge-status">Live</div></div><div class="badge-value" id="badgeLastUpdate">—</div><div class="badge-meta" id="badgeLastUpdateMeta">Tracker JSON timestamp</div></div>
+<div class="badge"><div class="badge-top"><div class="badge-label">IR signal</div><div class="badge-status" id="badgeIrStatus">Watch</div></div><div class="badge-value" id="badgeIrValue">—</div><div class="badge-meta" id="badgeIrMeta">—</div></div>
+<div class="badge"><div class="badge-top"><div class="badge-label">Price</div><div class="badge-status" id="badgePriceStatus">Live</div></div><div class="badge-value" id="badgePriceValue">—</div><div class="badge-meta" id="badgePriceMeta">—</div></div>
+<div class="badge"><div class="badge-top"><div class="badge-label">Trade pulse</div><div class="badge-status" id="badgeTradeStatus">Proxy</div></div><div class="badge-value" id="badgeTradeValue">—</div><div class="badge-meta" id="badgeTradeMeta">—</div></div>
+</div>
+</section>
+
+<div class="grid">
+<section class="card span-12"><div class="kicker">What matters now</div><div class="matters-grid" id="mattersGrid"></div></section>
+<section class="card span-12"><div class="kicker">What changed since last update</div><ul class="changes" id="changesList"></ul></section>
+<section class="card span-12"><div class="kicker">Latest market signals</div><div class="mini-grid">
+<div class="signal"><div class="label">Latest IR signal</div><div class="big" id="sigIrTitle">—</div><div class="small" id="sigIrMeta">—</div></div>
+<div class="signal"><div class="label">Share price snapshot</div><div class="big" id="sigPrice">—</div><div class="small" id="sigPriceMeta">—</div></div>
+<div class="signal"><div class="label">Hydrogen trade pulse</div><div class="big" id="sigTrade">—</div><div class="small" id="sigTradeMeta">—</div></div>
+<div class="signal"><div class="label">Dilution pressure</div><div class="big" id="sigDilution">—</div><div class="small" id="sigDilutionMeta">—</div></div>
+</div></section>
+<section class="card span-4"><div class="kicker">Cash & runway</div><div class="value" id="cashMsek">—</div><div class="sub" id="cashMeta">—</div></section>
+<section class="card span-4"><div class="kicker">Shares outstanding</div><div class="value" id="sharesOut">—</div><div class="sub" id="sharesMeta">—</div></section>
+<section class="card span-4"><div class="kicker">Funding probability through 2027</div><div class="value" id="survivalProb">—</div><div class="sub" id="survivalMeta">—</div></section>
+<section class="card span-8"><div class="kicker">Monte Carlo probability engine</div><div class="canvas-wrap"><canvas id="distChart"></canvas></div><div class="mc-meta"><div>Median: <strong id="mcMedian">—</strong></div><div>Range: <strong id="mcRange">—</strong></div><div>X-axis: valuation distribution</div><div>Y-axis: relative frequency</div></div></section>
+<section class="card span-4"><div class="kicker">Scenario scorecard</div><div class="bars" id="scenarioBars"></div></section>
+<section class="card span-12">
+  <div class="kicker">Customs monitor</div>
+  <div class="two-up">
+    <div><div class="value" id="customsIndex">—</div><div class="sub" id="customsMeta">—</div></div>
+    <div><div class="value" id="customsYoy">—</div><div class="sub" id="customsMethod">—</div></div>
+  </div>
+  <div class="sub" id="customsCoverage" style="margin-top:14px">—</div>
+  <div class="canvas-wrap" style="margin-top:16px"><canvas id="tradeChart"></canvas></div>
+  <div class="note"><span id="customsDatasetNote">Dataset target: —</span><br><span id="customsNextStep">Next step: —</span></div>
+</section>
+<section class="card span-12">
+  <div class="kicker">COMEXT / CN bundle scaffold</div>
+  <div class="bundle-grid">
+    <div class="bundle-card">
+      <div class="label">Bundle status</div>
+      <div class="big" id="bundleStatus">—</div>
+      <div class="small" id="bundleSummary">—</div>
+      <div class="bundle-tag" id="bundleDataset">—</div>
+    </div>
+    <div class="bundle-card">
+      <div class="label">Why this is here</div>
+      <div class="small" id="bundleWhy">—</div>
+      <div class="small" id="bundleLimitation" style="margin-top:10px">—</div>
+    </div>
+  </div>
+  <div class="bundle-list" id="bundleList"></div>
+</section>
+<section class="card span-6"><div class="kicker">Latest IR headlines</div><div class="list" id="irList"></div></section>
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const githubDataUrl='https://veijoruotanen-beep.github.io/cell-impact-live-tracker/data/tracker.json?nocache='+Date.now();
+const localDataUrl='./data/tracker.json?nocache='+Date.now();
+const dataUrls=[githubDataUrl,localDataUrl];
+let distChartInstance=null;
+let tradeChartInstance=null;
+
+function fmtNum(n,d=0){if(n===null||n===undefined||Number.isNaN(Number(n)))return '—';return Number(n).toLocaleString('en-US',{maximumFractionDigits:d,minimumFractionDigits:d});}
+function setText(id,v){const e=document.getElementById(id);if(e)e.textContent=v;}
+function decodeHtmlEntities(str){if(str===null||str===undefined)return '';const txt=document.createElement('textarea');txt.innerHTML=String(str);return txt.value;}
+function niceName(key){return String(key||'').replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());}
+async function fetchTrackerData(){
+  let lastErr=null;
+  for(const url of dataUrls){
+    try{
+      const res=await fetch(url,{cache:'no-store'});
+      if(!res.ok) throw new Error('HTTP '+res.status);
+      const data=await res.json();
+      data.__loaded_from=(url===githubDataUrl)?'GitHub live':'Local fallback';
+      return data;
+    }catch(err){lastErr=err;}
+  }
+  throw lastErr||new Error('No data source available');
+}
+function destroyCharts(){if(distChartInstance){distChartInstance.destroy();distChartInstance=null;}if(tradeChartInstance){tradeChartInstance.destroy();tradeChartInstance=null;}}
+function buildHistogramBins(values,bins=18){
+  if(!values?.length) return {labels:[],counts:[]};
+  const min=Math.min(...values), max=Math.max(...values); const span=Math.max(1,max-min); const step=span/bins;
+  const counts=Array.from({length:bins},()=>0);
+  values.forEach(v=>{const idx=Math.min(bins-1,Math.floor(((v-min)/span)*bins));counts[idx]++;});
+  const labels=counts.map((_,i)=>{
+    const start=min+(step*i); const end=(i===bins-1)?max:(start+step);
+    return `${fmtNum(start,0)}–${fmtNum(end,0)}`;
+  });
+  return {labels,counts};
+}
+function renderHistogram(values){
+  const canvas=document.getElementById('distChart');
+  if(!window.Chart||!canvas) return;
+  const {labels,counts}=buildHistogramBins(values||[]);
+  distChartInstance=new Chart(canvas,{type:'bar',data:{labels,datasets:[{label:'Simulations',data:counts,borderWidth:1,borderColor:'rgba(127,183,255,1)',backgroundColor:'rgba(127,183,255,.45)'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#9fb0c7',maxRotation:0,minRotation:0},grid:{color:'rgba(255,255,255,.06)'}},y:{ticks:{color:'#9fb0c7'},grid:{color:'rgba(255,255,255,.08)'}}}}});
+}
+function renderTradeChart(seriesMap){
+  const canvas=document.getElementById('tradeChart');
+  if(!window.Chart||!canvas) return;
+  const seriesKeys=Object.keys(seriesMap||{});
+  const allYears=[...new Set(seriesKeys.flatMap(k=>(seriesMap[k]||[]).map(p=>p.year)))].sort((a,b)=>a-b);
+  const palette=['rgba(127,183,255,1)','rgba(126,224,174,1)','rgba(242,202,125,1)','rgba(214,156,255,1)','rgba(255,140,140,1)'];
+  const datasets=seriesKeys.map((key,idx)=>({
+    label:niceName(key),
+    data:allYears.map(year=>{const point=(seriesMap[key]||[]).find(p=>String(p.year)===String(year));return point?point.value:null;}),
+    borderColor:palette[idx%palette.length],
+    backgroundColor:palette[idx%palette.length],
+    tension:.28,
+    spanGaps:true,
+    pointRadius:3,
+    pointHoverRadius:4
+  }));
+  tradeChartInstance=new Chart(canvas,{type:'line',data:{labels:allYears,datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#d6e3f7'}}},scales:{x:{ticks:{color:'#9fb0c7'},grid:{color:'rgba(255,255,255,.06)'}},y:{ticks:{color:'#9fb0c7'},grid:{color:'rgba(255,255,255,.08)'}}}}});
+}
+function renderScenarioBars(scenarios){const root=document.getElementById('scenarioBars');root.innerHTML='';(scenarios||[]).forEach(s=>{const row=document.createElement('div');row.className='barrow';row.innerHTML=`<div class="barlabel">${s.name}</div><div class="bar"><div class="fill" style="width:${Math.max(0,Math.min(100,s.score))}%"></div></div><div class="barvalue">${fmtNum(s.score,0)}</div>`;root.appendChild(row);});}
+function renderIrList(items){const root=document.getElementById('irList');root.innerHTML='';(items||[]).forEach(item=>{const title=decodeHtmlEntities(item.title||'—');const div=document.createElement('div');div.className='list-item';const linkHtml=item.url?`<a href="${item.url}" target="_blank" rel="noopener" style="text-decoration:none">${title}</a>`:title;div.innerHTML=`<div class="left"><div class="title">${linkHtml}</div><div class="meta">${item.date||'—'}</div></div>`;root.appendChild(div);});}
+function renderChanges(items){const root=document.getElementById('changesList');root.innerHTML='';(items||[]).forEach(item=>{const li=document.createElement('li');li.textContent=item;root.appendChild(li);});}
+function renderMatters(items){const root=document.getElementById('mattersGrid');root.innerHTML='';(items||[]).forEach(item=>{const div=document.createElement('div');div.className='matter';div.innerHTML=`<div class="label">${item.label}</div><div class="big">${item.value}</div><div class="small">${item.note}</div>`;root.appendChild(div);});}
+function renderBundle(bundle){
+  setText('bundleStatus',bundle?.status||'Not configured');
+  setText('bundleSummary',bundle?.bundle_name||bundle?.summary||'No COMEXT bundle metadata available yet.');
+  setText('bundleDataset',bundle?.dataset_target?`Dataset: ${bundle.dataset_target}`:'Dataset: not set');
+  setText('bundleWhy',bundle?.why||'This section is for the next customs-monitor upgrade: a more specific trade basket than a single proxy series.');
+  setText('bundleLimitation',bundle?.limitation||'Current tracker still runs on the live tet00013 proxy unless a verified bundle is enabled in the agent.');
+  const root=document.getElementById('bundleList'); root.innerHTML='';
+  (bundle?.codes||[]).forEach(item=>{const div=document.createElement('div');div.className='bundle-item';div.innerHTML=`<div><div class="bundle-code">${item.code||'—'} <span class="tiny">(${item.level||'code'})</span></div><div class="tiny">${item.label||'—'}</div></div><div class="tiny">${item.note||''}</div>`;root.appendChild(div);});
+  if(!bundle?.codes?.length){const div=document.createElement('div');div.className='bundle-item';div.innerHTML='<div class="tiny">No bundle codes stored in JSON yet.</div>';root.appendChild(div);}
+}
+async function init(){
+  destroyCharts();
+  const data=await fetchTrackerData();
+  setText('dataSource',`${data.meta?.data_source||'Tracker JSON'} • ${data.__loaded_from}`);
+  setText('lastUpdateTop',data.meta?.last_update||'—');
+  setText('ticker',data.company?.ticker||'—');
+  setText('badgeLastUpdate',data.meta?.last_update||'—');
+  setText('badgeLastUpdateMeta',data.meta?.data_source||'Tracker JSON timestamp');
+  setText('badgeIrValue',decodeHtmlEntities(data.market_signals?.latest_ir_signal?.title||'—'));
+  setText('badgeIrMeta',data.market_signals?.latest_ir_signal?.meta||'—');
+  setText('badgeIrStatus',data.market_signals?.latest_ir_signal?.status||'Watch');
+  setText('badgePriceValue',data.market_signals?.share_price?.value||'—');
+  setText('badgePriceMeta',data.market_signals?.share_price?.meta||'—');
+  setText('badgePriceStatus',data.market_signals?.share_price?.status||'Live');
+  setText('badgeTradeValue',data.market_signals?.hydrogen_trade_pulse?.value||'—');
+  setText('badgeTradeMeta',data.market_signals?.hydrogen_trade_pulse?.meta||'—');
+  setText('badgeTradeStatus',data.market_signals?.hydrogen_trade_pulse?.status||'Proxy');
+  setText('sigIrTitle',decodeHtmlEntities(data.market_signals?.latest_ir_signal?.title||'—'));
+  setText('sigIrMeta',data.market_signals?.latest_ir_signal?.meta||'—');
+  setText('sigPrice',data.market_signals?.share_price?.value||'—');
+  setText('sigPriceMeta',data.market_signals?.share_price?.meta||'—');
+  setText('sigTrade',data.market_signals?.hydrogen_trade_pulse?.value||'—');
+  setText('sigTradeMeta',data.market_signals?.hydrogen_trade_pulse?.meta||'—');
+  setText('sigDilution',data.market_signals?.dilution_pressure?.value||'—');
+  setText('sigDilutionMeta',data.market_signals?.dilution_pressure?.meta||'—');
+  setText('cashMsek',`${fmtNum(data.company?.cash_msek,1)} MSEK / ${fmtNum(data.company?.runway_months,1)} mo`);
+  setText('cashMeta',data.company?.cash_meta||'—');
+  setText('sharesOut',fmtNum(data.company?.shares_outstanding,0));
+  setText('sharesMeta',data.company?.shares_meta||'—');
+  setText('survivalProb',`${fmtNum(data.probability?.funding_through_2027_pct,0)}%`);
+  setText('survivalMeta',data.probability?.meta||'—');
+  const customs=data.customs_monitor||{};
+  setText('customsIndex',`${customs.index_name||'Trade index'} ${customs.latest_index??'—'}`);
+  setText('customsMeta',customs.latest_year?`Latest year: ${customs.latest_year} • ${customs.status||'status n/a'}`:'—');
+  setText('customsYoy',customs.yoy_pct!==undefined?`${fmtNum(customs.yoy_pct,1)}% YoY`:'—');
+  setText('customsMethod',customs.methodology||'—');
+  setText('customsCoverage',customs.coverage_note||'—');
+  setText('customsDatasetNote',`Dataset target: ${customs.dataset_target||'—'}${customs.comext_dataset_target?` • COMEXT scaffold: ${customs.comext_dataset_target}`:''}`);
+  setText('customsNextStep',`Next step: ${customs.next_step_note||'—'}`);
+  const dist=data.monte_carlo?.valuation_distribution||[];
+  if(dist.length){const sorted=[...dist].sort((a,b)=>a-b);setText('mcMedian',sorted[Math.floor(sorted.length/2)]);setText('mcRange',`${sorted[0]}–${sorted[sorted.length-1]}`);} else {setText('mcMedian','—'); setText('mcRange','—');}
+  renderMatters(data.what_matters_now||[]);
+  renderChanges(data.changes||[]);
+  renderScenarioBars(data.scenarios||[]);
+  renderIrList(data.ir_headlines||[]);
+  renderBundle(data.customs_monitor?.bundle_definition||{});
+  renderHistogram(dist);
+  renderTradeChart(customs.series||{});
+}
+init().catch(err=>{console.error(err);destroyCharts();setText('dataSource','Load error');setText('customsMethod',String(err&&err.message?err.message:err));});
+</script>
+</body>
+</html>
