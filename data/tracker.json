@@ -1,7 +1,7 @@
 {
   "meta": {
     "data_source": "GitHub Pages / same-repo JSON",
-    "last_update": "2026-03-09 20:38 UTC"
+    "last_update": "2026-03-09 20:58 UTC"
   },
   "changes": [
     "Tracker refreshed",
@@ -270,19 +270,19 @@
         "exports": 0.6,
         "imports": 0.4
       },
-      "note": "Monthly COMEXT extraction did not yield a usable series yet. HTTPError: HTTP Error 404: Not Found"
+      "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: No fullYYYYMM.7z files found in COMEXT_DATA/PRODUCTS listing"
     },
     "exports_signal": {
       "status": "Fetch failed",
       "scope": "EU + selected partners",
       "flows": "exports",
-      "note": "Monthly COMEXT extraction did not yield a usable series yet. HTTPError: HTTP Error 404: Not Found"
+      "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: No fullYYYYMM.7z files found in COMEXT_DATA/PRODUCTS listing"
     },
     "imports_signal": {
       "status": "Fetch failed",
       "scope": "EU + selected partners",
       "flows": "imports",
-      "note": "Monthly COMEXT extraction did not yield a usable series yet. HTTPError: HTTP Error 404: Not Found"
+      "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: No fullYYYYMM.7z files found in COMEXT_DATA/PRODUCTS listing"
     },
     "macro_signal": {
       "status": "Live",
@@ -312,215 +312,40 @@
     "latest_raw_balanced": null,
     "yoy_pct": null,
     "methodology": "Monthly balanced bundle. Shows the last 18 months after 3-month moving-average smoothing when live COMEXT extraction succeeds.",
-    "note": "Monthly COMEXT extraction did not yield a usable series yet. HTTPError: HTTP Error 404: Not Found",
+    "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: No fullYYYYMM.7z files found in COMEXT_DATA/PRODUCTS listing",
     "balanced_series": [],
     "balanced_raw_series": [],
     "exports_series": [],
     "imports_series": [],
     "debug": {
-      "message": "Monthly COMEXT extraction did not yield a usable series yet. HTTPError: HTTP Error 404: Not Found",
-      "updated_at": "2026-03-09 20:39 UTC",
-      "attempted": [
-        {
-          "dataset": "DS-059322",
-          "label": "simple_EXP+IMP_product",
-          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059322?freq=M&product=8501&product=8504&product=7219&product=7326&geo=EU27_2020&partner=US&partner=CN&partner=JP&partner=KR&flow=EXP&flow=IMP&format=JSON"
-        },
-        {
-          "dataset": "DS-059322",
-          "label": "simple_EXP+IMP_prod",
-          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059322?freq=M&prod=8501&prod=8504&prod=7219&prod=7326&geo=EU27_2020&partner=US&partner=CN&partner=JP&partner=KR&flow=EXP&flow=IMP&format=JSON"
-        },
-        {
-          "dataset": "DS-059322",
-          "label": "simple_EXP_product",
-          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059322?freq=M&product=8501&product=8504&product=7219&product=7326&geo=EU27_2020&partner=US&partner=CN&partner=JP&partner=KR&flow=EXP&format=JSON"
-        },
-        {
-          "dataset": "DS-059322",
-          "label": "simple_EXP_prod",
-          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059322?freq=M&prod=8501&prod=8504&prod=7219&prod=7326&geo=EU27_2020&partner=US&partner=CN&partner=JP&partner=KR&flow=EXP&format=JSON"
-        },
-        {
-          "dataset": "DS-059322",
-          "label": "simple_IMP_product",
-          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059322?freq=M&product=8501&product=8504&product=7219&product=7326&geo=EU27_2020&partner=US&partner=CN&partner=JP&partner=KR&flow=IMP&format=JSON"
-        },
-        {
-          "dataset": "DS-059322",
-          "label": "simple_IMP_prod",
-          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059322?freq=M&prod=8501&prod=8504&prod=7219&prod=7326&geo=EU27_2020&partner=US&partner=CN&partner=JP&partner=KR&flow=IMP&format=JSON"
-        },
-        {
-          "dataset": "DS-059322",
-          "label": "product_partner_flow",
-          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059322?freq=M&geo=EU27_2020&product=8501&product=8504&product=7219&product=7326&partner=US&partner=CN&partner=JP&partner=KR&flow=EXP&flow=IMP&format=JSON"
-        },
-        {
-          "dataset": "DS-059322",
-          "label": "product_partner_indic_et",
-          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059322?freq=M&geo=EU27_2020&product=8501&product=8504&product=7219&product=7326&partner=US&partner=CN&partner=JP&partner=KR&indic_et=EXP&indic_et=IMP&format=JSON"
-        },
-        {
-          "dataset": "DS-059322",
-          "label": "product_partner_trade",
-          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059322?freq=M&geo=EU27_2020&product=8501&product=8504&product=7219&product=7326&partner=US&partner=CN&partner=JP&partner=KR&trade=EXP&trade=IMP&format=JSON"
-        },
-        {
-          "dataset": "DS-059322",
-          "label": "product_partner_stk_flow",
-          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059322?freq=M&geo=EU27_2020&product=8501&product=8504&product=7219&product=7326&partner=US&partner=CN&partner=JP&partner=KR&stk_flow=EXP&stk_flow=IMP&format=JSON"
-        },
-        {
-          "dataset": "DS-059322",
-          "label": "product_partner_country_flow",
-          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059322?freq=M&geo=EU27_2020&product=8501&product=8504&product=7219&product=7326&partner_country=US&partner_country=CN&partner_country=JP&partner_country=KR&flow=EXP&flow=IMP&format=JSON"
-        },
-        {
-          "dataset": "DS-059322",
-          "label": "product_partner_country_indic_et",
-          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059322?freq=M&geo=EU27_2020&product=8501&product=8504&product=7219&product=7326&partner_country=US&partner_country=CN&partner_country=JP&partner_country=KR&indic_et=EXP&indic_et=IMP&format=JSON"
-        },
-        {
-          "dataset": "DS-059322",
-          "label": "product_partner_country_trade",
-          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059322?freq=M&geo=EU27_2020&product=8501&product=8504&product=7219&product=7326&partner_country=US&partner_country=CN&partner_country=JP&partner_country=KR&trade=EXP&trade=IMP&format=JSON"
-        },
-        {
-          "dataset": "DS-059322",
-          "label": "product_partner_country_stk_flow",
-          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059322?freq=M&geo=EU27_2020&product=8501&product=8504&product=7219&product=7326&partner_country=US&partner_country=CN&partner_country=JP&partner_country=KR&stk_flow=EXP&stk_flow=IMP&format=JSON"
-        },
-        {
-          "dataset": "DS-059322",
-          "label": "product_partner_geo_flow",
-          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059322?freq=M&geo=EU27_2020&product=8501&product=8504&product=7219&product=7326&partner_geo=US&partner_geo=CN&partner_geo=JP&partner_geo=KR&flow=EXP&flow=IMP&format=JSON"
-        },
-        {
-          "dataset": "DS-059322",
-          "label": "product_partner_geo_indic_et",
-          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059322?freq=M&geo=EU27_2020&product=8501&product=8504&product=7219&product=7326&partner_geo=US&partner_geo=CN&partner_geo=JP&partner_geo=KR&indic_et=EXP&indic_et=IMP&format=JSON"
-        },
-        {
-          "dataset": "DS-059322",
-          "label": "product_partner_geo_trade",
-          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059322?freq=M&geo=EU27_2020&product=8501&product=8504&product=7219&product=7326&partner_geo=US&partner_geo=CN&partner_geo=JP&partner_geo=KR&trade=EXP&trade=IMP&format=JSON"
-        },
-        {
-          "dataset": "DS-059322",
-          "label": "product_partner_geo_stk_flow",
-          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059322?freq=M&geo=EU27_2020&product=8501&product=8504&product=7219&product=7326&partner_geo=US&partner_geo=CN&partner_geo=JP&partner_geo=KR&stk_flow=EXP&stk_flow=IMP&format=JSON"
-        },
-        {
-          "dataset": "DS-059332",
-          "label": "simple_EXP+IMP_product",
-          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059332?freq=M&product=8501&product=8504&product=7219&product=7326&geo=EU27_2020&partner=US&partner=CN&partner=JP&partner=KR&flow=EXP&flow=IMP&format=JSON"
-        },
-        {
-          "dataset": "DS-059332",
-          "label": "simple_EXP+IMP_prod",
-          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059332?freq=M&prod=8501&prod=8504&prod=7219&prod=7326&geo=EU27_2020&partner=US&partner=CN&partner=JP&partner=KR&flow=EXP&flow=IMP&format=JSON"
-        },
-        {
-          "dataset": "DS-059332",
-          "label": "simple_EXP_product",
-          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059332?freq=M&product=8501&product=8504&product=7219&product=7326&geo=EU27_2020&partner=US&partner=CN&partner=JP&partner=KR&flow=EXP&format=JSON"
-        },
-        {
-          "dataset": "DS-059332",
-          "label": "simple_EXP_prod",
-          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059332?freq=M&prod=8501&prod=8504&prod=7219&prod=7326&geo=EU27_2020&partner=US&partner=CN&partner=JP&partner=KR&flow=EXP&format=JSON"
-        },
-        {
-          "dataset": "DS-059332",
-          "label": "simple_IMP_product",
-          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059332?freq=M&product=8501&product=8504&product=7219&product=7326&geo=EU27_2020&partner=US&partner=CN&partner=JP&partner=KR&flow=IMP&format=JSON"
-        },
-        {
-          "dataset": "DS-059332",
-          "label": "simple_IMP_prod",
-          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059332?freq=M&prod=8501&prod=8504&prod=7219&prod=7326&geo=EU27_2020&partner=US&partner=CN&partner=JP&partner=KR&flow=IMP&format=JSON"
-        },
-        {
-          "dataset": "DS-059332",
-          "label": "product_partner_flow",
-          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059332?freq=M&geo=EU27_2020&product=8501&product=8504&product=7219&product=7326&partner=US&partner=CN&partner=JP&partner=KR&flow=EXP&flow=IMP&format=JSON"
-        },
-        {
-          "dataset": "DS-059332",
-          "label": "product_partner_indic_et",
-          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059332?freq=M&geo=EU27_2020&product=8501&product=8504&product=7219&product=7326&partner=US&partner=CN&partner=JP&partner=KR&indic_et=EXP&indic_et=IMP&format=JSON"
-        },
-        {
-          "dataset": "DS-059332",
-          "label": "product_partner_trade",
-          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059332?freq=M&geo=EU27_2020&product=8501&product=8504&product=7219&product=7326&partner=US&partner=CN&partner=JP&partner=KR&trade=EXP&trade=IMP&format=JSON"
-        },
-        {
-          "dataset": "DS-059332",
-          "label": "product_partner_stk_flow",
-          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059332?freq=M&geo=EU27_2020&product=8501&product=8504&product=7219&product=7326&partner=US&partner=CN&partner=JP&partner=KR&stk_flow=EXP&stk_flow=IMP&format=JSON"
-        },
-        {
-          "dataset": "DS-059332",
-          "label": "product_partner_country_flow",
-          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059332?freq=M&geo=EU27_2020&product=8501&product=8504&product=7219&product=7326&partner_country=US&partner_country=CN&partner_country=JP&partner_country=KR&flow=EXP&flow=IMP&format=JSON"
-        },
-        {
-          "dataset": "DS-059332",
-          "label": "product_partner_country_indic_et",
-          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059332?freq=M&geo=EU27_2020&product=8501&product=8504&product=7219&product=7326&partner_country=US&partner_country=CN&partner_country=JP&partner_country=KR&indic_et=EXP&indic_et=IMP&format=JSON"
-        },
-        {
-          "dataset": "DS-059332",
-          "label": "product_partner_country_trade",
-          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059332?freq=M&geo=EU27_2020&product=8501&product=8504&product=7219&product=7326&partner_country=US&partner_country=CN&partner_country=JP&partner_country=KR&trade=EXP&trade=IMP&format=JSON"
-        },
-        {
-          "dataset": "DS-059332",
-          "label": "product_partner_country_stk_flow",
-          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059332?freq=M&geo=EU27_2020&product=8501&product=8504&product=7219&product=7326&partner_country=US&partner_country=CN&partner_country=JP&partner_country=KR&stk_flow=EXP&stk_flow=IMP&format=JSON"
-        },
-        {
-          "dataset": "DS-059332",
-          "label": "product_partner_geo_flow",
-          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059332?freq=M&geo=EU27_2020&product=8501&product=8504&product=7219&product=7326&partner_geo=US&partner_geo=CN&partner_geo=JP&partner_geo=KR&flow=EXP&flow=IMP&format=JSON"
-        },
-        {
-          "dataset": "DS-059332",
-          "label": "product_partner_geo_indic_et",
-          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059332?freq=M&geo=EU27_2020&product=8501&product=8504&product=7219&product=7326&partner_geo=US&partner_geo=CN&partner_geo=JP&partner_geo=KR&indic_et=EXP&indic_et=IMP&format=JSON"
-        },
-        {
-          "dataset": "DS-059332",
-          "label": "product_partner_geo_trade",
-          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059332?freq=M&geo=EU27_2020&product=8501&product=8504&product=7219&product=7326&partner_geo=US&partner_geo=CN&partner_geo=JP&partner_geo=KR&trade=EXP&trade=IMP&format=JSON"
-        },
-        {
-          "dataset": "DS-059332",
-          "label": "product_partner_geo_stk_flow",
-          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-059332?freq=M&geo=EU27_2020&product=8501&product=8504&product=7219&product=7326&partner_geo=US&partner_geo=CN&partner_geo=JP&partner_geo=KR&stk_flow=EXP&stk_flow=IMP&format=JSON"
-        }
-      ],
-      "metadata": {
-        "DS-059322": {
-          "dataset": "DS-059322",
-          "dataflow_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/dataflow/ESTAT/DS-059322/latest?references=all",
-          "datastructure_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/datastructure/ESTAT/DS-059322/latest?references=all",
-          "contentconstraint_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/contentconstraint/ESTAT/DS-059322/latest?references=all",
-          "dataflow_error": "HTTPError: HTTP Error 404: Not Found",
-          "datastructure_error": "HTTPError: HTTP Error 400: Bad Request",
-          "contentconstraint_error": "HTTPError: HTTP Error 404: Not Found"
-        },
-        "DS-059332": {
-          "dataset": "DS-059332",
-          "dataflow_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/dataflow/ESTAT/DS-059332/latest?references=all",
-          "datastructure_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/datastructure/ESTAT/DS-059332/latest?references=all",
-          "contentconstraint_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/contentconstraint/ESTAT/DS-059332/latest?references=all",
-          "dataflow_error": "HTTPError: HTTP Error 404: Not Found",
-          "datastructure_error": "HTTPError: HTTP Error 404: Not Found",
-          "contentconstraint_error": "HTTPError: HTTP Error 404: Not Found"
-        }
+      "message": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: No fullYYYYMM.7z files found in COMEXT_DATA/PRODUCTS listing",
+      "updated_at": "2026-03-09 20:58 UTC",
+      "files_api": {
+        "listing_url": "https://ec.europa.eu/eurostat/api/dissemination/files?format=csv&dir=comext%2FCOMEXT_DATA%2FPRODUCTS&hierarchy=false&sizeFormat=NONE&dateFormat=ISO",
+        "listing_count": 378,
+        "sample_names": [
+          "full_partxixu_v2_202101.7z",
+          "full_partxixu_v2_202102.7z",
+          "full_partxixu_v2_202103.7z",
+          "full_partxixu_v2_202104.7z",
+          "full_partxixu_v2_202105.7z",
+          "full_partxixu_v2_202106.7z",
+          "full_partxixu_v2_202107.7z",
+          "full_partxixu_v2_202108.7z",
+          "full_partxixu_v2_202109.7z",
+          "full_partxixu_v2_202110.7z",
+          "full_partxixu_v2_202111.7z",
+          "full_partxixu_v2_202112.7z",
+          "full_partxixu_v2_202152.7z",
+          "full_partxixu_v2_202201.7z",
+          "full_partxixu_v2_202202.7z",
+          "full_partxixu_v2_202203.7z",
+          "full_partxixu_v2_202204.7z",
+          "full_partxixu_v2_202205.7z",
+          "full_partxixu_v2_202206.7z",
+          "full_partxixu_v2_202207.7z"
+        ],
+        "full_candidates": []
       }
     }
   }
