@@ -1,0 +1,76 @@
+{
+  "meta": {
+    "title": "Global Fuel Cell Trade Index",
+    "source": "UN Comtrade annual goods trade API proxy",
+    "proxy_note": "HS 850680 and 850690 used as a practical fuel-cell-related trade proxy.",
+    "hs_codes": [
+      "850680",
+      "850690"
+    ],
+    "latest_year": null,
+    "last_update_utc": "2026-03-10 16:50:42 UTC",
+    "api_base": "https://comtradeapi.worldbank.org/data/v1/get/C/A/HS",
+    "status": "error"
+  },
+  "summary": {
+    "latest_index": null,
+    "latest_yoy_pct": null,
+    "series_points": 0,
+    "message": "Data unavailable or upstream API returned no usable rows."
+  },
+  "series": [],
+  "debug": {
+    "per_hs_code": {
+      "850680": {
+        "used_rows": 0,
+        "skipped_rows": 0,
+        "sample_rows": []
+      },
+      "850690": {
+        "used_rows": 0,
+        "skipped_rows": 0,
+        "sample_rows": []
+      }
+    },
+    "source_details": [
+      {
+        "hs_code": "850680",
+        "requested_url": null,
+        "status": "error",
+        "status_code": null,
+        "row_count": 0,
+        "error_type": "ConnectionError",
+        "error": "HTTPSConnectionPool(host='comtradeapi.worldbank.org', port=443): Max retries exceeded with url: /data/v1/get/C/A/HS?reporter=all&partner=0&flow=M%2CX&cmdCode=850680&max=500&fmt=json&period=2019%2C2020%2C2021%2C2022%2C2023%2C2024%2C2025 (Caused by NameResolutionError(\"HTTPSConnection(host='comtradeapi.worldbank.org', port=443): Failed to resolve 'comtradeapi.worldbank.org' ([Errno -2] Name or service not known)\"))",
+        "api_base": "https://comtradeapi.worldbank.org/data/v1/get/C/A/HS",
+        "params": {
+          "reporter": "all",
+          "partner": "0",
+          "flow": "M,X",
+          "cmdCode": "850680",
+          "max": "500",
+          "fmt": "json",
+          "period": "2019,2020,2021,2022,2023,2024,2025"
+        }
+      },
+      {
+        "hs_code": "850690",
+        "requested_url": null,
+        "status": "error",
+        "status_code": null,
+        "row_count": 0,
+        "error_type": "ConnectionError",
+        "error": "HTTPSConnectionPool(host='comtradeapi.worldbank.org', port=443): Max retries exceeded with url: /data/v1/get/C/A/HS?reporter=all&partner=0&flow=M%2CX&cmdCode=850690&max=500&fmt=json&period=2019%2C2020%2C2021%2C2022%2C2023%2C2024%2C2025 (Caused by NameResolutionError(\"HTTPSConnection(host='comtradeapi.worldbank.org', port=443): Failed to resolve 'comtradeapi.worldbank.org' ([Errno -2] Name or service not known)\"))",
+        "api_base": "https://comtradeapi.worldbank.org/data/v1/get/C/A/HS",
+        "params": {
+          "reporter": "all",
+          "partner": "0",
+          "flow": "M,X",
+          "cmdCode": "850690",
+          "max": "500",
+          "fmt": "json",
+          "period": "2019,2020,2021,2022,2023,2024,2025"
+        }
+      }
+    ]
+  }
+}
