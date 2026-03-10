@@ -551,7 +551,7 @@ def main():
         changes.append("Monthly balanced bundle updated")
     except Exception:
         changes.append("Monthly balanced bundle fetch failed")
-    build_what_matters_now(data)
+ 
     changes.append("What matters now updated")
     data["changes"] = changes
     save_data(data)
