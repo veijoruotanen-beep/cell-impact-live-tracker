@@ -1,7 +1,7 @@
 {
   "meta": {
     "data_source": "GitHub Pages / same-repo JSON",
-    "last_update": "2026-03-10 06:22 UTC"
+    "last_update": "2026-03-10 06:36 UTC"
   },
   "changes": [
     "Tracker refreshed",
@@ -270,19 +270,19 @@
         "exports": 0.6,
         "imports": 0.4
       },
-      "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: No matching full*_YYYYMM.7z files found in COMEXT_DATA/PRODUCTS listing"
+      "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: No CSV/TSV/TXT file found inside COMEXT archive"
     },
     "exports_signal": {
       "status": "Fetch failed",
       "scope": "EU + selected partners",
       "flows": "exports",
-      "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: No matching full*_YYYYMM.7z files found in COMEXT_DATA/PRODUCTS listing"
+      "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: No CSV/TSV/TXT file found inside COMEXT archive"
     },
     "imports_signal": {
       "status": "Fetch failed",
       "scope": "EU + selected partners",
       "flows": "imports",
-      "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: No matching full*_YYYYMM.7z files found in COMEXT_DATA/PRODUCTS listing"
+      "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: No CSV/TSV/TXT file found inside COMEXT archive"
     },
     "macro_signal": {
       "status": "Live",
@@ -312,14 +312,14 @@
     "latest_raw_balanced": null,
     "yoy_pct": null,
     "methodology": "Monthly balanced bundle. Shows the last 18 months after 3-month moving-average smoothing when live COMEXT extraction succeeds.",
-    "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: No matching full*_YYYYMM.7z files found in COMEXT_DATA/PRODUCTS listing",
+    "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: No CSV/TSV/TXT file found inside COMEXT archive",
     "balanced_series": [],
     "balanced_raw_series": [],
     "exports_series": [],
     "imports_series": [],
     "debug": {
-      "message": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: No matching full*_YYYYMM.7z files found in COMEXT_DATA/PRODUCTS listing",
-      "updated_at": "2026-03-10 06:22 UTC"
+      "message": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: No CSV/TSV/TXT file found inside COMEXT archive",
+      "updated_at": "2026-03-10 06:37 UTC"
     }
   }
 }
