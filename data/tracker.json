@@ -1,14 +1,13 @@
 {
   "meta": {
     "data_source": "GitHub Pages / same-repo JSON",
-    "last_update": "2026-03-10 11:16 UTC"
+    "last_update": "2026-03-10 12:31 UTC"
   },
   "changes": [
     "Tracker refreshed",
     "IR headlines updated",
     "Share price updated",
     "Trade index recalculated",
-    "Monthly balanced bundle fetch failed",
     "What matters now updated"
   ],
   "what_matters_now": [
@@ -46,17 +45,17 @@
   },
   "market_signals": {
     "latest_ir_signal": {
-      "title": "Investor Relations – Cell Impact",
+      "title": "Investor Relations &#x2013;&#xA0;Cell Impact",
       "meta": "Latest headline from Cell Impact investor page",
       "status": "Watch"
     },
     "share_price": {
-      "value": "0.131 SEK",
-      "meta": "CI.ST | -5.07% vs prev close",
+      "value": "0.133 SEK",
+      "meta": "CI.ST | -3.62% vs prev close",
       "status": "Live"
     },
     "hydrogen_trade_pulse": {
-      "value": "Trade index 100.0",
+      "value": "Trade index 1016924.3",
       "meta": "Customs index based on tracker series.",
       "status": "Live"
     },
@@ -138,7 +137,7 @@
   },
   "ir_headlines": [
     {
-      "title": "Investor Relations – Cell Impact",
+      "title": "Investor Relations &#x2013;&#xA0;Cell Impact",
       "url": "https://investor.cellimpact.com/css/generated-themes/ig-theme-eysvSQIBHECw6jSEKSSdSQ.css?v=250320251300",
       "date": ""
     },
@@ -156,58 +155,58 @@
   "customs_monitor": {
     "index_name": "Global Fuel Cell Trade Index",
     "latest_year": 2024,
-    "latest_index": 100.0,
-    "yoy_pct": 0.0,
+    "latest_index": 1016924.3,
+    "yoy_pct": -1.4,
     "methodology": "Live Eurostat dataset tet00013 mapped via JSON-stat payload parser.",
     "series": {
       "eu_imports_proxy": [
         {
           "year": 2013,
-          "value": 100.0
+          "value": 741129.7
         },
         {
           "year": 2014,
-          "value": 100.0
+          "value": 750927.1
         },
         {
           "year": 2015,
-          "value": 100.0
+          "value": 803409.5
         },
         {
           "year": 2016,
-          "value": 100.0
+          "value": 799481.5
         },
         {
           "year": 2017,
-          "value": 100.0
+          "value": 843608.3
         },
         {
           "year": 2018,
-          "value": 100.0
+          "value": 858136.4
         },
         {
           "year": 2019,
-          "value": 100.0
+          "value": 876488.3
         },
         {
           "year": 2020,
-          "value": 100.0
+          "value": 763894.5
         },
         {
           "year": 2021,
-          "value": 100.0
+          "value": 837669.7
         },
         {
           "year": 2022,
-          "value": 100.0
+          "value": 954719.7
         },
         {
           "year": 2023,
-          "value": 100.0
+          "value": 1031570.0
         },
         {
           "year": 2024,
-          "value": 100.0
+          "value": 1016924.3
         }
       ]
     },
