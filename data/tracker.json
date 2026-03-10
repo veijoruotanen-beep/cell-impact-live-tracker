@@ -1,7 +1,7 @@
 {
   "meta": {
     "data_source": "GitHub Pages / same-repo JSON",
-    "last_update": "2026-03-10 07:11 UTC"
+    "last_update": "2026-03-10 07:42 UTC"
   },
   "changes": [
     "Tracker refreshed",
@@ -318,7 +318,7 @@
     "exports_series": [],
     "imports_series": [],
     "debug": {
-      "updated_at": "2026-03-10 07:11 UTC",
+      "updated_at": "2026-03-10 07:42 UTC",
       "files_api": {
         "listing_url": "https://ec.europa.eu/eurostat/api/dissemination/files?format=csv&dir=comext%2FCOMEXT_DATA%2FPRODUCTS&hierarchy=false&sizeFormat=NONE&dateFormat=ISO",
         "listing_count": 378,
@@ -373,7 +373,6 @@
           "full_partxixu_v2_202110.7z",
           "full_partxixu_v2_202111.7z",
           "full_partxixu_v2_202112.7z",
-          "full_partxixu_v2_202152.7z",
           "full_partxixu_v2_202201.7z",
           "full_partxixu_v2_202202.7z",
           "full_partxixu_v2_202203.7z",
@@ -386,7 +385,6 @@
           "full_partxixu_v2_202210.7z",
           "full_partxixu_v2_202211.7z",
           "full_partxixu_v2_202212.7z",
-          "full_partxixu_v2_202252.7z",
           "full_partxixu_v2_202301.7z",
           "full_partxixu_v2_202302.7z",
           "full_partxixu_v2_202303.7z",
@@ -399,7 +397,6 @@
           "full_partxixu_v2_202310.7z",
           "full_partxixu_v2_202311.7z",
           "full_partxixu_v2_202312.7z",
-          "full_partxixu_v2_202352.7z",
           "full_partxixu_v2_202401.7z",
           "full_partxixu_v2_202402.7z",
           "full_partxixu_v2_202403.7z",
@@ -410,19 +407,52 @@
           "full_partxixu_v2_202408.7z",
           "full_partxixu_v2_202409.7z",
           "full_partxixu_v2_202410.7z",
-          "full_partxixu_v2_202411.7z"
+          "full_partxixu_v2_202411.7z",
+          "full_partxixu_v2_202412.7z",
+          "full_partxixu_v2_202501.7z",
+          "full_partxixu_v2_202502.7z",
+          "full_partxixu_v2_202503.7z",
+          "full_partxixu_v2_202504.7z",
+          "full_partxixu_v2_202505.7z",
+          "full_partxixu_v2_202506.7z",
+          "full_partxixu_v2_202507.7z",
+          "full_partxixu_v2_202508.7z",
+          "full_partxixu_v2_202509.7z",
+          "full_partxixu_v2_202510.7z",
+          "full_partxixu_v2_202511.7z",
+          "full_partxixu_v2_202512.7z",
+          "full_v2_200201.7z",
+          "full_v2_200202.7z",
+          "full_v2_200203.7z",
+          "full_v2_200204.7z",
+          "full_v2_200205.7z",
+          "full_v2_200206.7z",
+          "full_v2_200207.7z",
+          "full_v2_200208.7z",
+          "full_v2_200209.7z",
+          "full_v2_200210.7z",
+          "full_v2_200211.7z",
+          "full_v2_200212.7z",
+          "full_v2_200301.7z",
+          "full_v2_200302.7z",
+          "full_v2_200303.7z",
+          "full_v2_200304.7z",
+          "full_v2_200305.7z",
+          "full_v2_200306.7z",
+          "full_v2_200307.7z",
+          "full_v2_200308.7z"
         ]
       },
-      "selected_archive": "full_v2_202552.7z",
-      "selected_yyyymm": "202552",
-      "download_url": "https://ec.europa.eu/eurostat/api/dissemination/files?file=comext%2FCOMEXT_DATA%2FPRODUCTS%2Ffull_v2_202552.7z",
+      "selected_archive": "full_v2_202512.7z",
+      "selected_yyyymm": "202512",
+      "download_url": "https://ec.europa.eu/eurostat/api/dissemination/files?file=comext%2FCOMEXT_DATA%2FPRODUCTS%2Ffull_v2_202512.7z",
       "archive_members": [
-        "full_202552.dat"
+        "full_202512.dat"
       ],
       "extracted_all_files": [
-        "first_pass/full_202552.dat"
+        "first_pass/full_202512.dat"
       ],
-      "extracted_file": "first_pass/full_202552.dat",
+      "extracted_file": "first_pass/full_202512.dat",
       "extracted_kind": ".dat",
       "delimiter_guess": ",",
       "columns": [
@@ -453,8 +483,17 @@
         "product": "PRODUCT_NC",
         "value": "VALUE_EUR"
       },
-      "rows_seen": 6466660,
+      "rows_seen": 2809709,
       "rows_kept": 0,
+      "fail_counts": {
+        "period": 0,
+        "flow": 0,
+        "partner": 2470363,
+        "product": 333735,
+        "value": 0,
+        "geo": 5611
+      },
+      "kept_examples": [],
       "message": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: Monthly COMEXT extraction produced no usable smoothed balanced series"
     }
   }
