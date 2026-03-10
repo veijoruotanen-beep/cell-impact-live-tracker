@@ -1,7 +1,7 @@
 {
   "meta": {
     "data_source": "GitHub Pages / same-repo JSON",
-    "last_update": "2026-03-10 08:52 UTC"
+    "last_update": "2026-03-10 10:47 UTC"
   },
   "changes": [
     "Tracker refreshed",
@@ -51,12 +51,12 @@
       "status": "Watch"
     },
     "share_price": {
-      "value": "0.132 SEK",
-      "meta": "CI.ST | -4.35% vs prev close",
+      "value": "0.133 SEK",
+      "meta": "CI.ST | -3.62% vs prev close",
       "status": "Live"
     },
     "hydrogen_trade_pulse": {
-      "value": "Trade index 1016924.3",
+      "value": "Trade index 100.0",
       "meta": "Customs index based on tracker series.",
       "status": "Live"
     },
@@ -156,58 +156,58 @@
   "customs_monitor": {
     "index_name": "Global Fuel Cell Trade Index",
     "latest_year": 2024,
-    "latest_index": 1016924.3,
-    "yoy_pct": -1.4,
+    "latest_index": 100.0,
+    "yoy_pct": 0.0,
     "methodology": "Live Eurostat dataset tet00013 mapped via JSON-stat payload parser.",
     "series": {
       "eu_imports_proxy": [
         {
           "year": 2013,
-          "value": 741129.7
+          "value": 100.0
         },
         {
           "year": 2014,
-          "value": 750927.1
+          "value": 100.0
         },
         {
           "year": 2015,
-          "value": 803409.5
+          "value": 100.0
         },
         {
           "year": 2016,
-          "value": 799481.5
+          "value": 100.0
         },
         {
           "year": 2017,
-          "value": 843608.3
+          "value": 100.0
         },
         {
           "year": 2018,
-          "value": 858136.4
+          "value": 100.0
         },
         {
           "year": 2019,
-          "value": 876488.3
+          "value": 100.0
         },
         {
           "year": 2020,
-          "value": 763894.5
+          "value": 100.0
         },
         {
           "year": 2021,
-          "value": 837669.7
+          "value": 100.0
         },
         {
           "year": 2022,
-          "value": 954719.7
+          "value": 100.0
         },
         {
           "year": 2023,
-          "value": 1031570.0
+          "value": 100.0
         },
         {
           "year": 2024,
-          "value": 1016924.3
+          "value": 100.0
         }
       ]
     },
@@ -270,25 +270,25 @@
         "exports": 0.6,
         "imports": 0.4
       },
-      "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: Monthly COMEXT extraction produced no usable smoothed balanced series"
+      "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: Required columns missing: period, flow, partner, product, value"
     },
     "exports_signal": {
       "status": "Fetch failed",
       "scope": "EU + selected partners",
       "flows": "exports",
-      "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: Monthly COMEXT extraction produced no usable smoothed balanced series"
+      "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: Required columns missing: period, flow, partner, product, value"
     },
     "imports_signal": {
       "status": "Fetch failed",
       "scope": "EU + selected partners",
       "flows": "imports",
-      "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: Monthly COMEXT extraction produced no usable smoothed balanced series"
+      "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: Required columns missing: period, flow, partner, product, value"
     },
     "macro_signal": {
       "status": "Live",
       "dataset_target": "tet00013",
-      "value": 1016924.3,
-      "yoy_pct": -1.4,
+      "value": 100.0,
+      "yoy_pct": 0.0,
       "note": "Annual macro/proxy backdrop."
     }
   },
@@ -312,13 +312,13 @@
     "latest_raw_balanced": null,
     "yoy_pct": null,
     "methodology": "Monthly balanced bundle. Shows the last 18 months after 3-month moving-average smoothing when live COMEXT extraction succeeds.",
-    "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: Monthly COMEXT extraction produced no usable smoothed balanced series",
+    "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: Required columns missing: period, flow, partner, product, value",
     "balanced_series": [],
     "balanced_raw_series": [],
     "exports_series": [],
     "imports_series": [],
     "debug": {
-      "updated_at": "2026-03-10 08:52 UTC",
+      "updated_at": "2026-03-10 10:47 UTC",
       "files_api": {
         "listing_url": "https://ec.europa.eu/eurostat/api/dissemination/files?format=csv&dir=comext%2FCOMEXT_DATA%2FPRODUCTS&hierarchy=false&sizeFormat=NONE&dateFormat=ISO",
         "listing_count": 378,
@@ -361,66 +361,6 @@
           }
         ],
         "archive_candidates": [
-          "full_partxixu_v2_202101.7z",
-          "full_partxixu_v2_202102.7z",
-          "full_partxixu_v2_202103.7z",
-          "full_partxixu_v2_202104.7z",
-          "full_partxixu_v2_202105.7z",
-          "full_partxixu_v2_202106.7z",
-          "full_partxixu_v2_202107.7z",
-          "full_partxixu_v2_202108.7z",
-          "full_partxixu_v2_202109.7z",
-          "full_partxixu_v2_202110.7z",
-          "full_partxixu_v2_202111.7z",
-          "full_partxixu_v2_202112.7z",
-          "full_partxixu_v2_202201.7z",
-          "full_partxixu_v2_202202.7z",
-          "full_partxixu_v2_202203.7z",
-          "full_partxixu_v2_202204.7z",
-          "full_partxixu_v2_202205.7z",
-          "full_partxixu_v2_202206.7z",
-          "full_partxixu_v2_202207.7z",
-          "full_partxixu_v2_202208.7z",
-          "full_partxixu_v2_202209.7z",
-          "full_partxixu_v2_202210.7z",
-          "full_partxixu_v2_202211.7z",
-          "full_partxixu_v2_202212.7z",
-          "full_partxixu_v2_202301.7z",
-          "full_partxixu_v2_202302.7z",
-          "full_partxixu_v2_202303.7z",
-          "full_partxixu_v2_202304.7z",
-          "full_partxixu_v2_202305.7z",
-          "full_partxixu_v2_202306.7z",
-          "full_partxixu_v2_202307.7z",
-          "full_partxixu_v2_202308.7z",
-          "full_partxixu_v2_202309.7z",
-          "full_partxixu_v2_202310.7z",
-          "full_partxixu_v2_202311.7z",
-          "full_partxixu_v2_202312.7z",
-          "full_partxixu_v2_202401.7z",
-          "full_partxixu_v2_202402.7z",
-          "full_partxixu_v2_202403.7z",
-          "full_partxixu_v2_202404.7z",
-          "full_partxixu_v2_202405.7z",
-          "full_partxixu_v2_202406.7z",
-          "full_partxixu_v2_202407.7z",
-          "full_partxixu_v2_202408.7z",
-          "full_partxixu_v2_202409.7z",
-          "full_partxixu_v2_202410.7z",
-          "full_partxixu_v2_202411.7z",
-          "full_partxixu_v2_202412.7z",
-          "full_partxixu_v2_202501.7z",
-          "full_partxixu_v2_202502.7z",
-          "full_partxixu_v2_202503.7z",
-          "full_partxixu_v2_202504.7z",
-          "full_partxixu_v2_202505.7z",
-          "full_partxixu_v2_202506.7z",
-          "full_partxixu_v2_202507.7z",
-          "full_partxixu_v2_202508.7z",
-          "full_partxixu_v2_202509.7z",
-          "full_partxixu_v2_202510.7z",
-          "full_partxixu_v2_202511.7z",
-          "full_partxixu_v2_202512.7z",
           "full_v2_200201.7z",
           "full_v2_200202.7z",
           "full_v2_200203.7z",
@@ -440,486 +380,126 @@
           "full_v2_200305.7z",
           "full_v2_200306.7z",
           "full_v2_200307.7z",
-          "full_v2_200308.7z"
+          "full_v2_200308.7z",
+          "full_v2_200309.7z",
+          "full_v2_200310.7z",
+          "full_v2_200311.7z",
+          "full_v2_200312.7z",
+          "full_v2_200401.7z",
+          "full_v2_200402.7z",
+          "full_v2_200403.7z",
+          "full_v2_200404.7z",
+          "full_v2_200405.7z",
+          "full_v2_200406.7z",
+          "full_v2_200407.7z",
+          "full_v2_200408.7z",
+          "full_v2_200409.7z",
+          "full_v2_200410.7z",
+          "full_v2_200411.7z",
+          "full_v2_200412.7z",
+          "full_v2_200501.7z",
+          "full_v2_200502.7z",
+          "full_v2_200503.7z",
+          "full_v2_200504.7z",
+          "full_v2_200505.7z",
+          "full_v2_200506.7z",
+          "full_v2_200507.7z",
+          "full_v2_200508.7z",
+          "full_v2_200509.7z",
+          "full_v2_200510.7z",
+          "full_v2_200511.7z",
+          "full_v2_200512.7z",
+          "full_v2_200601.7z",
+          "full_v2_200602.7z",
+          "full_v2_200603.7z",
+          "full_v2_200604.7z",
+          "full_v2_200605.7z",
+          "full_v2_200606.7z",
+          "full_v2_200607.7z",
+          "full_v2_200608.7z",
+          "full_v2_200609.7z",
+          "full_v2_200610.7z",
+          "full_v2_200611.7z",
+          "full_v2_200612.7z",
+          "full_v2_200701.7z",
+          "full_v2_200702.7z",
+          "full_v2_200703.7z",
+          "full_v2_200704.7z",
+          "full_v2_200705.7z",
+          "full_v2_200706.7z",
+          "full_v2_200707.7z",
+          "full_v2_200708.7z",
+          "full_v2_200709.7z",
+          "full_v2_200710.7z",
+          "full_v2_200711.7z",
+          "full_v2_200712.7z",
+          "full_v2_200801.7z",
+          "full_v2_200802.7z",
+          "full_v2_200803.7z",
+          "full_v2_200804.7z",
+          "full_v2_200805.7z",
+          "full_v2_200806.7z",
+          "full_v2_200807.7z",
+          "full_v2_200808.7z",
+          "full_v2_200809.7z",
+          "full_v2_200810.7z",
+          "full_v2_200811.7z",
+          "full_v2_200812.7z",
+          "full_v2_200901.7z",
+          "full_v2_200902.7z",
+          "full_v2_200903.7z",
+          "full_v2_200904.7z",
+          "full_v2_200905.7z",
+          "full_v2_200906.7z",
+          "full_v2_200907.7z",
+          "full_v2_200908.7z",
+          "full_v2_200909.7z",
+          "full_v2_200910.7z",
+          "full_v2_200911.7z",
+          "full_v2_200912.7z",
+          "full_v2_201001.7z",
+          "full_v2_201002.7z",
+          "full_v2_201003.7z",
+          "full_v2_201004.7z",
+          "full_v2_201005.7z",
+          "full_v2_201006.7z",
+          "full_v2_201007.7z",
+          "full_v2_201008.7z",
+          "full_v2_201009.7z",
+          "full_v2_201010.7z",
+          "full_v2_201011.7z",
+          "full_v2_201012.7z",
+          "full_v2_201101.7z",
+          "full_v2_201102.7z",
+          "full_v2_201103.7z",
+          "full_v2_201104.7z",
+          "full_v2_201105.7z",
+          "full_v2_201106.7z",
+          "full_v2_201107.7z",
+          "full_v2_201108.7z",
+          "full_v2_201109.7z",
+          "full_v2_201110.7z",
+          "full_v2_201111.7z",
+          "full_v2_201112.7z"
+        ],
+        "selected_archives": [
+          "full_partxixu_v2_202510.7z",
+          "full_v2_202510.7z",
+          "full_partxixu_v2_202511.7z",
+          "full_v2_202511.7z",
+          "full_partxixu_v2_202512.7z",
+          "full_v2_202512.7z"
+        ],
+        "selected_periods": [
+          "202510",
+          "202510",
+          "202511",
+          "202511",
+          "202512",
+          "202512"
         ]
       },
-      "selected_archive": "full_v2_202512.7z",
-      "selected_yyyymm": "202512",
-      "download_url": "https://ec.europa.eu/eurostat/api/dissemination/files?file=comext%2FCOMEXT_DATA%2FPRODUCTS%2Ffull_v2_202512.7z",
-      "archive_members": [
-        "full_202512.dat"
-      ],
-      "extracted_all_files": [
-        "first_pass/full_202512.dat"
-      ],
-      "extracted_file": "first_pass/full_202512.dat",
-      "extracted_kind": ".dat",
-      "delimiter_guess": ",",
-      "columns": [
-        "REPORTER",
-        "PARTNER",
-        "TRADE_TYPE",
-        "PRODUCT_NC",
-        "PRODUCT_SITC",
-        "PRODUCT_CPA21",
-        "PRODUCT_CPA22",
-        "PRODUCT_BEC",
-        "PRODUCT_BEC5",
-        "PRODUCT_SECTION",
-        "FLOW",
-        "STAT_PROCEDURE",
-        "SUPPL_UNIT",
-        "PERIOD",
-        "VALUE_EUR",
-        "VALUE_NAC",
-        "QUANTITY_KG",
-        "QUANTITY_SUPPL_UNIT"
-      ],
-      "column_map": {
-        "period": "PERIOD",
-        "flow": "FLOW",
-        "geo": "REPORTER",
-        "partner": "PARTNER",
-        "product": "PRODUCT_NC",
-        "value": "VALUE_EUR"
-      },
-      "rows_seen": 2809709,
-      "rows_kept": 5611,
-      "fail_counts": {
-        "period": 0,
-        "flow": 0,
-        "partner": 2470363,
-        "product": 333735,
-        "value": 0,
-        "geo": 0
-      },
-      "kept_examples": [
-        {
-          "period": "2025-12",
-          "flow": "IMP",
-          "partner": "CN",
-          "prod4": "7219",
-          "geo": "AT",
-          "value": 28.0
-        },
-        {
-          "period": "2025-12",
-          "flow": "EXP",
-          "partner": "CN",
-          "prod4": "7219",
-          "geo": "AT",
-          "value": 1713.0
-        },
-        {
-          "period": "2025-12",
-          "flow": "EXP",
-          "partner": "CN",
-          "prod4": "7219",
-          "geo": "AT",
-          "value": 4.0
-        },
-        {
-          "period": "2025-12",
-          "flow": "IMP",
-          "partner": "CN",
-          "prod4": "7219",
-          "geo": "AT",
-          "value": 27579.0
-        },
-        {
-          "period": "2025-12",
-          "flow": "EXP",
-          "partner": "CN",
-          "prod4": "7326",
-          "geo": "AT",
-          "value": 1732.0
-        },
-        {
-          "period": "2025-12",
-          "flow": "EXP",
-          "partner": "CN",
-          "prod4": "7326",
-          "geo": "AT",
-          "value": 14342.0
-        },
-        {
-          "period": "2025-12",
-          "flow": "IMP",
-          "partner": "CN",
-          "prod4": "7326",
-          "geo": "AT",
-          "value": 66.0
-        },
-        {
-          "period": "2025-12",
-          "flow": "EXP",
-          "partner": "CN",
-          "prod4": "7326",
-          "geo": "AT",
-          "value": 124962.0
-        },
-        {
-          "period": "2025-12",
-          "flow": "IMP",
-          "partner": "CN",
-          "prod4": "7326",
-          "geo": "AT",
-          "value": 1043.0
-        },
-        {
-          "period": "2025-12",
-          "flow": "EXP",
-          "partner": "CN",
-          "prod4": "7326",
-          "geo": "AT",
-          "value": 298799.0
-        }
-      ],
-      "sample_partners": [
-        "AD",
-        "AD",
-        "AD",
-        "AD",
-        "AD",
-        "AD",
-        "AD",
-        "AD",
-        "AD",
-        "AD",
-        "AD",
-        "AD",
-        "AD",
-        "AD",
-        "AD",
-        "AD",
-        "AD",
-        "AD",
-        "AD",
-        "AD"
-      ],
-      "sample_geos": [
-        "AT",
-        "AT",
-        "AT",
-        "AT",
-        "AT",
-        "AT",
-        "AT",
-        "AT",
-        "AT",
-        "AT",
-        "AT",
-        "AT",
-        "AT",
-        "AT",
-        "AT",
-        "AT",
-        "AT",
-        "AT",
-        "AT",
-        "AT"
-      ],
-      "sample_products": [
-        "02032915",
-        "02032955",
-        "02032959",
-        "02064900",
-        "03074399",
-        "04021019",
-        "04022111",
-        "04041002",
-        "04061050",
-        "04063031",
-        "04063039",
-        "05040000",
-        "05079000",
-        "05080090",
-        "05119985",
-        "05119985",
-        "06049019",
-        "06049099",
-        "07102900",
-        "07108069"
-      ],
-      "sample_flows": [
-        "2",
-        "2",
-        "2",
-        "2",
-        "2",
-        "2",
-        "2",
-        "2",
-        "2",
-        "2",
-        "2",
-        "2",
-        "2",
-        "2",
-        "2",
-        "2",
-        "2",
-        "2",
-        "2",
-        "2"
-      ],
-      "top_partners": [
-        [
-          "GB",
-          141533
-        ],
-        [
-          "CN",
-          122963
-        ],
-        [
-          "US",
-          115830
-        ],
-        [
-          "CH",
-          93240
-        ],
-        [
-          "TR",
-          78020
-        ],
-        [
-          "DE",
-          69194
-        ],
-        [
-          "JP",
-          57896
-        ],
-        [
-          "NO",
-          57846
-        ],
-        [
-          "IN",
-          57643
-        ],
-        [
-          "PL",
-          54535
-        ],
-        [
-          "FR",
-          52035
-        ],
-        [
-          "IT",
-          51936
-        ],
-        [
-          "NL",
-          48781
-        ],
-        [
-          "XS",
-          45996
-        ],
-        [
-          "UA",
-          44725
-        ],
-        [
-          "CA",
-          43804
-        ],
-        [
-          "KR",
-          42657
-        ],
-        [
-          "AE",
-          38658
-        ],
-        [
-          "AU",
-          38365
-        ],
-        [
-          "BE",
-          37063
-        ]
-      ],
-      "top_products": [
-        [
-          "8708",
-          4660
-        ],
-        [
-          "7318",
-          4252
-        ],
-        [
-          "8536",
-          3776
-        ],
-        [
-          "6204",
-          3704
-        ],
-        [
-          "8481",
-          3269
-        ],
-        [
-          "4202",
-          3002
-        ],
-        [
-          "8483",
-          2847
-        ],
-        [
-          "8413",
-          2821
-        ],
-        [
-          "6403",
-          2750
-        ],
-        [
-          "6203",
-          2573
-        ],
-        [
-          "9405",
-          2429
-        ],
-        [
-          "8207",
-          2425
-        ],
-        [
-          "8414",
-          2316
-        ],
-        [
-          "9018",
-          2297
-        ],
-        [
-          "8504",
-          2083
-        ],
-        [
-          "8501",
-          2063
-        ],
-        [
-          "3920",
-          2018
-        ],
-        [
-          "8544",
-          1934
-        ],
-        [
-          "8421",
-          1930
-        ],
-        [
-          "9503",
-          1927
-        ]
-      ],
-      "top_geos": [
-        [
-          "DE",
-          533
-        ],
-        [
-          "NL",
-          389
-        ],
-        [
-          "FR",
-          385
-        ],
-        [
-          "IT",
-          365
-        ],
-        [
-          "BE",
-          335
-        ],
-        [
-          "SE",
-          314
-        ],
-        [
-          "PL",
-          289
-        ],
-        [
-          "ES",
-          283
-        ],
-        [
-          "CZ",
-          264
-        ],
-        [
-          "AT",
-          255
-        ],
-        [
-          "DK",
-          243
-        ],
-        [
-          "FI",
-          220
-        ],
-        [
-          "HU",
-          208
-        ],
-        [
-          "IE",
-          202
-        ],
-        [
-          "SK",
-          160
-        ],
-        [
-          "RO",
-          157
-        ],
-        [
-          "SI",
-          150
-        ],
-        [
-          "PT",
-          142
-        ],
-        [
-          "BG",
-          130
-        ],
-        [
-          "GR",
-          102
-        ]
-      ],
-      "top_flows": [
-        [
-          "IMP",
-          1649646
-        ],
-        [
-          "EXP",
-          1160063
-        ]
-      ],
-      "message": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: Monthly COMEXT extraction produced no usable smoothed balanced series"
+      "message": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: Required columns missing: period, flow, partner, product, value"
     }
   }
 }
