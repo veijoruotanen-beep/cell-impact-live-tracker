@@ -1,7 +1,7 @@
 {
   "meta": {
     "data_source": "GitHub Pages / same-repo JSON",
-    "last_update": "2026-03-10 05:12 UTC"
+    "last_update": "2026-03-10 06:22 UTC"
   },
   "changes": [
     "Tracker refreshed",
@@ -270,19 +270,19 @@
         "exports": 0.6,
         "imports": 0.4
       },
-      "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: No fullYYYYMM.7z files found in COMEXT_DATA/PRODUCTS listing"
+      "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: No matching full*_YYYYMM.7z files found in COMEXT_DATA/PRODUCTS listing"
     },
     "exports_signal": {
       "status": "Fetch failed",
       "scope": "EU + selected partners",
       "flows": "exports",
-      "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: No fullYYYYMM.7z files found in COMEXT_DATA/PRODUCTS listing"
+      "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: No matching full*_YYYYMM.7z files found in COMEXT_DATA/PRODUCTS listing"
     },
     "imports_signal": {
       "status": "Fetch failed",
       "scope": "EU + selected partners",
       "flows": "imports",
-      "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: No fullYYYYMM.7z files found in COMEXT_DATA/PRODUCTS listing"
+      "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: No matching full*_YYYYMM.7z files found in COMEXT_DATA/PRODUCTS listing"
     },
     "macro_signal": {
       "status": "Live",
@@ -312,41 +312,14 @@
     "latest_raw_balanced": null,
     "yoy_pct": null,
     "methodology": "Monthly balanced bundle. Shows the last 18 months after 3-month moving-average smoothing when live COMEXT extraction succeeds.",
-    "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: No fullYYYYMM.7z files found in COMEXT_DATA/PRODUCTS listing",
+    "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: No matching full*_YYYYMM.7z files found in COMEXT_DATA/PRODUCTS listing",
     "balanced_series": [],
     "balanced_raw_series": [],
     "exports_series": [],
     "imports_series": [],
     "debug": {
-      "message": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: No fullYYYYMM.7z files found in COMEXT_DATA/PRODUCTS listing",
-      "updated_at": "2026-03-10 05:12 UTC",
-      "files_api": {
-        "listing_url": "https://ec.europa.eu/eurostat/api/dissemination/files?format=csv&dir=comext%2FCOMEXT_DATA%2FPRODUCTS&hierarchy=false&sizeFormat=NONE&dateFormat=ISO",
-        "listing_count": 378,
-        "sample_names": [
-          "full_partxixu_v2_202101.7z",
-          "full_partxixu_v2_202102.7z",
-          "full_partxixu_v2_202103.7z",
-          "full_partxixu_v2_202104.7z",
-          "full_partxixu_v2_202105.7z",
-          "full_partxixu_v2_202106.7z",
-          "full_partxixu_v2_202107.7z",
-          "full_partxixu_v2_202108.7z",
-          "full_partxixu_v2_202109.7z",
-          "full_partxixu_v2_202110.7z",
-          "full_partxixu_v2_202111.7z",
-          "full_partxixu_v2_202112.7z",
-          "full_partxixu_v2_202152.7z",
-          "full_partxixu_v2_202201.7z",
-          "full_partxixu_v2_202202.7z",
-          "full_partxixu_v2_202203.7z",
-          "full_partxixu_v2_202204.7z",
-          "full_partxixu_v2_202205.7z",
-          "full_partxixu_v2_202206.7z",
-          "full_partxixu_v2_202207.7z"
-        ],
-        "full_candidates": []
-      }
+      "message": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: No matching full*_YYYYMM.7z files found in COMEXT_DATA/PRODUCTS listing",
+      "updated_at": "2026-03-10 06:22 UTC"
     }
   }
 }
