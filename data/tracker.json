@@ -1,7 +1,7 @@
 {
   "meta": {
     "data_source": "GitHub Pages / same-repo JSON",
-    "last_update": "2026-03-10 07:51 UTC"
+    "last_update": "2026-03-10 08:52 UTC"
   },
   "changes": [
     "Tracker refreshed",
@@ -51,8 +51,8 @@
       "status": "Watch"
     },
     "share_price": {
-      "value": "0.129 SEK",
-      "meta": "CI.ST | -3.01% vs prev close",
+      "value": "0.132 SEK",
+      "meta": "CI.ST | -4.35% vs prev close",
       "status": "Live"
     },
     "hydrogen_trade_pulse": {
@@ -318,7 +318,7 @@
     "exports_series": [],
     "imports_series": [],
     "debug": {
-      "updated_at": "2026-03-10 07:51 UTC",
+      "updated_at": "2026-03-10 08:52 UTC",
       "files_api": {
         "listing_url": "https://ec.europa.eu/eurostat/api/dissemination/files?format=csv&dir=comext%2FCOMEXT_DATA%2FPRODUCTS&hierarchy=false&sizeFormat=NONE&dateFormat=ISO",
         "listing_count": 378,
@@ -484,16 +484,97 @@
         "value": "VALUE_EUR"
       },
       "rows_seen": 2809709,
-      "rows_kept": 0,
+      "rows_kept": 5611,
       "fail_counts": {
         "period": 0,
         "flow": 0,
         "partner": 2470363,
         "product": 333735,
         "value": 0,
-        "geo": 5611
+        "geo": 0
       },
-      "kept_examples": [],
+      "kept_examples": [
+        {
+          "period": "2025-12",
+          "flow": "IMP",
+          "partner": "CN",
+          "prod4": "7219",
+          "geo": "AT",
+          "value": 28.0
+        },
+        {
+          "period": "2025-12",
+          "flow": "EXP",
+          "partner": "CN",
+          "prod4": "7219",
+          "geo": "AT",
+          "value": 1713.0
+        },
+        {
+          "period": "2025-12",
+          "flow": "EXP",
+          "partner": "CN",
+          "prod4": "7219",
+          "geo": "AT",
+          "value": 4.0
+        },
+        {
+          "period": "2025-12",
+          "flow": "IMP",
+          "partner": "CN",
+          "prod4": "7219",
+          "geo": "AT",
+          "value": 27579.0
+        },
+        {
+          "period": "2025-12",
+          "flow": "EXP",
+          "partner": "CN",
+          "prod4": "7326",
+          "geo": "AT",
+          "value": 1732.0
+        },
+        {
+          "period": "2025-12",
+          "flow": "EXP",
+          "partner": "CN",
+          "prod4": "7326",
+          "geo": "AT",
+          "value": 14342.0
+        },
+        {
+          "period": "2025-12",
+          "flow": "IMP",
+          "partner": "CN",
+          "prod4": "7326",
+          "geo": "AT",
+          "value": 66.0
+        },
+        {
+          "period": "2025-12",
+          "flow": "EXP",
+          "partner": "CN",
+          "prod4": "7326",
+          "geo": "AT",
+          "value": 124962.0
+        },
+        {
+          "period": "2025-12",
+          "flow": "IMP",
+          "partner": "CN",
+          "prod4": "7326",
+          "geo": "AT",
+          "value": 1043.0
+        },
+        {
+          "period": "2025-12",
+          "flow": "EXP",
+          "partner": "CN",
+          "prod4": "7326",
+          "geo": "AT",
+          "value": 298799.0
+        }
+      ],
       "sample_partners": [
         "AD",
         "AD",
@@ -539,26 +620,304 @@
         "AT"
       ],
       "sample_products": [
-        "27101983",
-        "27101987",
-        "27101999",
-        "30049000",
-        "30065000",
-        "32072090",
-        "33049900",
-        "34039900",
-        "38140090",
-        "39219090",
-        "39232100",
-        "39259080",
-        "39269097",
-        "39XXXXXX",
-        "40139000",
-        "40169997",
-        "42023100",
-        "42029291",
-        "44188100",
-        "44188200"
+        "02032915",
+        "02032955",
+        "02032959",
+        "02064900",
+        "03074399",
+        "04021019",
+        "04022111",
+        "04041002",
+        "04061050",
+        "04063031",
+        "04063039",
+        "05040000",
+        "05079000",
+        "05080090",
+        "05119985",
+        "05119985",
+        "06049019",
+        "06049099",
+        "07102900",
+        "07108069"
+      ],
+      "sample_flows": [
+        "2",
+        "2",
+        "2",
+        "2",
+        "2",
+        "2",
+        "2",
+        "2",
+        "2",
+        "2",
+        "2",
+        "2",
+        "2",
+        "2",
+        "2",
+        "2",
+        "2",
+        "2",
+        "2",
+        "2"
+      ],
+      "top_partners": [
+        [
+          "GB",
+          141533
+        ],
+        [
+          "CN",
+          122963
+        ],
+        [
+          "US",
+          115830
+        ],
+        [
+          "CH",
+          93240
+        ],
+        [
+          "TR",
+          78020
+        ],
+        [
+          "DE",
+          69194
+        ],
+        [
+          "JP",
+          57896
+        ],
+        [
+          "NO",
+          57846
+        ],
+        [
+          "IN",
+          57643
+        ],
+        [
+          "PL",
+          54535
+        ],
+        [
+          "FR",
+          52035
+        ],
+        [
+          "IT",
+          51936
+        ],
+        [
+          "NL",
+          48781
+        ],
+        [
+          "XS",
+          45996
+        ],
+        [
+          "UA",
+          44725
+        ],
+        [
+          "CA",
+          43804
+        ],
+        [
+          "KR",
+          42657
+        ],
+        [
+          "AE",
+          38658
+        ],
+        [
+          "AU",
+          38365
+        ],
+        [
+          "BE",
+          37063
+        ]
+      ],
+      "top_products": [
+        [
+          "8708",
+          4660
+        ],
+        [
+          "7318",
+          4252
+        ],
+        [
+          "8536",
+          3776
+        ],
+        [
+          "6204",
+          3704
+        ],
+        [
+          "8481",
+          3269
+        ],
+        [
+          "4202",
+          3002
+        ],
+        [
+          "8483",
+          2847
+        ],
+        [
+          "8413",
+          2821
+        ],
+        [
+          "6403",
+          2750
+        ],
+        [
+          "6203",
+          2573
+        ],
+        [
+          "9405",
+          2429
+        ],
+        [
+          "8207",
+          2425
+        ],
+        [
+          "8414",
+          2316
+        ],
+        [
+          "9018",
+          2297
+        ],
+        [
+          "8504",
+          2083
+        ],
+        [
+          "8501",
+          2063
+        ],
+        [
+          "3920",
+          2018
+        ],
+        [
+          "8544",
+          1934
+        ],
+        [
+          "8421",
+          1930
+        ],
+        [
+          "9503",
+          1927
+        ]
+      ],
+      "top_geos": [
+        [
+          "DE",
+          533
+        ],
+        [
+          "NL",
+          389
+        ],
+        [
+          "FR",
+          385
+        ],
+        [
+          "IT",
+          365
+        ],
+        [
+          "BE",
+          335
+        ],
+        [
+          "SE",
+          314
+        ],
+        [
+          "PL",
+          289
+        ],
+        [
+          "ES",
+          283
+        ],
+        [
+          "CZ",
+          264
+        ],
+        [
+          "AT",
+          255
+        ],
+        [
+          "DK",
+          243
+        ],
+        [
+          "FI",
+          220
+        ],
+        [
+          "HU",
+          208
+        ],
+        [
+          "IE",
+          202
+        ],
+        [
+          "SK",
+          160
+        ],
+        [
+          "RO",
+          157
+        ],
+        [
+          "SI",
+          150
+        ],
+        [
+          "PT",
+          142
+        ],
+        [
+          "BG",
+          130
+        ],
+        [
+          "GR",
+          102
+        ]
+      ],
+      "top_flows": [
+        [
+          "IMP",
+          1649646
+        ],
+        [
+          "EXP",
+          1160063
+        ]
       ],
       "message": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: Monthly COMEXT extraction produced no usable smoothed balanced series"
     }
