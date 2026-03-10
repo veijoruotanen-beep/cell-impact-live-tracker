@@ -1,0 +1,38 @@
+name: Update Fuel Cell Global Trade Data
+
+on:
+  schedule:
+    - cron: "0 4 * * *"
+  workflow_dispatch:
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install requests
+        run: pip install requests
+
+      - name: Show repo files
+        run: ls -R
+
+      - name: Run trade agent
+        env:
+          UN_COMTRADE_API_KEY: ${{ secrets.UN_COMTRADE_API_KEY }}
+        run: python fuel_cell_global_trade_agent.py --start-year 2019 --output data/customs-monitor.json
+
+      - name: Commit updated data
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+          git add data/customs-monitor.json
+          git commit -m "Update global fuel cell trade data" || echo "No changes"
+          git push
