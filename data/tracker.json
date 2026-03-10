@@ -1,7 +1,7 @@
 {
   "meta": {
     "data_source": "GitHub Pages / same-repo JSON",
-    "last_update": "2026-03-10 10:47 UTC"
+    "last_update": "2026-03-10 11:16 UTC"
   },
   "changes": [
     "Tracker refreshed",
@@ -51,8 +51,8 @@
       "status": "Watch"
     },
     "share_price": {
-      "value": "0.133 SEK",
-      "meta": "CI.ST | -3.62% vs prev close",
+      "value": "0.131 SEK",
+      "meta": "CI.ST | -5.07% vs prev close",
       "status": "Live"
     },
     "hydrogen_trade_pulse": {
@@ -318,7 +318,7 @@
     "exports_series": [],
     "imports_series": [],
     "debug": {
-      "updated_at": "2026-03-10 10:47 UTC",
+      "updated_at": "2026-03-10 11:16 UTC",
       "files_api": {
         "listing_url": "https://ec.europa.eu/eurostat/api/dissemination/files?format=csv&dir=comext%2FCOMEXT_DATA%2FPRODUCTS&hierarchy=false&sizeFormat=NONE&dateFormat=ISO",
         "listing_count": 378,
