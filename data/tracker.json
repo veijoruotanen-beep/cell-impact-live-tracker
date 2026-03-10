@@ -1,7 +1,7 @@
 {
   "meta": {
     "data_source": "GitHub Pages / same-repo JSON",
-    "last_update": "2026-03-09 20:58 UTC"
+    "last_update": "2026-03-10 05:12 UTC"
   },
   "changes": [
     "Tracker refreshed",
@@ -319,7 +319,7 @@
     "imports_series": [],
     "debug": {
       "message": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: No fullYYYYMM.7z files found in COMEXT_DATA/PRODUCTS listing",
-      "updated_at": "2026-03-09 20:58 UTC",
+      "updated_at": "2026-03-10 05:12 UTC",
       "files_api": {
         "listing_url": "https://ec.europa.eu/eurostat/api/dissemination/files?format=csv&dir=comext%2FCOMEXT_DATA%2FPRODUCTS&hierarchy=false&sizeFormat=NONE&dateFormat=ISO",
         "listing_count": 378,
