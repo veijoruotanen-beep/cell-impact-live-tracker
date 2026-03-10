@@ -1,7 +1,7 @@
 {
   "meta": {
     "data_source": "GitHub Pages / same-repo JSON",
-    "last_update": "2026-03-10 06:44 UTC"
+    "last_update": "2026-03-10 07:11 UTC"
   },
   "changes": [
     "Tracker refreshed",
@@ -270,19 +270,19 @@
         "exports": 0.6,
         "imports": 0.4
       },
-      "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: No CSV/TSV/TXT/PARQUET file found inside COMEXT archive"
+      "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: Monthly COMEXT extraction produced no usable smoothed balanced series"
     },
     "exports_signal": {
       "status": "Fetch failed",
       "scope": "EU + selected partners",
       "flows": "exports",
-      "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: No CSV/TSV/TXT/PARQUET file found inside COMEXT archive"
+      "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: Monthly COMEXT extraction produced no usable smoothed balanced series"
     },
     "imports_signal": {
       "status": "Fetch failed",
       "scope": "EU + selected partners",
       "flows": "imports",
-      "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: No CSV/TSV/TXT/PARQUET file found inside COMEXT archive"
+      "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: Monthly COMEXT extraction produced no usable smoothed balanced series"
     },
     "macro_signal": {
       "status": "Live",
@@ -296,10 +296,10 @@
     "status": "Fetch failed",
     "scope": "EU + selected partners | imports + exports | 60/40 weighting",
     "partners": [
-      "US",
       "CN",
       "JP",
-      "KR"
+      "KR",
+      "US"
     ],
     "flows": {
       "exports": 0.6,
@@ -312,14 +312,150 @@
     "latest_raw_balanced": null,
     "yoy_pct": null,
     "methodology": "Monthly balanced bundle. Shows the last 18 months after 3-month moving-average smoothing when live COMEXT extraction succeeds.",
-    "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: No CSV/TSV/TXT/PARQUET file found inside COMEXT archive",
+    "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: Monthly COMEXT extraction produced no usable smoothed balanced series",
     "balanced_series": [],
     "balanced_raw_series": [],
     "exports_series": [],
     "imports_series": [],
     "debug": {
-      "message": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: No CSV/TSV/TXT/PARQUET file found inside COMEXT archive",
-      "updated_at": "2026-03-10 06:50 UTC"
+      "updated_at": "2026-03-10 07:11 UTC",
+      "files_api": {
+        "listing_url": "https://ec.europa.eu/eurostat/api/dissemination/files?format=csv&dir=comext%2FCOMEXT_DATA%2FPRODUCTS&hierarchy=false&sizeFormat=NONE&dateFormat=ISO",
+        "listing_count": 378,
+        "listing_fields": [
+          "NAME",
+          "SIZE",
+          "TYPE",
+          "DATE"
+        ],
+        "listing_raw_preview": [
+          {
+            "NAME": "full_partxixu_v2_202101.7z",
+            "SIZE": "1834112",
+            "TYPE": "7z",
+            "DATE": "2026-01-06T12:54:24.992Z"
+          },
+          {
+            "NAME": "full_partxixu_v2_202102.7z",
+            "SIZE": "2083982",
+            "TYPE": "7z",
+            "DATE": "2026-01-06T12:54:25.021Z"
+          },
+          {
+            "NAME": "full_partxixu_v2_202103.7z",
+            "SIZE": "2196161",
+            "TYPE": "7z",
+            "DATE": "2026-01-06T12:54:25.050Z"
+          },
+          {
+            "NAME": "full_partxixu_v2_202104.7z",
+            "SIZE": "2153150",
+            "TYPE": "7z",
+            "DATE": "2026-01-06T12:54:25.080Z"
+          },
+          {
+            "NAME": "full_partxixu_v2_202105.7z",
+            "SIZE": "2135128",
+            "TYPE": "7z",
+            "DATE": "2026-01-06T12:54:25.110Z"
+          }
+        ],
+        "archive_candidates": [
+          "full_partxixu_v2_202101.7z",
+          "full_partxixu_v2_202102.7z",
+          "full_partxixu_v2_202103.7z",
+          "full_partxixu_v2_202104.7z",
+          "full_partxixu_v2_202105.7z",
+          "full_partxixu_v2_202106.7z",
+          "full_partxixu_v2_202107.7z",
+          "full_partxixu_v2_202108.7z",
+          "full_partxixu_v2_202109.7z",
+          "full_partxixu_v2_202110.7z",
+          "full_partxixu_v2_202111.7z",
+          "full_partxixu_v2_202112.7z",
+          "full_partxixu_v2_202152.7z",
+          "full_partxixu_v2_202201.7z",
+          "full_partxixu_v2_202202.7z",
+          "full_partxixu_v2_202203.7z",
+          "full_partxixu_v2_202204.7z",
+          "full_partxixu_v2_202205.7z",
+          "full_partxixu_v2_202206.7z",
+          "full_partxixu_v2_202207.7z",
+          "full_partxixu_v2_202208.7z",
+          "full_partxixu_v2_202209.7z",
+          "full_partxixu_v2_202210.7z",
+          "full_partxixu_v2_202211.7z",
+          "full_partxixu_v2_202212.7z",
+          "full_partxixu_v2_202252.7z",
+          "full_partxixu_v2_202301.7z",
+          "full_partxixu_v2_202302.7z",
+          "full_partxixu_v2_202303.7z",
+          "full_partxixu_v2_202304.7z",
+          "full_partxixu_v2_202305.7z",
+          "full_partxixu_v2_202306.7z",
+          "full_partxixu_v2_202307.7z",
+          "full_partxixu_v2_202308.7z",
+          "full_partxixu_v2_202309.7z",
+          "full_partxixu_v2_202310.7z",
+          "full_partxixu_v2_202311.7z",
+          "full_partxixu_v2_202312.7z",
+          "full_partxixu_v2_202352.7z",
+          "full_partxixu_v2_202401.7z",
+          "full_partxixu_v2_202402.7z",
+          "full_partxixu_v2_202403.7z",
+          "full_partxixu_v2_202404.7z",
+          "full_partxixu_v2_202405.7z",
+          "full_partxixu_v2_202406.7z",
+          "full_partxixu_v2_202407.7z",
+          "full_partxixu_v2_202408.7z",
+          "full_partxixu_v2_202409.7z",
+          "full_partxixu_v2_202410.7z",
+          "full_partxixu_v2_202411.7z"
+        ]
+      },
+      "selected_archive": "full_v2_202552.7z",
+      "selected_yyyymm": "202552",
+      "download_url": "https://ec.europa.eu/eurostat/api/dissemination/files?file=comext%2FCOMEXT_DATA%2FPRODUCTS%2Ffull_v2_202552.7z",
+      "archive_members": [
+        "full_202552.dat"
+      ],
+      "extracted_all_files": [
+        "first_pass/full_202552.dat"
+      ],
+      "extracted_file": "first_pass/full_202552.dat",
+      "extracted_kind": ".dat",
+      "delimiter_guess": ",",
+      "columns": [
+        "REPORTER",
+        "PARTNER",
+        "TRADE_TYPE",
+        "PRODUCT_NC",
+        "PRODUCT_SITC",
+        "PRODUCT_CPA21",
+        "PRODUCT_CPA22",
+        "PRODUCT_BEC",
+        "PRODUCT_BEC5",
+        "PRODUCT_SECTION",
+        "FLOW",
+        "STAT_PROCEDURE",
+        "SUPPL_UNIT",
+        "PERIOD",
+        "VALUE_EUR",
+        "VALUE_NAC",
+        "QUANTITY_KG",
+        "QUANTITY_SUPPL_UNIT"
+      ],
+      "column_map": {
+        "period": "PERIOD",
+        "flow": "FLOW",
+        "geo": "REPORTER",
+        "partner": "PARTNER",
+        "product": "PRODUCT_NC",
+        "value": "VALUE_EUR"
+      },
+      "rows_seen": 6466660,
+      "rows_kept": 0,
+      "message": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: Monthly COMEXT extraction produced no usable smoothed balanced series"
     }
   }
 }
