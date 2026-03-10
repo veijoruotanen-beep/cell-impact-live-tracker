@@ -1,7 +1,7 @@
 {
   "meta": {
     "data_source": "GitHub Pages / same-repo JSON",
-    "last_update": "2026-03-10 07:42 UTC"
+    "last_update": "2026-03-10 07:51 UTC"
   },
   "changes": [
     "Tracker refreshed",
@@ -318,7 +318,7 @@
     "exports_series": [],
     "imports_series": [],
     "debug": {
-      "updated_at": "2026-03-10 07:42 UTC",
+      "updated_at": "2026-03-10 07:51 UTC",
       "files_api": {
         "listing_url": "https://ec.europa.eu/eurostat/api/dissemination/files?format=csv&dir=comext%2FCOMEXT_DATA%2FPRODUCTS&hierarchy=false&sizeFormat=NONE&dateFormat=ISO",
         "listing_count": 378,
@@ -494,6 +494,72 @@
         "geo": 5611
       },
       "kept_examples": [],
+      "sample_partners": [
+        "AD",
+        "AD",
+        "AD",
+        "AD",
+        "AD",
+        "AD",
+        "AD",
+        "AD",
+        "AD",
+        "AD",
+        "AD",
+        "AD",
+        "AD",
+        "AD",
+        "AD",
+        "AD",
+        "AD",
+        "AD",
+        "AD",
+        "AD"
+      ],
+      "sample_geos": [
+        "AT",
+        "AT",
+        "AT",
+        "AT",
+        "AT",
+        "AT",
+        "AT",
+        "AT",
+        "AT",
+        "AT",
+        "AT",
+        "AT",
+        "AT",
+        "AT",
+        "AT",
+        "AT",
+        "AT",
+        "AT",
+        "AT",
+        "AT"
+      ],
+      "sample_products": [
+        "27101983",
+        "27101987",
+        "27101999",
+        "30049000",
+        "30065000",
+        "32072090",
+        "33049900",
+        "34039900",
+        "38140090",
+        "39219090",
+        "39232100",
+        "39259080",
+        "39269097",
+        "39XXXXXX",
+        "40139000",
+        "40169997",
+        "42023100",
+        "42029291",
+        "44188100",
+        "44188200"
+      ],
       "message": "Monthly COMEXT bulk extraction did not yield a usable series yet. RuntimeError: Monthly COMEXT extraction produced no usable smoothed balanced series"
     }
   }
