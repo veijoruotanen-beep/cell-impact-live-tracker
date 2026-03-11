@@ -11,7 +11,7 @@
     "last_update_utc": "2026-03-11 07:36:34 UTC",
     "api_base": "https://comtradeapi.worldbank.org/data/v1/get/C/A/HS",
     "status": "error",
-    "last_update": "2026-03-11 09:40 UTC",
+    "last_update": "2026-03-11 10:23 UTC",
     "data_source": "GitHub Pages / same-repo JSON"
   },
   "summary": {
@@ -82,14 +82,19 @@
       "status": "Watch"
     },
     "share_price": {
-      "value": "0.120 SEK",
-      "meta": "CI.ST | -11.11% vs prev close",
+      "value": "0.119 SEK",
+      "meta": "CI.ST | -11.85% vs prev close",
       "status": "Live"
     },
     "hydrogen_trade_pulse": {
       "value": "Trade index 100.0",
       "meta": "Customs index based on tracker series.",
       "status": "Live"
+    },
+    "dilution_pressure": {
+      "value": "Elevated",
+      "meta": "Funding sensitivity remains relevant when runway is short.",
+      "status": "Risk"
     }
   },
   "monthly_trade_pulse": {
@@ -210,7 +215,7 @@
       }
     ],
     "debug": {
-      "updated_at": "2026-03-11 09:40 UTC",
+      "updated_at": "2026-03-11 10:23 UTC",
       "files_api": {
         "listing_url": "https://ec.europa.eu/eurostat/api/dissemination/files?format=csv&dir=comext%2FCOMEXT_DATA%2FPRODUCTS&hierarchy=false&sizeFormat=NONE&dateFormat=ISO",
         "listing_count": 378,
@@ -3875,14 +3880,19 @@
       "note": "Monthly balanced bundle computed from COMEXT bulk files."
     },
     {
+      "label": "Cash runway",
+      "value": "8.3 months",
+      "note": "Illustrative runway estimate based on current baseline assumptions."
+    },
+    {
+      "label": "Funding through 2027",
+      "value": "41%",
+      "note": "Model estimate based on runway, burn assumptions and financing sensitivity."
+    },
+    {
       "label": "Macro backdrop",
       "value": "100.0",
       "note": "Live Eurostat dataset tet00013 mapped via JSON-stat payload parser. YoY +0.0%."
-    },
-    {
-      "label": "Share price",
-      "value": "0.120 SEK",
-      "note": "CI.ST | -11.11% vs prev close"
     }
   ],
   "changes": [
@@ -3893,8 +3903,85 @@
     "Monthly balanced bundle updated",
     "What matters now updated"
   ],
-  "company": {},
-  "probability": {},
-  "scenarios": [],
-  "monte_carlo": {}
+  "company": {
+    "name": "Cell Impact AB (publ)",
+    "ticker": "CI",
+    "market": "Nasdaq First North Growth Market",
+    "cash_msek": 23.0,
+    "cash_meta": "Rights issue proceeds, gross, used here as a practical tracker baseline.",
+    "shares_outstanding": 471335592,
+    "shares_meta": "Post-rights issue share count used as tracker baseline.",
+    "runway_months": 8.3,
+    "runway_meta": "Illustrative runway estimate based on current baseline assumptions."
+  },
+  "probability": {
+    "funding_through_2027_pct": 41,
+    "meta": "Model estimate based on runway, burn assumptions and financing sensitivity."
+  },
+  "scenarios": [
+    {
+      "name": "Bear",
+      "score": 28
+    },
+    {
+      "name": "Base",
+      "score": 52
+    },
+    {
+      "name": "Bull",
+      "score": 74
+    }
+  ],
+  "monte_carlo": {
+    "valuation_distribution": [
+      8,
+      11,
+      13,
+      14,
+      16,
+      17,
+      18,
+      19,
+      19,
+      20,
+      20,
+      21,
+      22,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      30,
+      31,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      46,
+      48,
+      49,
+      50,
+      52,
+      54,
+      57,
+      60,
+      63
+    ]
+  }
 }
