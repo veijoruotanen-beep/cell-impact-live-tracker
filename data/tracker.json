@@ -11,7 +11,7 @@
     "last_update_utc": "2026-03-11 07:36:34 UTC",
     "api_base": "https://comtradeapi.worldbank.org/data/v1/get/C/A/HS",
     "status": "error",
-    "last_update": "2026-03-11 10:23 UTC",
+    "last_update": "2026-03-11 10:56 UTC",
     "data_source": "GitHub Pages / same-repo JSON"
   },
   "summary": {
@@ -87,7 +87,7 @@
       "status": "Live"
     },
     "hydrogen_trade_pulse": {
-      "value": "Trade index 100.0",
+      "value": "Trade index 150.5",
       "meta": "Customs index based on tracker series.",
       "status": "Live"
     },
@@ -215,7 +215,7 @@
       }
     ],
     "debug": {
-      "updated_at": "2026-03-11 10:23 UTC",
+      "updated_at": "2026-03-11 10:56 UTC",
       "files_api": {
         "listing_url": "https://ec.europa.eu/eurostat/api/dissemination/files?format=csv&dir=comext%2FCOMEXT_DATA%2FPRODUCTS&hierarchy=false&sizeFormat=NONE&dateFormat=ISO",
         "listing_count": 378,
@@ -3788,8 +3788,8 @@
     "macro_signal": {
       "status": "Live",
       "dataset_target": "tet00013",
-      "value": 100.0,
-      "yoy_pct": 0.0,
+      "value": 150.5,
+      "yoy_pct": -2.8,
       "note": "Annual macro/proxy backdrop."
     }
   },
@@ -3798,63 +3798,85 @@
       "eu_imports_proxy": [
         {
           "year": 2013,
-          "value": 100.0
+          "value": 100.0,
+          "raw_value": 1630762.5
         },
         {
           "year": 2014,
-          "value": 100.0
+          "value": 99.67,
+          "raw_value": 1625384.3
         },
         {
           "year": 2015,
-          "value": 100.0
+          "value": 101.06,
+          "raw_value": 1648094.6
         },
         {
           "year": 2016,
-          "value": 100.0
+          "value": 98.26,
+          "raw_value": 1602417.8
         },
         {
           "year": 2017,
-          "value": 100.0
+          "value": 108.66,
+          "raw_value": 1771944.2
         },
         {
           "year": 2018,
-          "value": 100.0
+          "value": 117.15,
+          "raw_value": 1910413.8
         },
         {
           "year": 2019,
-          "value": 100.0
+          "value": 118.99,
+          "raw_value": 1940369.2
         },
         {
           "year": 2020,
-          "value": 100.0
+          "value": 105.17,
+          "raw_value": 1715118.5
         },
         {
           "year": 2021,
-          "value": 100.0
+          "value": 130.2,
+          "raw_value": 2123271.3
         },
         {
           "year": 2022,
-          "value": 100.0
+          "value": 184.49,
+          "raw_value": 3008570.0
         },
         {
           "year": 2023,
-          "value": 100.0
+          "value": 154.75,
+          "raw_value": 2523664.3
         },
         {
           "year": 2024,
-          "value": 100.0
+          "value": 150.47,
+          "raw_value": 2453783.5
         }
       ]
     },
-    "methodology": "Live Eurostat dataset tet00013 mapped via JSON-stat payload parser.",
-    "latest_index": 100.0,
+    "methodology": "Live Eurostat dataset tet00013 mapped via SDMX 3.0 parser (MIO_IMP_VAL, total-like SITC bucket, indexed to base year = 100).",
+    "latest_index": 150.5,
     "latest_year": 2024,
-    "yoy_pct": 0.0,
+    "yoy_pct": -2.8,
     "source_type": "single-dataset proxy",
     "coverage_note": "This is a customs proxy signal, not a complete global fuel-cell trade dataset.",
     "dataset_target": "tet00013",
     "next_step_note": "Next step: replace or supplement tet00013 with a verified COMEXT monthly bundle.",
-    "comext_dataset_target": "DS-059322 + DS-059332"
+    "comext_dataset_target": "DS-059322 + DS-059332",
+    "debug": {
+      "selection": {
+        "dataset": "tet00013",
+        "indic_et": "MIO_IMP_VAL",
+        "sitc06_mode": "first available total-like category",
+        "base_year": 2013
+      },
+      "api_url": "https://ec.europa.eu/eurostat/api/dissemination/sdmx/3.0/data/dataflow/ESTAT/tet00013/1.0?compress=false&format=json&lang=en",
+      "payload_updated": "2026-02-13T11:00:00+0100"
+    }
   },
   "ir_headlines": [
     {
@@ -3891,8 +3913,8 @@
     },
     {
       "label": "Macro backdrop",
-      "value": "100.0",
-      "note": "Live Eurostat dataset tet00013 mapped via JSON-stat payload parser. YoY +0.0%."
+      "value": "150.5",
+      "note": "Live Eurostat dataset tet00013 mapped via SDMX 3.0 parser (MIO_IMP_VAL, total-like SITC bucket, indexed to base year = 100). YoY -2.8%."
     }
   ],
   "changes": [
