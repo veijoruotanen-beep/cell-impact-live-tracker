@@ -11,7 +11,7 @@
     "last_update_utc": "2026-03-11 07:36:34 UTC",
     "api_base": "https://comtradeapi.worldbank.org/data/v1/get/C/A/HS",
     "status": "error",
-    "last_update": "2026-03-11 10:56 UTC",
+    "last_update": "2026-03-11 11:19 UTC",
     "data_source": "GitHub Pages / same-repo JSON"
   },
   "summary": {
@@ -82,8 +82,8 @@
       "status": "Watch"
     },
     "share_price": {
-      "value": "0.119 SEK",
-      "meta": "CI.ST | -11.85% vs prev close",
+      "value": "0.117 SEK",
+      "meta": "CI.ST | -13.33% vs prev close",
       "status": "Live"
     },
     "hydrogen_trade_pulse": {
@@ -215,7 +215,7 @@
       }
     ],
     "debug": {
-      "updated_at": "2026-03-11 10:56 UTC",
+      "updated_at": "2026-03-11 11:20 UTC",
       "files_api": {
         "listing_url": "https://ec.europa.eu/eurostat/api/dissemination/files?format=csv&dir=comext%2FCOMEXT_DATA%2FPRODUCTS&hierarchy=false&sizeFormat=NONE&dateFormat=ISO",
         "listing_count": 378,
@@ -3858,25 +3858,32 @@
         }
       ]
     },
-    "methodology": "Live Eurostat dataset tet00013 mapped via SDMX 3.0 parser (MIO_IMP_VAL, total-like SITC bucket, indexed to base year = 100).",
+    "methodology": "Live Eurostat annual proxy via SDMX 3.0 parser. Selected dataset tet00013 and indexed the chosen import-value proxy to base period = 100.",
     "latest_index": 150.5,
     "latest_year": 2024,
     "yoy_pct": -2.8,
     "source_type": "single-dataset proxy",
     "coverage_note": "This is a customs proxy signal, not a complete global fuel-cell trade dataset.",
     "dataset_target": "tet00013",
-    "next_step_note": "Next step: replace or supplement tet00013 with a verified COMEXT monthly bundle.",
+    "next_step_note": "Next step: replace or supplement this proxy with a verified COMEXT monthly bundle.",
     "comext_dataset_target": "DS-059322 + DS-059332",
     "debug": {
-      "selection": {
-        "dataset": "tet00013",
-        "indic_et": "MIO_IMP_VAL",
-        "sitc06_mode": "first available total-like category",
-        "base_year": 2013
-      },
-      "api_url": "https://ec.europa.eu/eurostat/api/dissemination/sdmx/3.0/data/dataflow/ESTAT/tet00013/1.0?compress=false&format=json&lang=en",
-      "payload_updated": "2026-02-13T11:00:00+0100"
-    }
+      "tet00013": {
+        "selection": {
+          "dataset": "Extra-EU27 (from 2020) trade, by product group",
+          "freq": "A",
+          "indic_et": "MIO_IMP_VAL",
+          "sitc06": "total_like",
+          "partner": "total_like_or_first",
+          "geo": "total_like_or_first",
+          "base_year": 2013
+        },
+        "api_url": "https://ec.europa.eu/eurostat/api/dissemination/sdmx/3.0/data/dataflow/ESTAT/tet00013/1.0?compress=false&format=json&lang=en",
+        "payload_updated": "2026-02-13T11:00:00+0100"
+      }
+    },
+    "status": "annual",
+    "fallback_dataset_target": "tet00013"
   },
   "ir_headlines": [
     {
@@ -3914,7 +3921,7 @@
     {
       "label": "Macro backdrop",
       "value": "150.5",
-      "note": "Live Eurostat dataset tet00013 mapped via SDMX 3.0 parser (MIO_IMP_VAL, total-like SITC bucket, indexed to base year = 100). YoY -2.8%."
+      "note": "Live Eurostat annual proxy via SDMX 3.0 parser. Selected dataset tet00013 and indexed the chosen import-value proxy to base period = 100. YoY -2.8%."
     }
   ],
   "changes": [
