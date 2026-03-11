@@ -10,7 +10,8 @@
     "latest_year": null,
     "last_update_utc": "2026-03-11 07:36:34 UTC",
     "api_base": "https://comtradeapi.worldbank.org/data/v1/get/C/A/HS",
-    "status": "error"
+    "status": "error",
+    "last_update": "2026-03-11 08:43 UTC"
   },
   "summary": {
     "latest_index": null,
@@ -72,5 +73,15 @@
         }
       }
     ]
-  }
+  },
+  "market_signals": {},
+  "monthly_trade_pulse": {
+    "status": "Live",
+    "smoothing": "3M MA"
+  },
+  "trade_signals": {},
+  "customs_monitor": {},
+  "ir_headlines": [],
+  "what_matters_now": [],
+  "changes": []
 }
