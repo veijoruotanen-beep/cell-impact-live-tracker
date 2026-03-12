@@ -1,0 +1,1449 @@
+#!/usr/bin/env python3
+import argparse
+import csv
+import gzip
+import html
+import io
+import json
+import re
+import ssl
+import urllib.parse
+import urllib.request
+from collections import Counter
+from datetime import datetime, timezone, timedelta
+from pathlib import Path
+
+import py7zr
+
+try:
+    from zoneinfo import ZoneInfo
+except Exception:
+    ZoneInfo = None
+
+# Optional lightweight enrichers. Safe fallback if files are not present yet.
+try:
+    from hydrogen_sector_news_agent import build_event_signals
+except Exception:
+    build_event_signals = None
+
+try:
+    from supply_chain_radar_v2 import calculate_supply_chain_radar
+except Exception:
+    calculate_supply_chain_radar = None
+
+DEFAULT_OUTPUT_PATH = "data/tracker.json"
+IR_URL = "https://investor.cellimpact.com/en/investor-relations"
+YAHOO_URL = "https://query1.finance.yahoo.com/v8/finance/chart/CI.ST?range=5d&interval=1d"
+EUROSTAT_API_BASE = "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data"
+EUROSTAT_SDMX_BASE = "https://ec.europa.eu/eurostat/api/dissemination/sdmx/3.0/data/dataflow/ESTAT"
+EUROSTAT_DATASET = "tet00013"
+EUROSTAT_MONTHLY_DATASET = "ei_eteu27_2020_m"
+FILES_API_LISTING = "https://ec.europa.eu/eurostat/api/dissemination/files?format=csv&dir=comext%2FCOMEXT_DATA%2FPRODUCTS&hierarchy=false&sizeFormat=NONE&dateFormat=ISO"
+FILES_API_DOWNLOAD = "https://ec.europa.eu/eurostat/api/dissemination/files?file={file}"
+
+PARTNERS = {"US", "CN", "JP", "KR"}
+HS4_CODES = {"8501", "8504", "7219", "7326"}
+EU_REPORTERS = {
+    "AT","BE","BG","HR","CY","CZ","DK","EE","FI","FR","DE","EL","GR","HU","IE","IT",
+    "LV","LT","LU","MT","NL","PL","PT","RO","SK","SI","ES","SE","EU","EU27","EU27_2020"
+}
+WINDOW_MONTHS = 18
+ARCHIVES_TO_LOAD = 12
+REFRESH_LATEST_ARCHIVES = 1
+
+# Runtime tuning for GitHub Actions: keep debug compact and network conservative.
+HTTP_TIMEOUT_DEFAULT = 25
+HTTP_TIMEOUT_LONG = 90
+FILES_API_PREVIEW_ROWS = 3
+ARCHIVE_CANDIDATE_DEBUG_LIMIT = 12
+TOP_DEBUG_LIMIT = 8
+PROCESSED_ARCHIVE_DEBUG_LIMIT = 2
+LATEST_LISTING_DEBUG_LIMIT = 10
+KEEP_VERBOSE_DEBUG = False
+
+LEGACY_FALLBACKS = {
+    "company": {
+        "name": "Cell Impact AB (publ)",
+        "ticker": "CI",
+        "market": "Nasdaq First North Growth Market",
+        "cash_msek": 23.0,
+        "cash_meta": "Rights issue proceeds, gross, used here as a practical tracker baseline.",
+        "shares_outstanding": 471335592,
+        "shares_meta": "Post-rights issue share count used as tracker baseline.",
+        "runway_months": 8.3,
+        "runway_meta": "Illustrative runway estimate based on current baseline assumptions."
+    },
+    "probability": {
+        "funding_through_2027_pct": 41,
+        "meta": "Model estimate based on runway, burn assumptions and financing sensitivity."
+    },
+    "monte_carlo": {
+        "valuation_distribution": [8, 11, 13, 14, 16, 17, 18, 19, 19, 20, 20, 21, 22, 22, 23, 24, 25, 26, 27, 28, 29, 30, 30, 31, 31, 32, 33, 34, 35, 36, 36, 37, 38, 39, 40, 41, 42, 43, 44, 46, 48, 49, 50, 52, 54, 57, 60, 63]
+    },
+    "scenarios": [
+        {"name": "Bear", "score": 28},
+        {"name": "Base", "score": 52},
+        {"name": "Bull", "score": 74}
+    ],
+    "market_signals": {
+        "dilution_pressure": {
+            "value": "Elevated",
+            "meta": "Funding sensitivity remains relevant when runway is short.",
+            "status": "Risk"
+        }
+    }
+}
+
+
+def merge_missing_dict(target, fallback):
+    if not isinstance(target, dict):
+        return dict(fallback)
+    for key, value in fallback.items():
+        current = target.get(key)
+        if isinstance(value, dict):
+            if not isinstance(current, dict) or not current:
+                target[key] = dict(value)
+            else:
+                for sub_key, sub_val in value.items():
+                    if current.get(sub_key) in (None, "", [], {}):
+                        current[sub_key] = sub_val
+        else:
+            if current in (None, "", [], {}):
+                target[key] = value
+    return target
+
+
+def apply_legacy_fallbacks(data):
+    ensure_root_scaffold(data)
+    data["company"] = merge_missing_dict(data.get("company", {}), LEGACY_FALLBACKS["company"])
+    data["probability"] = merge_missing_dict(data.get("probability", {}), LEGACY_FALLBACKS["probability"])
+    data["monte_carlo"] = merge_missing_dict(data.get("monte_carlo", {}), LEGACY_FALLBACKS["monte_carlo"])
+
+    scenarios = data.get("scenarios")
+    if not scenarios:
+        data["scenarios"] = list(LEGACY_FALLBACKS["scenarios"])
+
+    market = data.get("market_signals", {}) or {}
+    market = merge_missing_dict(market, LEGACY_FALLBACKS["market_signals"])
+    data["market_signals"] = market
+
+
+def fetch_text(url, timeout=HTTP_TIMEOUT_DEFAULT):
+    ctx = ssl.create_default_context()
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+    with urllib.request.urlopen(req, timeout=timeout, context=ctx) as r:
+        return r.read().decode("utf-8", errors="ignore")
+
+
+def fetch_bytes(url, timeout=HTTP_TIMEOUT_LONG):
+    ctx = ssl.create_default_context()
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+    with urllib.request.urlopen(req, timeout=timeout, context=ctx) as r:
+        return r.read()
+
+
+def fetch_json_url(url, timeout=HTTP_TIMEOUT_DEFAULT):
+    return json.loads(fetch_text(url, timeout=timeout))
+
+
+def build_eurostat_url(dataset):
+    return f"{EUROSTAT_API_BASE}/{dataset}?format=JSON"
+
+
+def build_eurostat_sdmx_url(dataset):
+    return f"{EUROSTAT_SDMX_BASE}/{dataset}/1.0?compress=false&format=json&lang=en"
+
+
+def make_default_tracker():
+    return {
+        "meta": {},
+        "changes": [],
+        "what_matters_now": [],
+        "company": {},
+        "market_signals": {},
+        "probability": {},
+        "scenarios": [],
+        "monte_carlo": {},
+        "ir_headlines": [],
+        "customs_monitor": {},
+        "trade_signals": {},
+        "monthly_trade_pulse": {},
+        "event_signals": {},
+        "supply_chain_radar": {},
+        "hydrogen_industrial_momentum": {},
+    }
+
+
+def ensure_root_scaffold(data):
+    if not isinstance(data, dict):
+        data = {}
+    data.setdefault("meta", {})
+    data.setdefault("changes", [])
+    data.setdefault("what_matters_now", [])
+    data.setdefault("company", {})
+    data.setdefault("market_signals", {})
+    data.setdefault("probability", {})
+    data.setdefault("scenarios", [])
+    data.setdefault("monte_carlo", {})
+    data.setdefault("ir_headlines", [])
+    data.setdefault("customs_monitor", {})
+    data.setdefault("trade_signals", {})
+    data.setdefault("monthly_trade_pulse", {})
+    data.setdefault("event_signals", {})
+    data.setdefault("supply_chain_radar", {})
+    data.setdefault("hydrogen_industrial_momentum", {})
+    return data
+
+
+def load_data(path):
+    p = Path(path)
+    if not p.exists():
+        return make_default_tracker()
+    with open(p, "r", encoding="utf-8") as f:
+        return ensure_root_scaffold(json.load(f))
+
+
+def save_data(data, path):
+    p = Path(path)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    with open(p, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+
+
+def parse_ir_headlines(html_text):
+    matches = re.findall(r'href="([^"]+)".{0,300}?>([^<]{12,160})<', html_text, flags=re.I | re.S)
+    out, seen = [], set()
+    blocked_suffixes = (".css", ".js", ".png", ".jpg", ".jpeg", ".svg", ".woff", ".woff2")
+    blocked_fragments = ("/css/", "/wp-content/", "/themes/", "generated-themes")
+    for href, title in matches:
+        t = html.unescape(re.sub(r"\s+", " ", title)).strip()
+        href = (href or "").strip()
+        href_l = href.lower()
+        if len(t) < 15:
+            continue
+        if t in seen:
+            continue
+        if href_l.endswith(blocked_suffixes):
+            continue
+        if any(fragment in href_l for fragment in blocked_fragments):
+            continue
+        if href_l.startswith(("mailto:", "tel:", "javascript:")):
+            href = ""
+        if not any(k in t.lower() for k in ["cell impact", "rights issue", "report", "annual", "quarter", "share", "investor"]):
+            continue
+        seen.add(t)
+        if href.startswith("/"):
+            href = "https://investor.cellimpact.com" + href
+        out.append({"title": t, "url": href, "date": ""})
+        if len(out) == 6:
+            break
+    return out
+
+
+def fetch_price():
+    try:
+        raw = fetch_text(YAHOO_URL)
+        m = re.search(r'"regularMarketPrice":\s*([0-9.]+)', raw)
+        c = re.search(r'"chartPreviousClose":\s*([0-9.]+)', raw)
+        if not m:
+            return None
+        price = float(m.group(1))
+        prev = float(c.group(1)) if c else None
+        meta = f"CI.ST | {((price - prev) / prev) * 100:+.2f}% vs prev close" if prev else "CI.ST"
+        return {"value": f"{price:.3f} SEK", "meta": meta, "status": "Live"}
+    except Exception:
+        return None
+
+
+def _category_index_map(payload, dim_name):
+    return (((payload.get("dimension") or {}).get(dim_name) or {}).get("category") or {}).get("index") or {}
+
+
+def _coords_from_flat_index(flat, sizes):
+    coords = [0] * len(sizes)
+    for i in range(len(sizes) - 1, -1, -1):
+        size = sizes[i]
+        coords[i] = flat % size
+        flat //= size
+    return coords
+
+
+def _choose_total_sitc_position(payload):
+    sitc_index = _category_index_map(payload, "sitc06")
+    if not sitc_index:
+        return 0
+    for key, pos in sitc_index.items():
+        u = str(key).upper()
+        if u in {"TOTAL", "TOTALS", "TOT", "TOTAL_PRODUCTS", "0"}:
+            return int(pos)
+    return min(int(v) for v in sitc_index.values())
+
+
+def _choose_total_like_position(index_map):
+    if not index_map:
+        return 0
+    preferred = (
+        "TOTAL", "TOTALS", "TOT", "ALL", "TOTAL_PRODUCTS", "TOTAL_PRODUCT_GROUPS",
+        "EXTRA_EU27_2020", "EXT_EU27_2020", "EXTRA_EU27", "EXT_EU27", "EXT", "WORLD", "TOTAL_PARTNERS", "INTRA_EXTRA_EU27_2020"
+    )
+    upper = {str(k).upper(): int(v) for k, v in index_map.items()}
+    for key in preferred:
+        if key in upper:
+            return upper[key]
+    for k, v in upper.items():
+        if any(token in k for token in ("TOTAL", "ALL", "WORLD", "EXT")):
+            return v
+    return min(upper.values())
+
+
+def _choose_indicator_position(index_map):
+    if not index_map:
+        return 0, None
+    items = [(str(k), int(v)) for k, v in index_map.items()]
+    preferences = [
+        (r"IMP", r"VAL|VALUE|MIO|EUR|TRADE"),
+        (r"IMPORT", r"VAL|VALUE|MIO|EUR|TRADE"),
+        (r"IMP", r""),
+        (r"MIO", r""),
+    ]
+    upper_items = [(k.upper(), v) for k, v in items]
+    for p1, p2 in preferences:
+        for k, v in upper_items:
+            if re.search(p1, k) and (not p2 or re.search(p2, k)):
+                return v, k
+    return upper_items[0][1], upper_items[0][0]
+
+
+def _normalize_time_code(code):
+    s = str(code).strip()
+    m = re.match(r"(\d{4})[-/](0[1-9]|1[0-2])$", s)
+    if m:
+        return f"{m.group(1)}-{m.group(2)}"
+    m = re.match(r"(\d{4})M(0[1-9]|1[0-2])$", s, re.I)
+    if m:
+        return f"{m.group(1)}-{m.group(2)}"
+    m = re.match(r"(\d{4})(0[1-9]|1[0-2])$", s)
+    if m:
+        return f"{m.group(1)}-{m.group(2)}"
+    m = re.match(r"(\d{4})$", s)
+    if m:
+        return m.group(1)
+    return None
+
+
+def _series_yoy(latest_key, points):
+    if not latest_key or len(points) < 2:
+        return None
+    value_map = {}
+    for p in points:
+        key = p.get("period") or str(p.get("year"))
+        value_map[key] = p.get("value")
+    latest_val = value_map.get(latest_key)
+    if latest_val in (None, 0):
+        return None
+    prev_key = None
+    if re.match(r"^\d{4}-\d{2}$", latest_key):
+        y, m = latest_key.split("-")
+        prev_key = f"{int(y)-1:04d}-{m}"
+    elif re.match(r"^\d{4}$", latest_key):
+        prev_key = f"{int(latest_key)-1:04d}"
+    prev_val = value_map.get(prev_key)
+    if prev_val in (None, 0):
+        return None
+    return round(((latest_val - prev_val) / prev_val) * 100.0, 1)
+
+
+def parse_eurostat_sdmx_trade_series(payload):
+    ids = payload.get("id", [])
+    sizes = payload.get("size", [])
+    vals = payload.get("value", {})
+    if not ids or not sizes or not vals or "time" not in ids:
+        return None
+
+    time_index = _category_index_map(payload, "time")
+    if not time_index:
+        return None
+
+    wanted = {}
+    selection = {"dataset": payload.get("label") or payload.get("href") or "unknown"}
+
+    if "freq" in ids:
+        freq_index = _category_index_map(payload, "freq")
+        if freq_index:
+            if "M" in freq_index:
+                wanted["freq"] = int(freq_index["M"])
+                selection["freq"] = "M"
+            elif "A" in freq_index:
+                wanted["freq"] = int(freq_index["A"])
+                selection["freq"] = "A"
+            else:
+                wanted["freq"] = min(int(v) for v in freq_index.values())
+                selection["freq"] = "first_available"
+
+    indicator_dim = None
+    for dim_name in ("indic_et", "indicator", "flow", "stk_flow"):
+        if dim_name in ids:
+            indicator_dim = dim_name
+            break
+    if indicator_dim:
+        indicator_index = _category_index_map(payload, indicator_dim)
+        pos, code = _choose_indicator_position(indicator_index)
+        wanted[indicator_dim] = pos
+        selection[indicator_dim] = code
+
+    for dim_name in ids:
+        if dim_name in wanted or dim_name == "time":
+            continue
+        index_map = _category_index_map(payload, dim_name)
+        if not index_map:
+            continue
+        if dim_name == "sitc06":
+            wanted[dim_name] = _choose_total_sitc_position(payload)
+            selection[dim_name] = "total_like"
+        elif dim_name in {"partner", "geo", "product", "unit", "s_adj", "adj", "currency"}:
+            wanted[dim_name] = _choose_total_like_position(index_map)
+            selection[dim_name] = "total_like_or_first"
+        else:
+            wanted[dim_name] = _choose_total_like_position(index_map)
+            selection[dim_name] = "first_or_total_like"
+
+    time_by_pos = {}
+    for code, pos in time_index.items():
+        norm = _normalize_time_code(code)
+        if norm:
+            time_by_pos[int(pos)] = norm
+    if not time_by_pos:
+        return None
+
+    raw_points = {}
+    time_axis = ids.index("time")
+    for k, v in vals.items():
+        try:
+            coords = _coords_from_flat_index(int(k), sizes)
+            keep = True
+            for dim_name, dim_pos in wanted.items():
+                if dim_name in ids and coords[ids.index(dim_name)] != dim_pos:
+                    keep = False
+                    break
+            if not keep:
+                continue
+            t = time_by_pos.get(coords[time_axis])
+            if not t:
+                continue
+            raw_points[t] = float(v)
+        except Exception:
+            continue
+
+    if len(raw_points) < 2:
+        return None
+
+    ordered_keys = sorted(raw_points)
+    base_key = ordered_keys[0]
+    base_value = raw_points.get(base_key)
+    if base_value in (None, 0):
+        return None
+
+    if re.match(r"^\d{4}-\d{2}$", base_key):
+        indexed = [
+            {"period": key, "value": round((raw_points[key] / base_value) * 100.0, 2), "raw_value": round(raw_points[key], 2)}
+            for key in ordered_keys
+        ]
+        selection["base_period"] = base_key
+    else:
+        indexed = [
+            {"year": int(key), "value": round((raw_points[key] / base_value) * 100.0, 2), "raw_value": round(raw_points[key], 2)}
+            for key in ordered_keys
+        ]
+        selection["base_year"] = int(base_key)
+
+    return {"eu_imports_proxy": indexed, "selection": selection}
+
+
+def jsonstat_series(payload):
+    ids = payload.get("id", [])
+    sizes = payload.get("size", [])
+    dim = payload.get("dimension", {})
+    vals = payload.get("value", {})
+    if not ids or not sizes or not dim or not vals:
+        return None
+    try:
+        time_dim = next((d for d in ids if d.lower().startswith("time")), None)
+        if not time_dim:
+            return None
+        t_index = dim[time_dim]["category"]["index"]
+        years_by_pos = {int(pos): int(code[:4]) for code, pos in t_index.items() if re.match(r"\d{4}", code)}
+        series = {}
+        sizes_rev = list(reversed(sizes))
+        for k, v in vals.items():
+            flat = int(k) if not isinstance(k, int) else k
+            coords = []
+            for s in sizes_rev:
+                coords.append(flat % s)
+                flat //= s
+            coords = list(reversed(coords))
+            year = years_by_pos.get(coords[ids.index(time_dim)])
+            if year is None:
+                continue
+            try:
+                val = float(v)
+            except Exception:
+                continue
+            series[year] = val
+        out = [{"year": y, "value": round(series[y], 2)} for y in sorted(series)]
+        return {"eu_imports_proxy": out} if len(out) >= 2 else None
+    except Exception:
+        return None
+
+
+def recompute_trade_index(data):
+    live = None
+    methodology = None
+    debug = {}
+
+    attempts = [
+        (EUROSTAT_MONTHLY_DATASET, "Live Eurostat monthly proxy via SDMX 3.0 parser."),
+        (EUROSTAT_DATASET, "Live Eurostat annual proxy via SDMX 3.0 parser."),
+    ]
+
+    for dataset_code, label in attempts:
+        sdmx_url = build_eurostat_sdmx_url(dataset_code)
+        try:
+            payload = fetch_json_url(sdmx_url)
+            parsed = parse_eurostat_sdmx_trade_series(payload)
+            if parsed:
+                live = {k: v for k, v in parsed.items() if k != "selection"}
+                debug[dataset_code] = {
+                    "selection": parsed.get("selection", {}),
+                    "api_url": sdmx_url,
+                    "payload_updated": payload.get("updated"),
+                }
+                methodology = f"{label} Selected dataset {dataset_code} and indexed the chosen import-value proxy to base period = 100."
+                break
+        except Exception as e:
+            debug[dataset_code] = {"sdmx_error": f"{type(e).__name__}: {e}", "api_url": sdmx_url}
+
+    if not live:
+        legacy_url = build_eurostat_url(EUROSTAT_DATASET)
+        try:
+            payload = fetch_json_url(legacy_url)
+            live = jsonstat_series(payload)
+            if live:
+                debug["legacy_fallback"] = {"api_url": legacy_url}
+                methodology = "Live Eurostat annual proxy via legacy JSON-stat payload parser."
+        except Exception as e:
+            debug["legacy_fallback"] = {"legacy_error": f"{type(e).__name__}: {e}", "api_url": legacy_url}
+
+    ensure_root_scaffold(data)
+    cm = data.get("customs_monitor", {})
+    if live:
+        cm["series"] = live
+        cm["methodology"] = methodology
+    series = cm.get("series", {})
+
+    latest_keys, latest_vals = [], []
+    for arr in series.values():
+        if not arr:
+            continue
+        last = arr[-1]
+        latest_keys.append(last.get("period") or str(last.get("year")))
+        latest_vals.append(last["value"])
+
+    if latest_vals:
+        avg = sum(latest_vals) / len(latest_vals)
+        latest_key = max(latest_keys)
+        yoy_candidates = []
+        for arr in series.values():
+            yoy = _series_yoy(arr[-1].get("period") or str(arr[-1].get("year")), arr)
+            if yoy is not None:
+                yoy_candidates.append(yoy)
+        yoy = round(sum(yoy_candidates) / len(yoy_candidates), 1) if yoy_candidates else 0.0
+        cm["latest_index"] = round(avg, 1)
+        if re.match(r"^\d{4}-\d{2}$", latest_key):
+            cm["latest_period"] = latest_key
+            cm["latest_year"] = int(latest_key[:4])
+            cm["status"] = "monthly"
+        else:
+            cm["latest_year"] = int(latest_key)
+            cm["status"] = "annual"
+        cm["yoy_pct"] = yoy
+        data["market_signals"]["hydrogen_trade_pulse"] = {
+            "value": f"Trade index {round(avg,1)}",
+            "meta": "Customs index based on tracker series.",
+            "status": "Live",
+        }
+    cm["source_type"] = "single-dataset proxy"
+    cm["coverage_note"] = "This is a customs proxy signal, not a complete global fuel-cell trade dataset."
+    cm["dataset_target"] = EUROSTAT_MONTHLY_DATASET if cm.get("status") == "monthly" else EUROSTAT_DATASET
+    cm["fallback_dataset_target"] = EUROSTAT_DATASET
+    cm["next_step_note"] = "Next step: replace or supplement this proxy with a verified COMEXT monthly bundle."
+    cm["comext_dataset_target"] = "DS-059322 + DS-059332"
+    cm["debug"] = debug
+    data["customs_monitor"] = cm
+
+
+def normalize_period(v):
+    if v is None:
+        return None
+    s = str(v).strip()
+    m = re.search(r"(20\d{2})[-/]?(0[1-9]|1[0-2])$", s)
+    return f"{m.group(1)}-{m.group(2)}" if m else None
+
+
+def normalize_partner(v):
+    if v is None:
+        return None
+    s = str(v).upper().strip()
+    aliases = {
+        "USA": "US", "UNITED STATES": "US", "CHN": "CN", "CHINA": "CN",
+        "JPN": "JP", "JAPAN": "JP", "KOR": "KR", "SOUTH KOREA": "KR",
+        "REPUBLIC OF KOREA": "KR"
+    }
+    return aliases.get(s, s)
+
+
+def normalize_flow(v):
+    if v is None:
+        return None
+    s = str(v).upper().strip()
+    if "EXP" in s or s in {"1", "EXPORT", "EXPORTS", "E"}:
+        return "EXP"
+    if "IMP" in s or s in {"2", "IMPORT", "IMPORTS", "I"}:
+        return "IMP"
+    return s
+
+
+def numeric_value(v):
+    if v is None:
+        return None
+    s = str(v).replace(" ", "").replace(",", ".")
+    m = re.search(r"-?\d+(?:\.\d+)?", s)
+    return float(m.group(0)) if m else None
+
+
+def moving_average(series, window=3):
+    out = []
+    vals = [p["value"] for p in series]
+    periods = [p["period"] for p in series]
+    for i in range(len(vals)):
+        if i + 1 < window:
+            continue
+        chunk = vals[i-window+1:i+1]
+        out.append({"period": periods[i], "value": round(sum(chunk) / len(chunk), 2)})
+    return out
+
+
+def last_n(series, n):
+    return series[-n:] if len(series) > n else series
+
+
+def series_to_map(series):
+    out = {}
+    for item in series or []:
+        period = item.get("period")
+        value = item.get("value")
+        if period is None or value is None:
+            continue
+        try:
+            out[str(period)] = float(value)
+        except Exception:
+            continue
+    return out
+
+
+def build_selected_archive_manifest(rows, selected):
+    selected_names = {name for _, name in selected}
+    manifest = {}
+    for row in rows:
+        name, yyyymm = extract_archive_name(row)
+        if not name or name not in selected_names:
+            continue
+        manifest[yyyymm] = {
+            "archive": name,
+            "date": (row.get("DATE") or "").strip(),
+            "size": (row.get("SIZE") or "").strip(),
+            "type": (row.get("TYPE") or "").strip(),
+        }
+    return manifest
+
+
+def choose_archives_to_refresh(selected, cached_periods, previous_manifest=None, current_manifest=None, refresh_latest=REFRESH_LATEST_ARCHIVES):
+    if not selected:
+        return []
+    previous_manifest = previous_manifest or {}
+    current_manifest = current_manifest or {}
+    need = set()
+    for yyyymm, name in selected:
+        period_key = f"{yyyymm[:4]}-{yyyymm[4:]}"
+        if period_key not in cached_periods:
+            need.add(yyyymm)
+            continue
+        prev_meta = previous_manifest.get(yyyymm) or {}
+        curr_meta = current_manifest.get(yyyymm) or {}
+        if prev_meta.get("archive") != name:
+            need.add(yyyymm)
+            continue
+        prev_date = (prev_meta.get("date") or "").strip()
+        curr_date = (curr_meta.get("date") or "").strip()
+        if prev_date and curr_date and prev_date != curr_date:
+            need.add(yyyymm)
+            continue
+        prev_size = (prev_meta.get("size") or "").strip()
+        curr_size = (curr_meta.get("size") or "").strip()
+        if prev_size and curr_size and prev_size != curr_size:
+            need.add(yyyymm)
+            continue
+
+    if refresh_latest > 0:
+        tail = selected[-refresh_latest:]
+        latest_yyyymm = tail[-1][0]
+        if latest_yyyymm not in need:
+            latest_period_key = f"{latest_yyyymm[:4]}-{latest_yyyymm[4:]}"
+            latest_prev = previous_manifest.get(latest_yyyymm) or {}
+            latest_curr = current_manifest.get(latest_yyyymm) or {}
+            latest_period_ok = latest_period_key in cached_periods
+            latest_meta_equal = (
+                latest_prev.get("archive") == latest_curr.get("archive") and
+                (latest_prev.get("date") or "").strip() == (latest_curr.get("date") or "").strip() and
+                (latest_prev.get("size") or "").strip() == (latest_curr.get("size") or "").strip()
+            )
+            if not (latest_period_ok and latest_meta_equal):
+                need.add(latest_yyyymm)
+
+    return [item for item in selected if item[0] in need]
+
+
+def list_files_api():
+    raw = fetch_text(FILES_API_LISTING, timeout=HTTP_TIMEOUT_LONG)
+    return list(csv.DictReader(io.StringIO(raw)))
+
+
+def extract_archive_name(row):
+    for v in row.values():
+        if not isinstance(v, str):
+            continue
+        name = v.strip()
+        m = re.search(r"^full_v2_((20\d{2})(0[1-9]|1[0-2]))\.7z$", name)
+        if m:
+            return name, m.group(1)
+    return None, None
+
+
+def choose_recent_archives(rows, debug, n=ARCHIVES_TO_LOAD):
+    debug["listing_fields"] = list(rows[0].keys()) if rows else []
+    debug["listing_raw_preview"] = rows[:FILES_API_PREVIEW_ROWS]
+    candidates = []
+    for row in rows:
+        name, yyyymm = extract_archive_name(row)
+        if name and yyyymm:
+            candidates.append((yyyymm, name))
+    candidates.sort(key=lambda x: x[0])
+    if not candidates:
+        raise RuntimeError("No matching monthly full*_YYYYMM.7z files found in COMEXT_DATA/PRODUCTS listing")
+
+    chosen = candidates[-n:]
+    latest_candidates = candidates[-LATEST_LISTING_DEBUG_LIMIT:]
+    debug["latest_listing_names"] = [name for _, name in latest_candidates]
+    debug["latest_listing_periods"] = [yyyymm for yyyymm, _ in latest_candidates]
+    debug["archive_candidates"] = [name for _, name in latest_candidates[-ARCHIVE_CANDIDATE_DEBUG_LIMIT:]]
+    debug["latest_archive_available"] = latest_candidates[-1][1]
+    debug["latest_period_available"] = latest_candidates[-1][0]
+    debug["selected_archives"] = [name for _, name in chosen]
+    debug["selected_periods"] = [yyyymm for yyyymm, _ in chosen]
+    debug["latest_archive_selected"] = chosen[-1][1]
+    debug["latest_period_selected"] = chosen[-1][0]
+    return chosen
+
+
+def download_archive_bytes(name):
+    quoted = urllib.parse.quote(f"comext/COMEXT_DATA/PRODUCTS/{name}", safe="")
+    return fetch_bytes(FILES_API_DOWNLOAD.format(file=quoted), timeout=HTTP_TIMEOUT_LONG)
+
+
+def extract_first_payload(blob, workdir: Path, debug):
+    workdir.mkdir(parents=True, exist_ok=True)
+    p1 = workdir / "first_pass"
+    p1.mkdir(parents=True, exist_ok=True)
+    with io.BytesIO(blob) as bio:
+        with py7zr.SevenZipFile(bio, mode="r") as z:
+            debug["archive_members"] = z.getnames()[:12]
+            z.extractall(path=p1)
+    files = [p for p in sorted(p1.rglob("*")) if p.is_file()]
+    for p in files:
+        lname = p.name.lower()
+        if lname.endswith((".csv", ".tsv", ".txt", ".dat", ".parquet")):
+            debug["extracted_file"] = str(p.relative_to(workdir))
+            debug["extracted_kind"] = p.suffix.lower()
+            return p
+        if lname.endswith((".csv.gz", ".tsv.gz", ".txt.gz", ".dat.gz")):
+            out = workdir / p.stem
+            with gzip.open(p, "rb") as src, open(out, "wb") as dst:
+                dst.write(src.read())
+            debug["extracted_file"] = str(out.relative_to(workdir))
+            debug["extracted_kind"] = ".gz"
+            return out
+    raise RuntimeError("No CSV/TSV/TXT/DAT/PARQUET/GZ payload found inside COMEXT archive")
+
+
+def sniff_delimiter(sample: str):
+    counts = {",": sample.count(","), ";": sample.count(";"), "\t": sample.count("\t"), "|": sample.count("|")}
+    return max(counts, key=counts.get) if counts else ","
+
+
+def choose_column(columns, candidates):
+    lowered = {c.lower(): c for c in columns}
+    for cand in candidates:
+        if cand.lower() in lowered:
+            return lowered[cand.lower()]
+    for c in columns:
+        if any(cand.lower() in c.lower() for cand in candidates):
+            return c
+    return None
+
+
+def map_columns(columns):
+    return {
+        "period": choose_column(columns, ["period", "time", "month", "time_period"]),
+        "flow": choose_column(columns, ["flow", "trade_flow", "stk_flow", "indic_et", "trade"]),
+        "geo": choose_column(columns, ["geo", "reporter", "reporting_country"]),
+        "partner": choose_column(columns, ["partner", "partner_country", "partner_geo"]),
+        "product": choose_column(columns, ["product_nc", "product", "prod", "commodity", "cn", "hs"]),
+        "value": choose_column(columns, ["value_eur", "value", "obs_value", "trade_value"]),
+    }
+
+
+def process_archive_rows(row_iter, cmap, debug):
+    debug["column_map"] = cmap
+    missing = [k for k in ["period", "flow", "partner", "product", "value"] if not cmap.get(k)]
+    if missing:
+        raise RuntimeError(f"Required columns missing: {', '.join(missing)}")
+
+    rows_seen = rows_kept = 0
+    fail_counts = {"period": 0, "flow": 0, "partner": 0, "product": 0, "value": 0, "geo": 0}
+    sample_partners, sample_geos, sample_products, sample_flows = [], [], [], []
+    top_partners, top_products, top_geos, top_flows = Counter(), Counter(), Counter(), Counter()
+    kept_examples = []
+    exp, imp = {}, {}
+    geo_col = cmap.get("geo")
+
+    for row in row_iter:
+        rows_seen += 1
+        period = normalize_period(row.get(cmap["period"]))
+        if not period:
+            fail_counts["period"] += 1
+            continue
+        raw_flow = str(row.get(cmap["flow"], "")).strip()
+        if raw_flow and len(sample_flows) < 10:
+            sample_flows.append(raw_flow)
+        flow = normalize_flow(raw_flow)
+        if flow:
+            top_flows[flow] += 1
+        if flow not in {"EXP", "IMP"}:
+            fail_counts["flow"] += 1
+            continue
+        raw_partner = str(row.get(cmap["partner"], "")).strip()
+        if raw_partner and len(sample_partners) < 10:
+            sample_partners.append(raw_partner)
+        partner = normalize_partner(raw_partner)
+        if partner:
+            top_partners[partner] += 1
+        if partner not in PARTNERS:
+            fail_counts["partner"] += 1
+            continue
+        prod_raw = str(row.get(cmap["product"], "")).strip()
+        if prod_raw and len(sample_products) < 10:
+            sample_products.append(prod_raw)
+        prod4 = re.sub(r"\D", "", prod_raw)[:4]
+        if prod4:
+            top_products[prod4] += 1
+        if prod4 not in HS4_CODES:
+            fail_counts["product"] += 1
+            continue
+        val = numeric_value(row.get(cmap["value"]))
+        if val is None:
+            fail_counts["value"] += 1
+            continue
+        geo = str(row.get(geo_col, "")).upper().strip() if geo_col else ""
+        if geo and len(sample_geos) < 10:
+            sample_geos.append(geo)
+        if geo:
+            top_geos[geo] += 1
+        if geo_col and geo and geo not in EU_REPORTERS:
+            fail_counts["geo"] += 1
+            continue
+        rows_kept += 1
+        if len(kept_examples) < 6:
+            kept_examples.append({"period": period, "flow": flow, "partner": partner, "prod4": prod4, "geo": geo, "value": val})
+        target = exp if flow == "EXP" else imp
+        target[period] = target.get(period, 0.0) + val
+
+    debug.update({
+        "rows_seen": rows_seen,
+        "rows_kept": rows_kept,
+        "fail_counts": fail_counts,
+    })
+    if KEEP_VERBOSE_DEBUG:
+        debug.update({
+            "kept_examples": kept_examples,
+            "sample_partners": sample_partners,
+            "sample_geos": sample_geos,
+            "sample_products": sample_products,
+            "sample_flows": sample_flows,
+            "top_partners": top_partners.most_common(TOP_DEBUG_LIMIT),
+            "top_products": top_products.most_common(TOP_DEBUG_LIMIT),
+            "top_geos": top_geos.most_common(TOP_DEBUG_LIMIT),
+            "top_flows": top_flows.most_common(TOP_DEBUG_LIMIT),
+        })
+    return exp, imp
+
+
+def ensure_monthly_scaffold(data):
+    data["trade_signals"] = {
+        "balanced_signal": {"status": "Pending live run", "scope": "EU + selected partners", "flows": "imports + exports", "weights": {"exports": 0.6, "imports": 0.4}, "note": "Primary monthly trade pulse. Will update after the agent completes a successful COMEXT monthly extraction."},
+        "exports_signal": {"status": "Pending live run", "scope": "EU + selected partners", "flows": "exports", "note": "Closer commercial-direction signal for an EU-based supplier."},
+        "imports_signal": {"status": "Pending live run", "scope": "EU + selected partners", "flows": "imports", "note": "Demand-environment signal."},
+        "macro_signal": {"status": "Live", "dataset_target": "tet00013", "value": data.get("customs_monitor", {}).get("latest_index"), "yoy_pct": data.get("customs_monitor", {}).get("yoy_pct"), "note": "Annual macro/proxy backdrop."},
+    }
+    data["monthly_trade_pulse"] = {
+        "status": "Pending live run",
+        "scope": "EU + selected partners | imports + exports | 60/40 weighting",
+        "partners": sorted(PARTNERS),
+        "flows": {"exports": 0.6, "imports": 0.4},
+        "window_months": WINDOW_MONTHS,
+        "smoothing": "3M MA",
+        "latest_period": None,
+        "latest_value": None,
+        "latest_raw_balanced": None,
+        "yoy_pct": None,
+        "methodology": "Monthly balanced bundle. Shows the last 18 months after 3-month moving-average smoothing when live COMEXT extraction succeeds.",
+        "note": "Starts empty until the updated agent writes live monthly series. COMEXT trade data is typically published with about a 40–60 day lag from the reference month.",
+        "balanced_series": [],
+        "balanced_raw_series": [],
+        "exports_series": [],
+        "imports_series": [],
+        "debug": {},
+    }
+
+
+def recompute_monthly_bundle(data):
+    ensure_monthly_scaffold(data)
+    debug = {"updated_at": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")}
+    data["monthly_trade_pulse"]["debug"] = debug
+
+    try:
+        rows = list_files_api()
+        debug["files_api"] = {"listing_url": FILES_API_LISTING, "listing_count": len(rows)}
+        selected = choose_recent_archives(rows, debug["files_api"], n=ARCHIVES_TO_LOAD)
+        current_manifest = build_selected_archive_manifest(rows, selected)
+
+        pulse = data.get("monthly_trade_pulse", {}) or {}
+        previous_manifest = (((pulse.get("debug") or {}).get("files_api") or {}).get("selected_archive_manifest") or {})
+        exp_total = series_to_map(pulse.get("exports_series"))
+        imp_total = series_to_map(pulse.get("imports_series"))
+        cached_periods = set(exp_total.keys()) | set(imp_total.keys())
+        refresh_selected = choose_archives_to_refresh(
+            selected,
+            cached_periods,
+            previous_manifest=previous_manifest,
+            current_manifest=current_manifest,
+            refresh_latest=REFRESH_LATEST_ARCHIVES,
+        )
+        debug["files_api"]["selected_archive_manifest"] = current_manifest
+
+        debug["refresh_strategy"] = {
+            "mode": "incremental-date-aware",
+            "cached_periods": len(cached_periods),
+            "selected_archives": len(selected),
+            "refreshed_archives": len(refresh_selected),
+            "refresh_latest_archives": REFRESH_LATEST_ARCHIVES,
+            "skipped_archives": max(0, len(selected) - len(refresh_selected)),
+            "used_cached_series": len(refresh_selected) == 0,
+        }
+
+        processed_archives, archive_row_counts = [], []
+
+        for yyyymm, archive_name in refresh_selected:
+            period_key = f"{yyyymm[:4]}-{yyyymm[4:]}"
+            exp_total.pop(period_key, None)
+            imp_total.pop(period_key, None)
+
+            archive_debug = {"archive": archive_name, "yyyymm": yyyymm}
+            blob = download_archive_bytes(archive_name)
+            archive_debug["download_url"] = FILES_API_DOWNLOAD.format(file=urllib.parse.quote(f"comext/COMEXT_DATA/PRODUCTS/{archive_name}", safe=""))
+            workdir = Path(f"/tmp/comext_monthly_{yyyymm}")
+            if workdir.exists():
+                import shutil
+                shutil.rmtree(workdir)
+            payload_path = extract_first_payload(blob, workdir, archive_debug)
+
+            with open(payload_path, "rb") as f:
+                raw = f.read(65536)
+            delimiter = sniff_delimiter(raw.decode("utf-8", errors="ignore"))
+            archive_debug["delimiter_guess"] = delimiter
+
+            with open(payload_path, "r", encoding="utf-8", errors="ignore", newline="") as f:
+                reader = csv.DictReader(f, delimiter=delimiter)
+                archive_debug["columns"] = reader.fieldnames or []
+                cmap = map_columns(archive_debug["columns"])
+                exp_part, imp_part = process_archive_rows(reader, cmap, archive_debug)
+
+            for p, val in exp_part.items():
+                exp_total[p] = exp_total.get(p, 0.0) + val
+            for p, val in imp_part.items():
+                imp_total[p] = imp_total.get(p, 0.0) + val
+
+            processed_archives.append(archive_debug)
+            archive_row_counts.append({"archive": archive_name, "rows_seen": archive_debug.get("rows_seen", 0), "rows_kept": archive_debug.get("rows_kept", 0)})
+
+        debug["processed_archives"] = processed_archives[-PROCESSED_ARCHIVE_DEBUG_LIMIT:]
+        debug["archive_row_counts"] = archive_row_counts[-PROCESSED_ARCHIVE_DEBUG_LIMIT:]
+        if processed_archives:
+            latest = processed_archives[-1]
+            for k in ["columns", "column_map", "fail_counts"]:
+                if k in latest:
+                    debug[k] = latest[k]
+            debug["latest_rows_seen"] = latest.get("rows_seen")
+            debug["latest_rows_kept"] = latest.get("rows_kept")
+        else:
+            debug["latest_rows_seen"] = None
+            debug["latest_rows_kept"] = None
+            debug["cache_reuse_note"] = "No COMEXT archive refresh was needed; reused cached monthly series from tracker.json."
+
+        selected_period_keys = {f"{yyyymm[:4]}-{yyyymm[4:]}" for yyyymm, _ in selected}
+        periods = sorted((set(exp_total.keys()) | set(imp_total.keys())) & selected_period_keys)
+        exports_series = [{"period": p, "value": round(exp_total.get(p, 0.0), 2)} for p in periods]
+        imports_series = [{"period": p, "value": round(imp_total.get(p, 0.0), 2)} for p in periods]
+        balanced_raw = [{"period": p, "value": round(0.6 * exp_total.get(p, 0.0) + 0.4 * imp_total.get(p, 0.0), 2)} for p in periods]
+        exports_series = last_n(exports_series, WINDOW_MONTHS)
+        imports_series = last_n(imports_series, WINDOW_MONTHS)
+        balanced_raw = last_n(balanced_raw, WINDOW_MONTHS)
+        balanced_ma = moving_average(balanced_raw, 3)
+        if not balanced_ma:
+            raise RuntimeError("Monthly COMEXT extraction produced no usable smoothed balanced series")
+
+        latest_ma = balanced_ma[-1]
+        latest_raw_map = {p["period"]: p["value"] for p in balanced_raw}
+        latest_raw = latest_raw_map.get(latest_ma["period"])
+        yoy = None
+        y, m = latest_ma["period"].split("-")
+        prev = latest_raw_map.get(f"{int(y)-1:04d}-{m}")
+        if prev not in (None, 0):
+            yoy = round(((latest_raw - prev) / prev) * 100, 1)
+
+        data["monthly_trade_pulse"].update({
+            "status": "Live",
+            "latest_period": latest_ma["period"],
+            "latest_value": latest_ma["value"],
+            "latest_raw_balanced": latest_raw,
+            "yoy_pct": yoy,
+            "note": "Monthly balanced bundle computed from COMEXT bulk files. COMEXT trade data is typically published with about a 40–60 day lag from the reference month.",
+            "balanced_series": balanced_ma,
+            "balanced_raw_series": balanced_raw,
+            "exports_series": exports_series,
+            "imports_series": imports_series,
+        })
+        data["trade_signals"]["balanced_signal"].update({"status": "Live", "note": "Primary monthly trade pulse from COMEXT bulk files."})
+        data["trade_signals"]["exports_signal"].update({"status": "Live", "note": "Exports slice from monthly COMEXT bundle."})
+        data["trade_signals"]["imports_signal"].update({"status": "Live", "note": "Imports slice from monthly COMEXT bundle."})
+
+    except Exception as e:
+        msg = f"Monthly COMEXT bulk extraction did not yield a usable series yet. {type(e).__name__}: {e}"
+        for k in ("balanced_signal", "exports_signal", "imports_signal"):
+            data["trade_signals"][k]["status"] = "Fetch failed"
+            data["trade_signals"][k]["note"] = msg
+        data["monthly_trade_pulse"]["status"] = "Fetch failed"
+        data["monthly_trade_pulse"]["note"] = msg
+        data["monthly_trade_pulse"]["debug"]["message"] = msg
+        raise
+
+
+
+
+def build_trade_breadth(data):
+    monthly = data.get("monthly_trade_pulse", {}) or {}
+    trade_signals = data.get("trade_signals", {}) or {}
+
+    def last_change_positive(series):
+        if not isinstance(series, list) or len(series) < 2:
+            return None
+        prev_val = series[-2].get("value")
+        last_val = series[-1].get("value")
+        if prev_val in (None, 0) or last_val is None:
+            return None
+        return float(last_val) > float(prev_val)
+
+    checks = [
+        last_change_positive(monthly.get("balanced_series")),
+        last_change_positive(monthly.get("exports_series")),
+        last_change_positive(monthly.get("imports_series")),
+    ]
+    checks = [c for c in checks if c is not None]
+
+    if not checks:
+        trade_signals["breadth_signal"] = {
+            "status": "Pending",
+            "value": None,
+            "note": "Breadth signal could not be calculated from current monthly series."
+        }
+        monthly["breadth"] = {
+            "overall_pct": None,
+            "overall_status": "Pending",
+            "headline": {"note": "Breadth signal could not be calculated from current monthly series."}
+        }
+        data["trade_signals"] = trade_signals
+        data["monthly_trade_pulse"] = monthly
+        return
+
+    rising = sum(1 for c in checks if c)
+    overall_pct = round((rising / len(checks)) * 100)
+
+    if overall_pct >= 67:
+        status = "Strong"
+    elif overall_pct >= 34:
+        status = "Mixed"
+    else:
+        status = "Weak"
+
+    trade_signals["breadth_signal"] = {
+        "status": status,
+        "value": overall_pct,
+        "note": "Share of tracked monthly slices improving vs previous period."
+    }
+    monthly["breadth"] = {
+        "overall_pct": overall_pct,
+        "overall_status": status,
+        "headline": {"note": "Breadth based on balanced bundle, exports, and imports latest-period direction."}
+    }
+
+    data["trade_signals"] = trade_signals
+    data["monthly_trade_pulse"] = monthly
+
+def _safe_float(value):
+    try:
+        return float(value)
+    except Exception:
+        return None
+
+
+def _clamp(value, low, high):
+    return max(low, min(high, value))
+
+
+def build_hydrogen_industrial_momentum(data):
+    ensure_root_scaffold(data)
+    monthly = data.get("monthly_trade_pulse", {}) or {}
+    trade_signals = data.get("trade_signals", {}) or {}
+    event_signals = data.get("event_signals", {}) or {}
+    company = data.get("company", {}) or {}
+    probability = data.get("probability", {}) or {}
+    market_signals = data.get("market_signals", {}) or {}
+
+    def direction_score(series):
+        if not isinstance(series, list) or len(series) < 2:
+            return 0.5
+        prev_v = _safe_float(series[-2].get("value"))
+        last_v = _safe_float(series[-1].get("value"))
+        if prev_v in (None, 0) or last_v is None:
+            return 0.5
+        delta = (last_v - prev_v) / abs(prev_v)
+        return _clamp(0.5 + delta * 8.0, 0.0, 1.0)
+
+    def status_from_score(score):
+        if score >= 75:
+            return "Strong"
+        if score >= 50:
+            return "Improving"
+        if score >= 25:
+            return "Fragile"
+        return "Weak"
+
+    def trend_label(series):
+        if not isinstance(series, list) or len(series) < 2:
+            return "neutral"
+        prev_v = _safe_float(series[-2].get("value"))
+        last_v = _safe_float(series[-1].get("value"))
+        if prev_v in (None, 0) or last_v is None:
+            return "neutral"
+        if last_v > prev_v:
+            return "up"
+        if last_v < prev_v:
+            return "down"
+        return "stable"
+
+    trade_mix = (
+        0.50 * direction_score(monthly.get("balanced_series")) +
+        0.30 * direction_score(monthly.get("exports_series")) +
+        0.20 * direction_score(monthly.get("imports_series"))
+    )
+    trade_flow_score = round(40 * trade_mix)
+
+    events = event_signals.get("events") or []
+    if events:
+        weighted = 0.0
+        max_weight = 0.0
+        conf_map = {"low": 0.7, "medium": 1.0, "high": 1.15}
+        impact_map = {"up": 1.0, "positive": 1.0, "stable": 0.5, "neutral": 0.5, "down": 0.0, "negative": 0.0}
+        for ev in events[:12]:
+            weight = _safe_float(ev.get("weight")) or 1.0
+            impact = impact_map.get(str(ev.get("impact") or ev.get("status") or "neutral").lower(), 0.5)
+            conf = conf_map.get(str(ev.get("confidence") or "medium").lower(), 1.0)
+            weighted += weight * impact * conf
+            max_weight += weight * 1.15
+        project_mix = weighted / max_weight if max_weight else 0.5
+    else:
+        project_mix = 0.5
+    project_order_score = round(35 * _clamp(project_mix, 0.0, 1.0))
+
+    runway_months = _safe_float(company.get("runway_months"))
+    runway_health = _clamp((runway_months or 0.0) / 18.0, 0.0, 1.0)
+    funding_prob = _clamp((_safe_float(probability.get("funding_through_2027_pct")) or 0.0) / 100.0, 0.0, 1.0)
+    dilution_value = str(((market_signals.get("dilution_pressure") or {}).get("value") or "")).lower()
+    dilution_inverse = 0.25 if "elevated" in dilution_value or "high" in dilution_value else 0.55 if "moderate" in dilution_value else 0.8
+    share_meta = str(((market_signals.get("share_price") or {}).get("meta") or ""))
+    m = re.search(r'([+-]\d+(?:\.\d+)?)% vs prev close', share_meta)
+    market_signal = 0.5
+    if m:
+        pct = _safe_float(m.group(1)) or 0.0
+        market_signal = _clamp(0.5 + pct / 20.0, 0.0, 1.0)
+
+    market_stress_mix = (
+        0.35 * runway_health +
+        0.25 * funding_prob +
+        0.20 * dilution_inverse +
+        0.20 * market_signal
+    )
+    market_stress_score = round(25 * market_stress_mix)
+
+    latest_score = int(trade_flow_score + project_order_score + market_stress_score)
+    status = status_from_score(latest_score)
+
+    evidence_points = 0
+    if isinstance(monthly.get("balanced_series"), list) and len(monthly.get("balanced_series")) >= 2:
+        evidence_points += 1
+    if events:
+        evidence_points += 1
+    if runway_months is not None and funding_prob is not None:
+        evidence_points += 1
+    confidence = "High" if evidence_points >= 3 else "Medium" if evidence_points == 2 else "Low"
+
+    breadth_val = ((trade_signals.get("breadth_signal") or {}).get("value"))
+    breadth_status = ((trade_signals.get("breadth_signal") or {}).get("status") or "Pending")
+    trade_period = monthly.get("latest_period") or "n/a"
+    dilution_pressure = ((market_signals.get("dilution_pressure") or {}).get("value") or "n/a")
+    macro_backdrop = ((trade_signals.get("macro_signal") or {}).get("value"))
+    macro_backdrop = str(macro_backdrop) if macro_backdrop not in (None, "") else "n/a"
+
+    components = {
+        "trade_flow": trade_flow_score,
+        "project_order": project_order_score,
+        "market_stress": market_stress_score,
+        "trade_flow_score": trade_flow_score,
+        "project_order_score": project_order_score,
+        "market_stress_score": market_stress_score,
+    }
+
+    subsignals = [
+        {
+            "name": "Trade breadth",
+            "value": f"{breadth_val}%" if breadth_val not in (None, "") else "n/a",
+            "status": str(breadth_status).lower()
+        },
+        {
+            "name": "Monthly trade pulse",
+            "value": trade_period,
+            "status": trend_label(monthly.get("balanced_series"))
+        },
+        {
+            "name": "Project / order flow",
+            "value": "IR-weighted" if events else "No events",
+            "status": "stable" if events else "neutral"
+        },
+        {
+            "name": "Dilution pressure",
+            "value": dilution_pressure,
+            "status": "down" if "elevated" in str(dilution_pressure).lower() else "stable"
+        },
+        {
+            "name": "Macro backdrop",
+            "value": macro_backdrop,
+            "status": "stable"
+        },
+    ]
+
+    data["hydrogen_industrial_momentum"] = {
+        "latest_score": latest_score,
+        "headline_score": latest_score,
+        "status": status,
+        "overall_status": status.lower(),
+        "confidence": confidence,
+        "components": components,
+        "subsignals": subsignals,
+        "subsignals_map": {
+            "trade_breadth": f"{breadth_val}%" if breadth_val not in (None, "") else "n/a",
+            "monthly_trade_pulse": trade_period,
+            "project_flow": "IR-weighted" if events else "No events",
+            "dilution_pressure": dilution_pressure,
+            "macro_backdrop": macro_backdrop
+        },
+        "note": "Composite proxy indicator combining trade flow, project/order signal and company/market stress.",
+        "methodology": "Uses already available tracker fields only, so the calculation stays lightweight. COMEXT-based Monthly Trade Pulse itself typically lags the reference month by about 40–60 days."
+    }
+
+def build_what_matters_now(data):
+    ensure_root_scaffold(data)
+    monthly = data.get("monthly_trade_pulse", {}) or {}
+    customs = data.get("customs_monitor", {}) or {}
+    share = (data.get("market_signals", {}) or {}).get("share_price", {}) or {}
+    company = data.get("company", {}) or {}
+    probability = data.get("probability", {}) or {}
+    items = []
+
+    latest_value = monthly.get("latest_value")
+    if latest_value not in (None, ""):
+        items.append({
+            "label": "Monthly trade pulse",
+            "value": f"{latest_value:,.1f}" if isinstance(latest_value, (int, float)) else str(latest_value),
+            "note": monthly.get("note", "Monthly balanced bundle computed from COMEXT bulk files.")
+        })
+
+    runway = company.get("runway_months")
+    if runway not in (None, ""):
+        items.append({
+            "label": "Cash runway",
+            "value": f"{runway} months",
+            "note": company.get("runway_meta", "Illustrative runway estimate based on current baseline assumptions.")
+        })
+
+    funding = probability.get("funding_through_2027_pct")
+    if funding not in (None, ""):
+        items.append({
+            "label": "Funding through 2027",
+            "value": f"{funding}%",
+            "note": probability.get("meta", "Model estimate based on runway, burn assumptions and financing sensitivity.")
+        })
+
+    latest_index = customs.get("latest_index")
+    if latest_index not in (None, "") and len(items) < 4:
+        yoy = customs.get("yoy_pct")
+        yoy_txt = f" YoY {yoy:+.1f}%." if isinstance(yoy, (int, float)) else ""
+        items.append({
+            "label": "Macro backdrop",
+            "value": str(latest_index),
+            "note": f"{customs.get('methodology', 'Annual macro/proxy backdrop.')}{yoy_txt}".strip()
+        })
+
+    if share.get("value") and len(items) < 4:
+        items.append({
+            "label": "Share price",
+            "value": share.get("value"),
+            "note": share.get("meta", "CI.ST")
+        })
+
+    if not items:
+        items.append({
+            "label": "Tracker state",
+            "value": "Live structure ready",
+            "note": "Core tracker scaffold is present even if some live feeds are temporarily unavailable."
+        })
+
+    data["what_matters_now"] = items[:4]
+
+
+def build_lightweight_news_items(data):
+    """Use already-fetched IR headlines only. Keeps runtime extremely small."""
+    items = []
+    for h in (data.get("ir_headlines") or [])[:6]:
+        title = h.get("title")
+        if not title:
+            continue
+        items.append({
+            "title": title,
+            "source": "Cell Impact IR",
+            "date": h.get("date", ""),
+            "snippet": "",
+        })
+    return items
+
+
+def enrich_signals(data, changes):
+    if build_event_signals is not None:
+        try:
+            news_items = build_lightweight_news_items(data)
+            data["event_signals"] = build_event_signals(news_items=news_items, lookback_days=90)
+            changes.append("Event signals updated")
+        except Exception:
+            pass
+
+    if calculate_supply_chain_radar is not None:
+        try:
+            data["supply_chain_radar"] = calculate_supply_chain_radar(data)
+            changes.append("Supply chain radar updated")
+        except Exception:
+            pass
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--output", default=DEFAULT_OUTPUT_PATH)
+    args = parser.parse_args()
+
+    data = ensure_root_scaffold(load_data(args.output))
+    changes = []
+    now_utc = datetime.now(timezone.utc)
+    if ZoneInfo is not None:
+        try:
+            now_fi = now_utc.astimezone(ZoneInfo("Europe/Helsinki"))
+        except Exception:
+            now_fi = now_utc + timedelta(hours=2)
+    else:
+        now_fi = now_utc + timedelta(hours=2)
+
+    data["meta"]["last_update_utc"] = now_utc.strftime("%Y-%m-%d %H:%M UTC")
+    data["meta"]["last_update_fi"] = now_fi.strftime("%Y-%m-%d %H:%M Finland")
+    data["meta"]["last_update"] = data["meta"]["last_update_utc"]
+    data["meta"]["data_source"] = "GitHub Pages / same-repo JSON"
+    changes.append("Tracker refreshed")
+
+    try:
+        html_text = fetch_text(IR_URL)
+        headlines = parse_ir_headlines(html_text)
+        if headlines:
+            data["ir_headlines"] = headlines[:3]
+            data["market_signals"]["latest_ir_signal"] = {
+                "title": headlines[0]["title"],
+                "meta": "Latest headline from Cell Impact investor page",
+                "status": "Watch"
+            }
+            changes.append("IR headlines updated")
+    except Exception:
+        pass
+
+    price = fetch_price()
+    if price:
+        data["market_signals"]["share_price"] = price
+        changes.append("Share price updated")
+
+    recompute_trade_index(data)
+    changes.append("Trade index recalculated")
+
+    try:
+        recompute_monthly_bundle(data)
+        changes.append("Monthly balanced bundle updated")
+    except Exception:
+        changes.append("Monthly balanced bundle fetch failed")
+
+    apply_legacy_fallbacks(data)
+    build_trade_breadth(data)
+    build_hydrogen_industrial_momentum(data)
+    changes.append("Hydrogen Industrial Momentum updated")
+    build_what_matters_now(data)
+    changes.append("What matters now updated")
+
+    enrich_signals(data, changes)
+
+    data["changes"] = changes
+    save_data(data, args.output)
+    print("Tracker JSON updated.")
+
+
+if __name__ == "__main__":
+    main()
