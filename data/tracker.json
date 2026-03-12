@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_update": "2026-03-12 10:29 UTC",
+    "last_update": "2026-03-12 12:17 UTC",
     "data_source": "GitHub Pages / same-repo JSON"
   },
   "changes": [
@@ -48,13 +48,13 @@
   },
   "market_signals": {
     "latest_ir_signal": {
-      "title": "Investor Relations – Cell Impact",
+      "title": "Cell Impact AB is a global supplier of advanced flow plates to manufacturers of fuel cells and electrolyzers.",
       "meta": "Latest headline from Cell Impact investor page",
       "status": "Watch"
     },
     "share_price": {
-      "value": "0.120 SEK",
-      "meta": "CI.ST | -10.45% vs prev close",
+      "value": "0.121 SEK",
+      "meta": "CI.ST | -9.70% vs prev close",
       "status": "Live"
     },
     "hydrogen_trade_pulse": {
@@ -140,11 +140,6 @@
   },
   "ir_headlines": [
     {
-      "title": "Investor Relations – Cell Impact",
-      "url": "https://investor.cellimpact.com/css/generated-themes/ig-theme-eysvSQIBHECw6jSEKSSdSQ.css?v=250320251300",
-      "date": ""
-    },
-    {
       "title": "Cell Impact AB is a global supplier of advanced flow plates to manufacturers of fuel cells and electrolyzers.",
       "url": "https://investor.cellimpact.com/en/about-us/",
       "date": ""
@@ -152,6 +147,11 @@
     {
       "title": "Good corporate governance is about ensuring that Cell Impact is managed sustainably, responsibly and as efficiently as possible.",
       "url": "https://investor.cellimpact.com/en/governance/",
+      "date": ""
+    },
+    {
+      "title": "Annual general meeting",
+      "url": "https://investor.cellimpact.com/en/governance/annual-general-meeting/",
       "date": ""
     }
   ],
@@ -276,6 +276,11 @@
       "value": 150.5,
       "yoy_pct": -2.8,
       "note": "Annual macro/proxy backdrop."
+    },
+    "breadth_signal": {
+      "status": "Weak",
+      "value": 0,
+      "note": "Share of tracked monthly slices improving vs previous period."
     }
   },
   "monthly_trade_pulse": {
@@ -301,6 +306,30 @@
     "note": "Monthly balanced bundle computed from COMEXT bulk files.",
     "balanced_series": [
       {
+        "period": "2025-03",
+        "value": 1712816031.6
+      },
+      {
+        "period": "2025-04",
+        "value": 1719062834.95
+      },
+      {
+        "period": "2025-05",
+        "value": 1730899435.35
+      },
+      {
+        "period": "2025-06",
+        "value": 1734492371.5
+      },
+      {
+        "period": "2025-07",
+        "value": 1754877024.84
+      },
+      {
+        "period": "2025-08",
+        "value": 1718527514.06
+      },
+      {
         "period": "2025-09",
         "value": 1700940767.4
       },
@@ -318,6 +347,30 @@
       }
     ],
     "balanced_raw_series": [
+      {
+        "period": "2025-01",
+        "value": 1676054039.98
+      },
+      {
+        "period": "2025-02",
+        "value": 1657969356.28
+      },
+      {
+        "period": "2025-03",
+        "value": 1804424698.53
+      },
+      {
+        "period": "2025-04",
+        "value": 1694794450.03
+      },
+      {
+        "period": "2025-05",
+        "value": 1693479157.48
+      },
+      {
+        "period": "2025-06",
+        "value": 1815203506.99
+      },
       {
         "period": "2025-07",
         "value": 1755948410.04
@@ -345,6 +398,30 @@
     ],
     "exports_series": [
       {
+        "period": "2025-01",
+        "value": 1996961750.58
+      },
+      {
+        "period": "2025-02",
+        "value": 1909979304.54
+      },
+      {
+        "period": "2025-03",
+        "value": 2070933720.58
+      },
+      {
+        "period": "2025-04",
+        "value": 1986920133.3
+      },
+      {
+        "period": "2025-05",
+        "value": 2023070849.97
+      },
+      {
+        "period": "2025-06",
+        "value": 2184724203.27
+      },
+      {
         "period": "2025-07",
         "value": 2103707944.11
       },
@@ -371,6 +448,30 @@
     ],
     "imports_series": [
       {
+        "period": "2025-01",
+        "value": 1194692474.09
+      },
+      {
+        "period": "2025-02",
+        "value": 1279954433.89
+      },
+      {
+        "period": "2025-03",
+        "value": 1404661165.45
+      },
+      {
+        "period": "2025-04",
+        "value": 1256605925.13
+      },
+      {
+        "period": "2025-05",
+        "value": 1199091618.74
+      },
+      {
+        "period": "2025-06",
+        "value": 1260922462.57
+      },
+      {
         "period": "2025-07",
         "value": 1234309108.94
       },
@@ -396,7 +497,7 @@
       }
     ],
     "debug": {
-      "updated_at": "2026-03-12 10:30 UTC",
+      "updated_at": "2026-03-12 12:19 UTC",
       "files_api": {
         "listing_url": "https://ec.europa.eu/eurostat/api/dissemination/files?format=csv&dir=comext%2FCOMEXT_DATA%2FPRODUCTS&hierarchy=false&sizeFormat=NONE&dateFormat=ISO",
         "listing_count": 378,
@@ -469,6 +570,12 @@
           "full_v2_200504.7z"
         ],
         "selected_archives": [
+          "full_v2_202501.7z",
+          "full_v2_202502.7z",
+          "full_v2_202503.7z",
+          "full_v2_202504.7z",
+          "full_v2_202505.7z",
+          "full_v2_202506.7z",
           "full_v2_202507.7z",
           "full_v2_202508.7z",
           "full_v2_202509.7z",
@@ -477,6 +584,12 @@
           "full_v2_202512.7z"
         ],
         "selected_periods": [
+          "202501",
+          "202502",
+          "202503",
+          "202504",
+          "202505",
+          "202506",
           "202507",
           "202508",
           "202509",
@@ -2043,23 +2156,18 @@
           "value": 14342.0
         }
       ]
+    },
+    "breadth": {
+      "overall_pct": 0,
+      "overall_status": "Weak",
+      "headline": {
+        "note": "Breadth based on balanced bundle, exports, and imports latest-period direction."
+      }
     }
   },
   "event_signals": {
     "lookback_days": 90,
     "events": [
-      {
-        "date": "",
-        "layer": "cell_impact",
-        "entity": "Cell Impact",
-        "title": "Investor Relations – Cell Impact",
-        "impact": "neutral",
-        "status": "stable",
-        "weight": 3,
-        "confidence": "medium",
-        "note": "",
-        "source": "Cell Impact IR"
-      },
       {
         "date": "",
         "layer": "component_supplier",
@@ -2077,6 +2185,18 @@
         "layer": "cell_impact",
         "entity": "Cell Impact",
         "title": "Good corporate governance is about ensuring that Cell Impact is managed sustainably, responsibly and as efficiently as possible.",
+        "impact": "neutral",
+        "status": "stable",
+        "weight": 3,
+        "confidence": "medium",
+        "note": "",
+        "source": "Cell Impact IR"
+      },
+      {
+        "date": "",
+        "layer": "cell_impact",
+        "entity": "Cell Impact",
+        "title": "Annual general meeting",
         "impact": "neutral",
         "status": "stable",
         "weight": 3,
