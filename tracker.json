@@ -11,7 +11,7 @@
     "last_update_utc": "2026-03-11 07:36:34 UTC",
     "api_base": "https://comtradeapi.worldbank.org/data/v1/get/C/A/HS",
     "status": "error",
-    "last_update": "2026-03-11 14:50 UTC",
+    "last_update": "2026-03-12 07:11 UTC",
     "data_source": "GitHub Pages / same-repo JSON"
   },
   "summary": {
@@ -82,8 +82,8 @@
       "status": "Watch"
     },
     "share_price": {
-      "value": "0.117 SEK",
-      "meta": "CI.ST | -13.33% vs prev close",
+      "value": "0.120 SEK",
+      "meta": "CI.ST | -11.11% vs prev close",
       "status": "Live"
     },
     "hydrogen_trade_pulse": {
@@ -215,7 +215,7 @@
       }
     ],
     "debug": {
-      "updated_at": "2026-03-11 14:52 UTC",
+      "updated_at": "2026-03-12 07:13 UTC",
       "files_api": {
         "listing_url": "https://ec.europa.eu/eurostat/api/dissemination/files?format=csv&dir=comext%2FCOMEXT_DATA%2FPRODUCTS&hierarchy=false&sizeFormat=NONE&dateFormat=ISO",
         "listing_count": 378,
