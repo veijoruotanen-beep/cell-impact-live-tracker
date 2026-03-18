@@ -1,9 +1,9 @@
 {
   "meta": {
-    "last_update": "2026-03-17 07:17 UTC",
+    "last_update": "2026-03-18 07:16 UTC",
     "data_source": "GitHub Pages / same-repo JSON",
-    "last_update_utc": "2026-03-17 07:17 UTC",
-    "last_update_fi": "2026-03-17 09:17 Finland"
+    "last_update_utc": "2026-03-18 07:16 UTC",
+    "last_update_fi": "2026-03-18 09:16 Finland"
   },
   "changes": [
     "Tracker refreshed",
@@ -56,8 +56,8 @@
       "status": "Watch"
     },
     "share_price": {
-      "value": "0.120 SEK",
-      "meta": "CI.ST | +1.69% vs prev close",
+      "value": "0.127 SEK",
+      "meta": "CI.ST | +5.83% vs prev close",
       "status": "Live"
     },
     "hydrogen_trade_pulse": {
@@ -500,7 +500,7 @@
       }
     ],
     "debug": {
-      "updated_at": "2026-03-17 07:19 UTC",
+      "updated_at": "2026-03-18 07:18 UTC",
       "files_api": {
         "listing_url": "https://ec.europa.eu/eurostat/api/dissemination/files?format=csv&dir=comext%2FCOMEXT_DATA%2FPRODUCTS&hierarchy=false&sizeFormat=NONE&dateFormat=ISO",
         "listing_count": 378,
@@ -930,18 +930,18 @@
     "methodology": "Auto-calculated from current tracker fields, with optional manufacturer_signals and event_signals. Conservative proxy model; not a revenue forecast."
   },
   "hydrogen_industrial_momentum": {
-    "latest_score": 30,
-    "headline_score": 30,
+    "latest_score": 31,
+    "headline_score": 31,
     "status": "Fragile",
     "overall_status": "fragile",
     "confidence": "High",
     "components": {
       "trade_flow": 4,
       "project_order": 15,
-      "market_stress": 11,
+      "market_stress": 12,
       "trade_flow_score": 4,
       "project_order_score": 15,
-      "market_stress_score": 11
+      "market_stress_score": 12
     },
     "subsignals": [
       {
