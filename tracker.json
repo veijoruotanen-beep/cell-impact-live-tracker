@@ -1,22 +1,27 @@
 {
   "meta": {
-    "last_update": "2026-03-20 07:11 UTC",
+    "last_update": "2026-03-21 07:01 UTC",
     "data_source": "GitHub Pages / same-repo JSON",
-    "last_update_utc": "2026-03-20 07:11 UTC",
-    "last_update_fi": "2026-03-20 09:11 Finland"
+    "last_update_utc": "2026-03-21 07:01 UTC",
+    "last_update_fi": "2026-03-21 09:01 Finland"
   },
   "changes": [
     "Tracker refreshed",
     "IR headlines updated",
     "Share price updated",
     "Trade index recalculated",
-    "Monthly balanced bundle fetch failed",
+    "Monthly balanced bundle updated",
     "Hydrogen Industrial Momentum updated",
     "What matters now updated",
     "Event signals updated",
     "Supply chain radar updated"
   ],
   "what_matters_now": [
+    {
+      "label": "Monthly trade pulse",
+      "value": "1,630,876,619.7",
+      "note": "Monthly balanced bundle computed from COMEXT bulk files. COMEXT trade data is typically published with about a 40–60 day lag from the reference month."
+    },
     {
       "label": "Cash runway",
       "value": "8.3 months",
@@ -29,13 +34,8 @@
     },
     {
       "label": "Macro backdrop",
-      "value": "150.5",
-      "note": "Live Eurostat annual proxy via SDMX 3.0 parser. Selected dataset tet00013 and indexed the chosen import-value proxy to base period = 100. YoY -2.8%."
-    },
-    {
-      "label": "Share price",
-      "value": "0.119 SEK",
-      "note": "CI.ST | -2.46% vs prev close"
+      "value": "154.7",
+      "note": "Live Eurostat annual proxy via SDMX 3.0 parser. Selected dataset tet00013 and indexed the chosen import-value proxy to base period = 100. YoY +2.4%."
     }
   ],
   "company": {
@@ -56,12 +56,12 @@
       "status": "Watch"
     },
     "share_price": {
-      "value": "0.119 SEK",
-      "meta": "CI.ST | -2.46% vs prev close",
+      "value": "0.120 SEK",
+      "meta": "CI.ST | +0.00% vs prev close",
       "status": "Live"
     },
     "hydrogen_trade_pulse": {
-      "value": "Trade index 150.5",
+      "value": "Trade index 154.7",
       "meta": "Customs index based on tracker series.",
       "status": "Live"
     },
@@ -162,72 +162,72 @@
     "series": {
       "eu_imports_proxy": [
         {
-          "year": 2013,
-          "value": 100.0,
-          "raw_value": 1630762.5
-        },
-        {
           "year": 2014,
-          "value": 99.67,
+          "value": 100.0,
           "raw_value": 1625384.3
         },
         {
           "year": 2015,
-          "value": 101.06,
+          "value": 101.4,
           "raw_value": 1648094.6
         },
         {
           "year": 2016,
-          "value": 98.26,
+          "value": 98.59,
           "raw_value": 1602417.8
         },
         {
           "year": 2017,
-          "value": 108.66,
+          "value": 109.02,
           "raw_value": 1771944.2
         },
         {
           "year": 2018,
-          "value": 117.15,
+          "value": 117.54,
           "raw_value": 1910413.8
         },
         {
           "year": 2019,
-          "value": 118.99,
+          "value": 119.38,
           "raw_value": 1940369.2
         },
         {
           "year": 2020,
-          "value": 105.17,
+          "value": 105.52,
           "raw_value": 1715118.5
         },
         {
           "year": 2021,
-          "value": 130.2,
+          "value": 130.63,
           "raw_value": 2123271.3
         },
         {
           "year": 2022,
-          "value": 184.49,
+          "value": 185.1,
           "raw_value": 3008570.0
         },
         {
           "year": 2023,
-          "value": 154.75,
-          "raw_value": 2523664.3
+          "value": 155.28,
+          "raw_value": 2523816.8
         },
         {
           "year": 2024,
-          "value": 150.47,
-          "raw_value": 2453783.5
+          "value": 150.99,
+          "raw_value": 2454155.0
+        },
+        {
+          "year": 2025,
+          "value": 154.68,
+          "raw_value": 2514067.2
         }
       ]
     },
     "methodology": "Live Eurostat annual proxy via SDMX 3.0 parser. Selected dataset tet00013 and indexed the chosen import-value proxy to base period = 100.",
-    "latest_index": 150.5,
-    "latest_year": 2024,
+    "latest_index": 154.7,
+    "latest_year": 2025,
     "status": "annual",
-    "yoy_pct": -2.8,
+    "yoy_pct": 2.4,
     "source_type": "single-dataset proxy",
     "coverage_note": "This is a customs proxy signal, not a complete global fuel-cell trade dataset.",
     "dataset_target": "tet00013",
@@ -243,51 +243,51 @@
           "sitc06": "total_like",
           "partner": "total_like_or_first",
           "geo": "total_like_or_first",
-          "base_year": 2013
+          "base_year": 2014
         },
         "api_url": "https://ec.europa.eu/eurostat/api/dissemination/sdmx/3.0/data/dataflow/ESTAT/tet00013/1.0?compress=false&format=json&lang=en",
-        "payload_updated": "2026-02-13T11:00:00+0100"
+        "payload_updated": "2026-03-20T11:00:00+0100"
       }
     }
   },
   "trade_signals": {
     "balanced_signal": {
-      "status": "Fetch failed",
+      "status": "Live",
       "scope": "EU + selected partners",
       "flows": "imports + exports",
       "weights": {
         "exports": 0.6,
         "imports": 0.4
       },
-      "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. IncompleteRead: IncompleteRead(38779420 bytes read, 4903020 more expected)"
+      "note": "Primary monthly trade pulse from COMEXT bulk files."
     },
     "exports_signal": {
-      "status": "Fetch failed",
+      "status": "Live",
       "scope": "EU + selected partners",
       "flows": "exports",
-      "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. IncompleteRead: IncompleteRead(38779420 bytes read, 4903020 more expected)"
+      "note": "Exports slice from monthly COMEXT bundle."
     },
     "imports_signal": {
-      "status": "Fetch failed",
+      "status": "Live",
       "scope": "EU + selected partners",
       "flows": "imports",
-      "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. IncompleteRead: IncompleteRead(38779420 bytes read, 4903020 more expected)"
+      "note": "Imports slice from monthly COMEXT bundle."
     },
     "macro_signal": {
       "status": "Live",
       "dataset_target": "tet00013",
-      "value": 150.5,
-      "yoy_pct": -2.8,
+      "value": 154.7,
+      "yoy_pct": 2.4,
       "note": "Annual macro/proxy backdrop."
     },
     "breadth_signal": {
-      "status": "Pending",
-      "value": null,
-      "note": "Breadth signal could not be calculated from current monthly series."
+      "status": "Weak",
+      "value": 33,
+      "note": "Share of tracked monthly slices improving vs previous period."
     }
   },
   "monthly_trade_pulse": {
-    "status": "Fetch failed",
+    "status": "Live",
     "scope": "EU + selected partners | imports + exports | 60/40 weighting",
     "partners": [
       "CN",
@@ -301,21 +301,209 @@
     },
     "window_months": 18,
     "smoothing": "3M MA",
-    "latest_period": null,
-    "latest_value": null,
-    "latest_raw_balanced": null,
+    "latest_period": "2026-01",
+    "latest_value": 1630876619.65,
+    "latest_raw_balanced": 1615050811.58,
     "yoy_pct": null,
     "methodology": "Monthly balanced bundle. Shows the last 18 months after 3-month moving-average smoothing when live COMEXT extraction succeeds.",
-    "note": "Monthly COMEXT bulk extraction did not yield a usable series yet. IncompleteRead: IncompleteRead(38779420 bytes read, 4903020 more expected)",
-    "balanced_series": [],
-    "balanced_raw_series": [],
-    "exports_series": [],
-    "imports_series": [],
+    "note": "Monthly balanced bundle computed from COMEXT bulk files. COMEXT trade data is typically published with about a 40–60 day lag from the reference month.",
+    "balanced_series": [
+      {
+        "period": "2025-04",
+        "value": 1719010231.08
+      },
+      {
+        "period": "2025-05",
+        "value": 1730920453.88
+      },
+      {
+        "period": "2025-06",
+        "value": 1733943123.6
+      },
+      {
+        "period": "2025-07",
+        "value": 1758265575.19
+      },
+      {
+        "period": "2025-08",
+        "value": 1721496539.46
+      },
+      {
+        "period": "2025-09",
+        "value": 1704588828.72
+      },
+      {
+        "period": "2025-10",
+        "value": 1691142469.82
+      },
+      {
+        "period": "2025-11",
+        "value": 1726905444.0
+      },
+      {
+        "period": "2025-12",
+        "value": 1668056236.65
+      },
+      {
+        "period": "2026-01",
+        "value": 1630876619.65
+      }
+    ],
+    "balanced_raw_series": [
+      {
+        "period": "2025-02",
+        "value": 1657908474.68
+      },
+      {
+        "period": "2025-03",
+        "value": 1805160834.08
+      },
+      {
+        "period": "2025-04",
+        "value": 1693961384.49
+      },
+      {
+        "period": "2025-05",
+        "value": 1693639143.08
+      },
+      {
+        "period": "2025-06",
+        "value": 1814228843.22
+      },
+      {
+        "period": "2025-07",
+        "value": 1766928739.27
+      },
+      {
+        "period": "2025-08",
+        "value": 1583332035.9
+      },
+      {
+        "period": "2025-09",
+        "value": 1763505710.99
+      },
+      {
+        "period": "2025-10",
+        "value": 1726589662.56
+      },
+      {
+        "period": "2025-11",
+        "value": 1690620958.45
+      },
+      {
+        "period": "2025-12",
+        "value": 1586958088.93
+      },
+      {
+        "period": "2026-01",
+        "value": 1615050811.58
+      }
+    ],
+    "exports_series": [
+      {
+        "period": "2025-02",
+        "value": 1909782920.95
+      },
+      {
+        "period": "2025-03",
+        "value": 2072061330.03
+      },
+      {
+        "period": "2025-04",
+        "value": 1985523449.34
+      },
+      {
+        "period": "2025-05",
+        "value": 2023320981.64
+      },
+      {
+        "period": "2025-06",
+        "value": 2183022956.36
+      },
+      {
+        "period": "2025-07",
+        "value": 2121967947.04
+      },
+      {
+        "period": "2025-08",
+        "value": 1957427506.85
+      },
+      {
+        "period": "2025-09",
+        "value": 2127806985.33
+      },
+      {
+        "period": "2025-10",
+        "value": 2067788422.2
+      },
+      {
+        "period": "2025-11",
+        "value": 2002027145.53
+      },
+      {
+        "period": "2025-12",
+        "value": 1876671386.35
+      },
+      {
+        "period": "2026-01",
+        "value": 1985374714.6
+      }
+    ],
+    "imports_series": [
+      {
+        "period": "2025-02",
+        "value": 1280096805.28
+      },
+      {
+        "period": "2025-03",
+        "value": 1404810090.14
+      },
+      {
+        "period": "2025-04",
+        "value": 1256618287.22
+      },
+      {
+        "period": "2025-05",
+        "value": 1199116385.24
+      },
+      {
+        "period": "2025-06",
+        "value": 1261037673.52
+      },
+      {
+        "period": "2025-07",
+        "value": 1234369927.61
+      },
+      {
+        "period": "2025-08",
+        "value": 1022188829.47
+      },
+      {
+        "period": "2025-09",
+        "value": 1217053799.48
+      },
+      {
+        "period": "2025-10",
+        "value": 1214791523.08
+      },
+      {
+        "period": "2025-11",
+        "value": 1223511677.84
+      },
+      {
+        "period": "2025-12",
+        "value": 1152388142.8
+      },
+      {
+        "period": "2026-01",
+        "value": 1059564957.06
+      }
+    ],
     "debug": {
-      "updated_at": "2026-03-20 07:25 UTC",
+      "updated_at": "2026-03-21 07:01 UTC",
       "files_api": {
         "listing_url": "https://ec.europa.eu/eurostat/api/dissemination/files?format=csv&dir=comext%2FCOMEXT_DATA%2FPRODUCTS&hierarchy=false&sizeFormat=NONE&dateFormat=ISO",
-        "listing_count": 378,
+        "listing_count": 380,
         "listing_fields": [
           "NAME",
           "SIZE",
@@ -343,7 +531,6 @@
           }
         ],
         "latest_listing_names": [
-          "full_v2_202503.7z",
           "full_v2_202504.7z",
           "full_v2_202505.7z",
           "full_v2_202506.7z",
@@ -352,10 +539,10 @@
           "full_v2_202509.7z",
           "full_v2_202510.7z",
           "full_v2_202511.7z",
-          "full_v2_202512.7z"
+          "full_v2_202512.7z",
+          "full_v2_202601.7z"
         ],
         "latest_listing_periods": [
-          "202503",
           "202504",
           "202505",
           "202506",
@@ -364,10 +551,10 @@
           "202509",
           "202510",
           "202511",
-          "202512"
+          "202512",
+          "202601"
         ],
         "archive_candidates": [
-          "full_v2_202503.7z",
           "full_v2_202504.7z",
           "full_v2_202505.7z",
           "full_v2_202506.7z",
@@ -376,12 +563,12 @@
           "full_v2_202509.7z",
           "full_v2_202510.7z",
           "full_v2_202511.7z",
-          "full_v2_202512.7z"
+          "full_v2_202512.7z",
+          "full_v2_202601.7z"
         ],
-        "latest_archive_available": "full_v2_202512.7z",
-        "latest_period_available": "202512",
+        "latest_archive_available": "full_v2_202601.7z",
+        "latest_period_available": "202601",
         "selected_archives": [
-          "full_v2_202501.7z",
           "full_v2_202502.7z",
           "full_v2_202503.7z",
           "full_v2_202504.7z",
@@ -392,10 +579,10 @@
           "full_v2_202509.7z",
           "full_v2_202510.7z",
           "full_v2_202511.7z",
-          "full_v2_202512.7z"
+          "full_v2_202512.7z",
+          "full_v2_202601.7z"
         ],
         "selected_periods": [
-          "202501",
           "202502",
           "202503",
           "202504",
@@ -406,81 +593,82 @@
           "202509",
           "202510",
           "202511",
-          "202512"
+          "202512",
+          "202601"
         ],
-        "latest_archive_selected": "full_v2_202512.7z",
-        "latest_period_selected": "202512",
+        "latest_archive_selected": "full_v2_202601.7z",
+        "latest_period_selected": "202601",
         "selected_archive_manifest": {
-          "202501": {
-            "archive": "full_v2_202501.7z",
-            "date": "2026-02-13T09:33:17.631Z",
-            "size": "45284560",
-            "type": "7z"
-          },
           "202502": {
             "archive": "full_v2_202502.7z",
-            "date": "2026-02-13T09:33:17.979Z",
-            "size": "45906742",
+            "date": "2026-03-20T08:59:42.183Z",
+            "size": "45764138",
             "type": "7z"
           },
           "202503": {
             "archive": "full_v2_202503.7z",
-            "date": "2026-02-13T09:33:18.391Z",
-            "size": "46921513",
+            "date": "2026-03-20T08:59:42.456Z",
+            "size": "46805505",
             "type": "7z"
           },
           "202504": {
             "archive": "full_v2_202504.7z",
-            "date": "2026-02-13T09:33:18.817Z",
-            "size": "46393163",
+            "date": "2026-03-20T08:59:42.772Z",
+            "size": "46496403",
             "type": "7z"
           },
           "202505": {
             "archive": "full_v2_202505.7z",
-            "date": "2026-02-13T09:33:19.136Z",
-            "size": "46079528",
+            "date": "2026-03-20T08:59:43.041Z",
+            "size": "46246274",
             "type": "7z"
           },
           "202506": {
             "archive": "full_v2_202506.7z",
-            "date": "2026-02-13T09:33:19.571Z",
-            "size": "45615369",
+            "date": "2026-03-20T08:59:43.346Z",
+            "size": "45709310",
             "type": "7z"
           },
           "202507": {
             "archive": "full_v2_202507.7z",
-            "date": "2026-02-13T09:33:20.059Z",
-            "size": "46576751",
+            "date": "2026-03-20T08:59:43.634Z",
+            "size": "46675056",
             "type": "7z"
           },
           "202508": {
             "archive": "full_v2_202508.7z",
-            "date": "2026-02-13T09:33:20.515Z",
-            "size": "43682440",
+            "date": "2026-03-20T08:59:43.969Z",
+            "size": "43836757",
             "type": "7z"
           },
           "202509": {
             "archive": "full_v2_202509.7z",
-            "date": "2026-02-13T09:33:20.904Z",
-            "size": "46408406",
+            "date": "2026-03-20T08:59:44.314Z",
+            "size": "46600303",
             "type": "7z"
           },
           "202510": {
             "archive": "full_v2_202510.7z",
-            "date": "2026-02-13T09:33:21.367Z",
-            "size": "47447019",
+            "date": "2026-03-20T08:59:44.650Z",
+            "size": "47573349",
             "type": "7z"
           },
           "202511": {
             "archive": "full_v2_202511.7z",
-            "date": "2026-02-13T09:33:21.771Z",
-            "size": "46098502",
+            "date": "2026-03-20T08:59:44.951Z",
+            "size": "46228559",
             "type": "7z"
           },
           "202512": {
             "archive": "full_v2_202512.7z",
-            "date": "2026-02-13T09:33:22.086Z",
-            "size": "26320662",
+            "date": "2026-03-20T08:59:45.241Z",
+            "size": "45057636",
+            "type": "7z"
+          },
+          "202601": {
+            "archive": "full_v2_202601.7z",
+            "date": "2026-03-20T08:59:50.339Z",
+            "size": "25191213",
             "type": "7z"
           }
         }
@@ -494,13 +682,162 @@
         "skipped_archives": 0,
         "used_cached_series": false
       },
-      "message": "Monthly COMEXT bulk extraction did not yield a usable series yet. IncompleteRead: IncompleteRead(38779420 bytes read, 4903020 more expected)"
+      "processed_archives": [
+        {
+          "archive": "full_v2_202512.7z",
+          "yyyymm": "202512",
+          "download_url": "https://ec.europa.eu/eurostat/api/dissemination/files?file=comext%2FCOMEXT_DATA%2FPRODUCTS%2Ffull_v2_202512.7z",
+          "archive_members": [
+            "full_202512.dat"
+          ],
+          "extracted_file": "first_pass/full_202512.dat",
+          "extracted_kind": ".dat",
+          "delimiter_guess": ",",
+          "columns": [
+            "REPORTER",
+            "PARTNER",
+            "TRADE_TYPE",
+            "PRODUCT_NC",
+            "PRODUCT_SITC",
+            "PRODUCT_CPA21",
+            "PRODUCT_CPA22",
+            "PRODUCT_BEC",
+            "PRODUCT_BEC5",
+            "PRODUCT_SECTION",
+            "FLOW",
+            "STAT_PROCEDURE",
+            "SUPPL_UNIT",
+            "PERIOD",
+            "VALUE_EUR",
+            "VALUE_NAC",
+            "QUANTITY_KG",
+            "QUANTITY_SUPPL_UNIT"
+          ],
+          "column_map": {
+            "period": "PERIOD",
+            "flow": "FLOW",
+            "geo": "REPORTER",
+            "partner": "PARTNER",
+            "product": "PRODUCT_NC",
+            "value": "VALUE_EUR"
+          },
+          "rows_seen": 4855900,
+          "rows_kept": 5647,
+          "fail_counts": {
+            "period": 0,
+            "flow": 0,
+            "partner": 4512018,
+            "product": 338235,
+            "value": 0,
+            "geo": 0
+          }
+        },
+        {
+          "archive": "full_v2_202601.7z",
+          "yyyymm": "202601",
+          "download_url": "https://ec.europa.eu/eurostat/api/dissemination/files?file=comext%2FCOMEXT_DATA%2FPRODUCTS%2Ffull_v2_202601.7z",
+          "archive_members": [
+            "full_202601.dat"
+          ],
+          "extracted_file": "first_pass/full_202601.dat",
+          "extracted_kind": ".dat",
+          "delimiter_guess": ",",
+          "columns": [
+            "REPORTER",
+            "PARTNER",
+            "TRADE_TYPE",
+            "PRODUCT_NC",
+            "PRODUCT_SITC",
+            "PRODUCT_CPA21",
+            "PRODUCT_CPA22",
+            "PRODUCT_BEC",
+            "PRODUCT_BEC5",
+            "PRODUCT_SECTION",
+            "FLOW",
+            "STAT_PROCEDURE",
+            "SUPPL_UNIT",
+            "PERIOD",
+            "VALUE_EUR",
+            "VALUE_NAC",
+            "QUANTITY_KG",
+            "QUANTITY_SUPPL_UNIT"
+          ],
+          "column_map": {
+            "period": "PERIOD",
+            "flow": "FLOW",
+            "geo": "REPORTER",
+            "partner": "PARTNER",
+            "product": "PRODUCT_NC",
+            "value": "VALUE_EUR"
+          },
+          "rows_seen": 2702676,
+          "rows_kept": 5563,
+          "fail_counts": {
+            "period": 0,
+            "flow": 0,
+            "partner": 2365021,
+            "product": 332092,
+            "value": 0,
+            "geo": 0
+          }
+        }
+      ],
+      "archive_row_counts": [
+        {
+          "archive": "full_v2_202512.7z",
+          "rows_seen": 4855900,
+          "rows_kept": 5647
+        },
+        {
+          "archive": "full_v2_202601.7z",
+          "rows_seen": 2702676,
+          "rows_kept": 5563
+        }
+      ],
+      "columns": [
+        "REPORTER",
+        "PARTNER",
+        "TRADE_TYPE",
+        "PRODUCT_NC",
+        "PRODUCT_SITC",
+        "PRODUCT_CPA21",
+        "PRODUCT_CPA22",
+        "PRODUCT_BEC",
+        "PRODUCT_BEC5",
+        "PRODUCT_SECTION",
+        "FLOW",
+        "STAT_PROCEDURE",
+        "SUPPL_UNIT",
+        "PERIOD",
+        "VALUE_EUR",
+        "VALUE_NAC",
+        "QUANTITY_KG",
+        "QUANTITY_SUPPL_UNIT"
+      ],
+      "column_map": {
+        "period": "PERIOD",
+        "flow": "FLOW",
+        "geo": "REPORTER",
+        "partner": "PARTNER",
+        "product": "PRODUCT_NC",
+        "value": "VALUE_EUR"
+      },
+      "fail_counts": {
+        "period": 0,
+        "flow": 0,
+        "partner": 2365021,
+        "product": 332092,
+        "value": 0,
+        "geo": 0
+      },
+      "latest_rows_seen": 2702676,
+      "latest_rows_kept": 5563
     },
     "breadth": {
-      "overall_pct": null,
-      "overall_status": "Pending",
+      "overall_pct": 33,
+      "overall_status": "Weak",
       "headline": {
-        "note": "Breadth signal could not be calculated from current monthly series."
+        "note": "Breadth based on balanced bundle, exports, and imports latest-period direction."
       }
     }
   },
@@ -557,29 +894,29 @@
   },
   "supply_chain_radar": {
     "version": "v2",
-    "momentum": "Unavailable",
-    "nowcast": 49,
-    "confidence": "Medium",
+    "momentum": "Weakening",
+    "nowcast": 50,
+    "confidence": "High",
     "layers": [
       {
         "title": "Market Demand",
         "status": "stable",
         "strength": "weak",
-        "score": 51,
+        "score": 52,
         "description": "Derived from monthly balanced trade pulse, macro backdrop and market-level event flow."
       },
       {
         "title": "System Manufacturers",
         "status": "stable",
-        "strength": "weak",
-        "score": 51,
+        "strength": "medium",
+        "score": 58,
         "description": "Built from market pulse, exports momentum and optional manufacturer signal/event inputs."
       },
       {
         "title": "Component Suppliers",
         "status": "stable",
         "strength": "weak",
-        "score": 50,
+        "score": 45,
         "description": "Built from balanced bundle momentum plus export/import flow direction and supplier events."
       },
       {
@@ -593,29 +930,29 @@
     "methodology": "Auto-calculated from current tracker fields, with optional manufacturer_signals and event_signals. Conservative proxy model; not a revenue forecast."
   },
   "hydrogen_industrial_momentum": {
-    "latest_score": 45,
-    "headline_score": 45,
+    "latest_score": 43,
+    "headline_score": 43,
     "status": "Fragile",
     "overall_status": "fragile",
-    "confidence": "Medium",
+    "confidence": "High",
     "components": {
-      "trade_flow": 20,
+      "trade_flow": 18,
       "project_order": 15,
       "market_stress": 10,
-      "trade_flow_score": 20,
+      "trade_flow_score": 18,
       "project_order_score": 15,
       "market_stress_score": 10
     },
     "subsignals": [
       {
         "name": "Trade breadth",
-        "value": "n/a",
-        "status": "pending"
+        "value": "33%",
+        "status": "weak"
       },
       {
         "name": "Monthly trade pulse",
-        "value": "n/a",
-        "status": "neutral"
+        "value": "2026-01",
+        "status": "down"
       },
       {
         "name": "Project / order flow",
@@ -629,16 +966,16 @@
       },
       {
         "name": "Macro backdrop",
-        "value": "150.5",
+        "value": "154.7",
         "status": "stable"
       }
     ],
     "subsignals_map": {
-      "trade_breadth": "n/a",
-      "monthly_trade_pulse": "n/a",
+      "trade_breadth": "33%",
+      "monthly_trade_pulse": "2026-01",
       "project_flow": "IR-weighted",
       "dilution_pressure": "Elevated",
-      "macro_backdrop": "150.5"
+      "macro_backdrop": "154.7"
     },
     "note": "Composite proxy indicator combining trade flow, project/order signal and company/market stress.",
     "methodology": "Uses already available tracker fields only, so the calculation stays lightweight. COMEXT-based Monthly Trade Pulse itself typically lags the reference month by about 40–60 days."
